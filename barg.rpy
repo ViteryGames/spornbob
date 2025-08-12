@@ -1,4 +1,4 @@
-# barg.rpy - Shop System (English)
+# barg.rpy - Shop System (English) - UPDATED VERSION
 
 label barg: 
     hide screen xerequinha
@@ -25,8 +25,7 @@ default inventario = []  # List of purchased items (IDs)
 default pagina_atual = 1  # Controls current shop page
 default agua_viva_capturadas = 0  # Counter for jellyfish caught in minigame
 
-# Defining the 20 original shop items 
-# Adding item 21 (jellyfish) and 22 (jelly) and 23 (jar with jelly) so they can be referenced by inventory
+# Defining the shop items including new additions
 define itens_loja = {
     1: {"nome": "Cowboy Hat", "preco": 50},
     2: {"nome": "Chocolate", "preco": 3},
@@ -48,12 +47,17 @@ define itens_loja = {
     18: {"nome": "Glass Bottle", "preco": 15},
     19: {"nome": "Pineapple", "preco": 8},  # UPDATED: price reduced to 8 coins
     20: {"nome": "Mysterious Item 2", "preco": 4000},
-    21: {"nome": "Captured Jellyfish", "preco": 25},  # Item added for reference
-    22: {"nome": "Jellyfish Jelly", "preco": 40},  # Item added for reference
-    23: {"nome": "Jar with Jelly", "preco": 50}       # Item added for reference
+    21: {"nome": "Captured Jellyfish", "preco": 25},  # Item added for reference (not sold in shop)
+    22: {"nome": "Jellyfish Jelly", "preco": 40},  # Item added for reference (not sold in shop)
+    23: {"nome": "Jar with Jelly", "preco": 50},  # Item added for reference (not sold in shop)
+    # NEW ITEMS ADDED - Homemade ice creams (not sold in shop)
+    101: {"nome": "Homemade Milk Ice Cream", "preco": 0},  # Not sold - gift item only
+    102: {"nome": "Homemade Mango Ice Cream", "preco": 0},  # Not sold - gift item only
+    # NEW ITEM ADDED - Steroids (not sold in shop)
+    103: {"nome": "Steroids", "preco": 0}  # Not sold - special item for Larry interactions
 }
 
-# List of items that actually appear in the shop
+# List of items that actually appear in the shop (excludes special items)
 define itens_mostrados_loja = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
 
 # Function to buy items
@@ -117,6 +121,35 @@ init python:
         agua_viva_capturadas += quantidade
         
         renpy.notify(f"{quantidade} jellyfish added to inventory!")
+    
+    # Function to add special items to inventory (for homemade ice creams, steroids, etc.)
+    def adicionar_item_especial(id_item, quantidade=1):
+        global inventario
+        for i in range(quantidade):
+            inventario.append(id_item)
+        
+        if id_item in itens_loja:
+            item_nome = itens_loja[id_item]["nome"]
+            if quantidade == 1:
+                renpy.notify(f"{item_nome} added to inventory!")
+            else:
+                renpy.notify(f"{quantidade} {item_nome} added to inventory!")
+    
+    # Function to check if player has specific item
+    def tem_item(id_item):
+        return id_item in inventario
+    
+    # Function to remove item from inventory
+    def remover_item(id_item):
+        global inventario
+        if id_item in inventario:
+            inventario.remove(id_item)
+            return True
+        return False
+    
+    # Function to count specific items in inventory
+    def contar_item(id_item):
+        return inventario.count(id_item)
 
 # Functions to change pages
 init python:

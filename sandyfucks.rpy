@@ -207,7 +207,7 @@ label ver_peitos_sandy:
     hide sandynua
     
     # Return to Sandy dressed
-    show sandy satisfeita at center
+    show sandy envergonhada at center
     
     $ vezes_mostrou_peitos += 1
     $ hora_do_dia += 2
@@ -246,7 +246,7 @@ label ver_peitos_rapido:
     
     # Return to normal scene
     scene bg casa_sandy with dissolve
-    show sandy satisfeita at center
+    show sandy envergonhada at center
     
     sd "Enjoyed the quick view?"
     
@@ -346,7 +346,7 @@ label ver_buceta_rapido:
     
     # Return to normal scene
     scene bg casa_sandy with dissolve
-    show sandy satisfeita at center
+    show sandy envergonhada at center
     
     sd "Enjoyed the quick view?"
     
@@ -426,7 +426,7 @@ label punheta_sandy:
             hide sandypohadas
     
     # Show satisfied Sandy
-    show sandy satisfeita at center
+    show sandy envergonhada at center
     
     sd "Wow, so much milk! You really enjoyed it, huh?"
 
@@ -514,7 +514,7 @@ label boquete_sandy:
             hide sandypohadas
     
     # Show satisfied Sandy
-    show sandy satisfeita at center
+    show sandy envergonhada at center
     
     sd "*Glup* *Glup* ... *Cough* *Cough*"
     sd "Wow... this is... different from what I expected."

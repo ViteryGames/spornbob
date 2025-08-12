@@ -18,6 +18,7 @@ default visitou_siricascudo = False
 default visitou_sandy_exterior = False
 default visitou_aguasvivas = False
 default visitou_loja_exterior = False
+default visitou_praia_exterior = False
 
 # Main label for exploration
 label explorar_siricascudo:
@@ -126,6 +127,32 @@ label explorar_loja:
             "Go back to map":
                 call screen mapScreen
 
+label explorar_praia:
+    # Check if it's too late (after 8 PM)
+    if hora_do_dia >= 20:
+        scene praia noite
+        "It's too late. Goon Lagoon Beach is closed at night."
+        
+        menu:
+            "Go back home":
+                jump room4
+    else:
+        # Show area during the day
+        scene praca praia
+        
+        # Show description only on first visit
+        if not visitou_praia_exterior:
+            "You're at the entrance to Goon Lagoon Beach."
+            
+            "You can hear the sound of waves and see muscular sea creatures working out."
+            $ visitou_praia_exterior = True
+        
+        menu:
+            "Enter Goo Lagoon Beach":
+                jump praia
+                
+            "Go back to map":
+                call screen mapScreen
 # Add this code to screens.rpy or myScreens.rpy file to modify the map screen
 # so it uses the new exploration labels
 
@@ -169,12 +196,12 @@ screen mapScreen():
         action [Hide("mapScreen"), Jump("explorar_sandy")]
     
     #Room 5
-    #imagebutton:
-        #xpos 1430
-        #ypos 25
-        #idle "R5 idle.png"
-       # hover "R5 hover.png"
-       # action [Hide("mapScreen"), Jump("praia")]
+    imagebutton:
+        xpos 1430
+        ypos 25
+        idle "R5 idle.png"
+        hover "R5 hover.png"
+        action [Hide("mapScreen"), Jump("explorar_praia")]
         
     #Jellyfish Fields
     imagebutton:
