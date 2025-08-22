@@ -60,30 +60,67 @@ label menu_conversa_siririca:
             jump menu_conversa_siririca
         
         "Ask about his daughter":
-            # Hide any current Mr. Krack before showing another
-            hide krab happy
-            hide krab4
-            show krab a:
-                zoom 0.6 xpos 1000 ypos 400
-            
-            k "Wait, how do YOU know I have a daughter?"
-            
-            k "Have you been following Pearl around? If I find out you're hitting on her..."
-            
-            # Hide krab a before showing kradeath
-            hide krab a
-            show kradeath
-            
-            k "I'LL STICK THIS CRAB BURGER IN YOUR..."
-            
-            # Hide kradeath before showing krab a again
-            hide kradeath
-            show krab a:
-                zoom 0.6 xpos 1000 ypos 400
-            
-            k "Ahem... get back to work, Spoogebob Squirtpants."
-            
-            jump menu_conversa_siririca
+            # Check if it's day 12 or later for different dialogue
+            if dia >= 12:
+                # Hide any current Mr. Krack before showing another
+                hide krab happy
+                hide krab4
+                show krab madtalk:
+                    zoom 0.6 xpos 1000 ypos 400
+                
+                k "DON'T... don't mention Pearl right now, boy..."
+                
+                k "She came here the other day and... let's just say she found out about some of my... PRIVATE EXPENSES."
+                
+                # Hide krab madtalk before showing krab sus
+                hide krab madtalk
+                show krab sus:
+                    zoom 0.6 xpos 1000 ypos 400
+                
+                k "Now she's threatening to tell everyone in town about my... 'collection'..."
+                
+                k "That girl is going to RUIN my reputation! And my BUSINESS!"
+                
+                # Hide krab sus before showing kradeath
+                hide krab sus
+                show kradeath
+                
+                k "IF SHE COSTS ME ONE PENNY, I'LL..."
+                
+                # Hide kradeath before showing krab a again
+                hide kradeath
+                show krab a:
+                    zoom 0.6 xpos 1000 ypos 400
+                
+                k "Ahem... just... get back to work and FORGET we had this conversation."
+                
+                jump menu_conversa_siririca
+            else:
+                # Original dialogue for days before 12
+                # Hide any current Mr. Krack before showing another
+                hide krab happy
+                hide krab4
+                show krab a:
+                    zoom 0.6 xpos 1000 ypos 400
+                
+                k "Wait, how do YOU know I have a daughter?"
+                
+                k "Have you been following Pearl around? If I find out you're hitting on her..."
+                
+                # Hide krab a before showing kradeath
+                hide krab a
+                show kradeath
+                
+                k "I'LL STICK THIS CRAB BURGER IN YOUR..."
+                
+                # Hide kradeath before showing krab a again
+                hide kradeath
+                show krab a:
+                    zoom 0.6 xpos 1000 ypos 400
+                
+                k "Ahem... get back to work, Spoogebob Squirtpants."
+                
+                jump menu_conversa_siririca
         
         "Talk about the weather":
             # Hide any current Mr. Krack before showing krab4

@@ -86,7 +86,7 @@ label opbob1_menu_opcoes:
         "Ask about Bikini Bottom":
             y "So this shit here is Bikini Bottom? What a ridiculous name!"
             
-            bs "I-it's a really cool place when you get to know it... W-we have the Krusty Krab, Mrs. Puff's Boating School..."
+            bs "I-it's a really cool place when you get to know it... W-we have the Krusty Krotch, Mrs. Puffy's Boating School..."
             
             y "I don't give a shit about that crap! I want to know where there's money and where there are people for me to have fun with!"
             
@@ -141,6 +141,7 @@ label opbob1_menu_opcoes:
                     jump opbob1_menu_opcoes
                 "Go back":
                     jump quanaite
+                    
         
         "Knock him out":
             y "I'm already tired of your stupid face!"

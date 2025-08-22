@@ -20,6 +20,11 @@ default vezes_foder_buceta = 0  # Counter for times player fucked her pussy
 default vezes_nozes_cuzinho = 0  # Counter for times player stuck nuts in her ass
 default ultimo_dia_acao_sexual = -1  # Stores the 'dia' variable value when sexual action was performed
 
+# NEW: Sexual enhancement system variables
+default acoes_extras_dia = 0  # Extra actions available today
+default reef_powder_usado_hoje = False  # Track if reef powder was used today
+default jaguar_power_usado_hoje = False  # Track if jaguar power was used today
+
 # Function to update interest level based on points
 init python:
     def atualizar_nivel_interesse():
@@ -28,9 +33,53 @@ init python:
         # Limit to maximum level 20
         if nivel_interesse_sandy > 20:
             nivel_interesse_sandy = 20
+    
+    # NEW: Functions for sexual enhancement system
+    def usar_reef_powder():
+        global acoes_extras_dia, reef_powder_usado_hoje, inventario
+        if 26 in inventario and not reef_powder_usado_hoje:
+            inventario.remove(26)
+            acoes_extras_dia += 1
+            reef_powder_usado_hoje = True
+            return True
+        return False
+    
+    def usar_jaguar_power():
+        global acoes_extras_dia, jaguar_power_usado_hoje, inventario
+        if 27 in inventario and not jaguar_power_usado_hoje:
+            inventario.remove(27)
+            acoes_extras_dia += 2
+            jaguar_power_usado_hoje = True
+            return True
+        return False
+    
+    def pode_fazer_acao_sexual():
+        global ultimo_dia_acao_sexual, dia, acoes_extras_dia
+        # Can do action if it's a different day OR if has extra actions available
+        return ultimo_dia_acao_sexual != dia or acoes_extras_dia > 0
+    
+    def consumir_acao_sexual():
+        global ultimo_dia_acao_sexual, dia, acoes_extras_dia
+        if ultimo_dia_acao_sexual != dia:
+            # First action of the day - mark as used
+            ultimo_dia_acao_sexual = dia
+        else:
+            # Using extra action
+            acoes_extras_dia -= 1
+    
+    def resetar_enhancers_diarios():
+        global reef_powder_usado_hoje, jaguar_power_usado_hoje, acoes_extras_dia
+        # Reset daily enhancer usage (call this when day changes)
+        reef_powder_usado_hoje = False
+        jaguar_power_usado_hoje = False
+        acoes_extras_dia = 0
 
 # Label to interact with Sandy
 label sandy:
+    # Check if day changed and reset enhancers
+    if ultimo_dia_acao_sexual < dia - 1:
+        $ resetar_enhancers_diarios()
+    
     if not ja_visitou_sandy:
         scene bg casa_sandy with dissolve
         "You arrive at Sandy's house for the first time."
@@ -41,8 +90,12 @@ label sandy:
 
     show sandy normal at center
     
-    sd "Hi, Spoogebob Squirtpants! What brings you here?"
+    play audio "hisandy.mp3"
+
+    sd "Howdy, Spoogebob Squirtpants! What brings you here partner?"
     "Current interest level: [nivel_interesse_sandy]"
+    if acoes_extras_dia > 0:
+        "🔥 Extra spicy actions available: [acoes_extras_dia] 🔥"
     
     jump mostrar_menu_sandy
 
@@ -60,9 +113,28 @@ label mostrar_menu_sandy:
         "Offer a gift":
             jump presentear_sandy
         
-        # See tits - Kept in main menu
+        # NEW: Enhancement options
+        "Use Reef Powder (+1 extra spicy action)" if 26 in inventario and not reef_powder_usado_hoje:
+            $ sucesso = usar_reef_powder()
+            if sucesso:
+                show sandy seducao at center
+                sd "Mmm... what's that strange powder you're taking? You seem more... energetic!"
+                sd "I can feel the energy radiating from you, cowboy..."
+                "You used Reef Powder! You now have +1 extra spicy action today!"
+            jump mostrar_menu_sandy
+            
+        "Use Jaguar Power (+2 extra spicy actions)" if 27 in inventario and not jaguar_power_usado_hoje:
+            $ sucesso = usar_jaguar_power()
+            if sucesso:
+                show sandy seducao at center
+                sd "Holy cow! What did you just take? Your whole aura changed!"
+                sd "You look like a wild animal ready to pounce... I like it!"
+                "You used Jaguar Power! You now have +2 extra spicy actions today!"
+            jump mostrar_menu_sandy
+        
+        # See tits - UPDATED with new system
         "See her tits ([min(vezes_mostrou_peitos, 3)]/3)" if nivel_interesse_sandy >= 1:
-            if vezes_mostrou_peitos < 3 and ultimo_dia_acao_sexual == dia:
+            if not pode_fazer_acao_sexual():
                 show sandy seducao at center
                 $ dialogo = obter_dialogo_recusa()
                 sd "[dialogo]"
@@ -70,9 +142,9 @@ label mostrar_menu_sandy:
             else:
                 jump ver_peitos_sandy
         
-        # See pussy - Kept in main menu
+        # See pussy - UPDATED with new system
         "See her pussy ([min(vezes_mostrou_buceta, 3)]/3)" if nivel_interesse_sandy >= 5 and vezes_punheta >= 3:
-            if vezes_mostrou_buceta < 3 and ultimo_dia_acao_sexual == dia:
+            if not pode_fazer_acao_sexual():
                 show sandy seducao at center
                 $ dialogo = obter_dialogo_recusa()
                 sd "[dialogo]"
@@ -87,14 +159,14 @@ label mostrar_menu_sandy:
         "Leave":
             jump sair_da_sandy
 
-# Submenu for sexual favors (ONLY sex actions, not showing tits/pussy)
+# Submenu for sexual favors (UPDATED with new system)
 label menu_favores_sexuais:
     menu:
         "What sexual favor do you want?"
                 
-        # Handjob - Available at level 3+
+        # Handjob - UPDATED with new system
         "Ask for a handjob ([min(vezes_punheta, 3)]/3)" if nivel_interesse_sandy >= 3:
-            if ultimo_dia_acao_sexual == dia:
+            if not pode_fazer_acao_sexual():
                 show sandy seducao at center
                 $ dialogo = obter_dialogo_recusa()
                 sd "[dialogo]"
@@ -102,9 +174,9 @@ label menu_favores_sexuais:
             else:
                 jump punheta_sandy
                 
-        # Blowjob - Available at level 7+
+        # Blowjob - UPDATED with new system
         "Get a blowjob ([min(vezes_boquete, 3)]/3)" if nivel_interesse_sandy >= 7:
-            if ultimo_dia_acao_sexual == dia:
+            if not pode_fazer_acao_sexual():
                 show sandy seducao at center
                 $ dialogo = obter_dialogo_recusa()
                 sd "[dialogo]"
@@ -112,9 +184,9 @@ label menu_favores_sexuais:
             else:
                 jump boquete_sandy
                 
-        # Fuck her pussy - Available at level 10+
+        # Fuck her pussy - UPDATED with new system
         "Fuck her pussy ([min(vezes_foder_buceta, 3)]/3)" if nivel_interesse_sandy >= 10:
-            if ultimo_dia_acao_sexual == dia:
+            if not pode_fazer_acao_sexual():
                 show sandy seducao at center
                 $ dialogo = obter_dialogo_recusa()
                 sd "[dialogo]"
@@ -122,23 +194,9 @@ label menu_favores_sexuais:
             else:
                 jump foder_buceta_sandy
         
-        # Stick nuts in her ass - Available at level 15+ if has nuts in inventory
-        #"Stick nuts in her ass" if nivel_interesse_sandy >= 15:
-            #if ultimo_dia_acao_sexual == dia:
-                #show sandy seducao at center
-                #$ dialogo = obter_dialogo_recusa()
-                #sd "[dialogo]"
-                #jump menu_favores_sexuais
-            #elif 3 not in inventario:
-                #show sandy normal at center
-                #sd "You need to buy nuts first, silly!"
-                #jump menu_favores_sexuais
-           # else:
-                #jump nozes_cuzinho_sandy
-        
-        # Fuck her ass - Available only at level 20+
+        # Fuck her ass - UPDATED with new system
         "Fuck her ass ([min(vezes_cuzinho, 3)]/3)" if nivel_interesse_sandy >= 20:
-             if ultimo_dia_acao_sexual == dia:
+             if not pode_fazer_acao_sexual():
                 show sandy seducao at center
                 $ dialogo = obter_dialogo_recusa()
                 sd "[dialogo]"
@@ -153,7 +211,7 @@ label menu_favores_sexuais:
 
 # Leaving Sandy's house
 label sair_da_sandy:
-    sd "Leaving already? That's okay, come back whenever you want!"
+    sd "Leaving already cowoboy? That's okay, come back whenever you want!"
     
     scene black with dissolve
     "You leave Sandy's house..."

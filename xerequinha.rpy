@@ -159,7 +159,7 @@ screen inventarioScreen():
                                         text itens_loja[item_id]["nome"] size 30 color "#99CCFF" outlines [(2, "#0044AA", 0, 0)]
                                         text "Price: $[itens_loja[item_id]['preco']]" size 25 color "#AADDFF" outlines [(1, "#0066CC", 0, 0)]
                                         
-                                        # Custom descriptions for some items
+                                        # Custom descriptions for items
                                         if item_id == 1:  # Cowboy Hat
                                             text "A stylish hat to look like a real cowboy." size 20 color "#FFFFFF" outlines [(1, "#003366", 1, 1)]
                                         elif item_id == 15:  # Blow-up Doll
@@ -168,6 +168,16 @@ screen inventarioScreen():
                                             text "Essential tool for hunting jellyfish. Allows capturing more when using the minigame." size 20 color "#FFFFFF" outlines [(1, "#003366", 1, 1)]
                                         elif item_id == 8:  # Jellyfish Jar
                                             text "A special container for storing jellyfish. Different from the ones you capture in the game." size 20 color "#FFFFFF" outlines [(1, "#003366", 1, 1)]
+                                        elif item_id == 25:  # Trash Stick
+                                            text "Made from 100% authentic garbage. Sold at the Cum Bucket. Used in various evil recipes." size 20 color "#FFFFFF" outlines [(1, "#003366", 1, 1)]
+                                        elif item_id == 26:  # Reef Powder
+                                            text "🔥 Sexual stamina enhancer! Gives +1 extra spicy action per day with any character. Crafted in Plugton's lab." size 20 color "#FF6699" outlines [(1, "#CC0033", 1, 1)]
+                                        elif item_id == 27:  # Jaguar Power
+                                            text "🔥🔥 Ultimate sexual enhancer! Gives +2 extra spicy actions per day with any character. Crafted in Plugton's lab." size 20 color "#FF3366" outlines [(1, "#CC0033", 1, 1)]
+                                        elif item_id == 28:  # Spatula 3000
+                                            text "The most advanced cooking utensil ever created. Can flip burgers at light speed with perfect precision." size 20 color "#FFCC00" outlines [(1, "#996600", 1, 1)]
+                                        elif item_id == 24:  # Steroid Shots
+                                            text "💪 Military-grade anabolic enhancer! Guarantees victory in physical challenges." size 20 color "#00FF00" outlines [(1, "#006600", 1, 1)]
                                         else:
                                             text "Useful item for your adventure." size 20 color "#FFFFFF" outlines [(1, "#003366", 1, 1)]
                                     # If it's the jellyfish item (ID 21) that's in the separate dictionary

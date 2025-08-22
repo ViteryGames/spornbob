@@ -1,4 +1,4 @@
-# room4.rpy - Room 4 Game Logic
+# room4.rpy - Room 4 Game Logic - REORGANIZED
 
 # Room 4 specific variables
 default vezes_investigou = 0
@@ -42,7 +42,7 @@ label room4:
     "What should I do now?"
     jump chegada_em_casa
 
-# Home arrival menu
+# Home arrival menu - REORGANIZED
 label chegada_em_casa:
     # Check if it's after 8 PM to redirect to night scene
     if hora_do_dia >= 20:
@@ -51,7 +51,7 @@ label chegada_em_casa:
     # If not night, continue normally
     # Start a loop of options that always returns to the initial menu
     while True:
-        # Menu with credits option only after 15 days and nap option during day
+        # Menu with credits option only after 15 days and actions submenu
         if dia >= 15:
             menu:
                 "Go to the living room":
@@ -60,23 +60,15 @@ label chegada_em_casa:
                     $ escolha = "cozinha"
                     jump salabob
 
-                "Check Spoogebob":
-                    $ escolha = "bob"
-                    jump opcoes
-
-                "Investigate":
-                    $ escolha = "inv"
-                    jump opcoes
-                    
-                "Take a nap" if hora_do_dia < 20:
-                    jump take_nap
+                "Actions":
+                    jump menu_acoes_quarto
                     
                 "View Credits": # Option available after 15 days
                     play sound som_opcao
                     "You turn on the television and see a special program about Bikini Bottom..."
                     jump creditos
         else:
-            # Normal menu for days < 15 with nap option
+            # Normal menu for days < 15 with actions submenu
             menu:
                 "Go to the living room":
                     $ hora_do_dia += 1
@@ -84,16 +76,32 @@ label chegada_em_casa:
                     $ escolha = "cozinha"
                     jump salabob
 
-                "Check Spoogebob":
-                    $ escolha = "bob"
-                    jump opcoes
+                "Actions":
+                    jump menu_acoes_quarto
 
-                "Investigate":
-                    $ escolha = "inv"
-                    jump opcoes
-                    
-                "Take a nap" if hora_do_dia < 20:
-                    jump take_nap
+# NEW: Actions submenu for bedroom
+label menu_acoes_quarto:
+    menu:
+        "What action do you want to take?"
+        
+        # Only show "Check Spoogebob" before day 3
+        "Check Spoogebob" if dia < 3:
+            $ escolha = "bob"
+            jump opcoes_quarto
+
+        "Investigate":
+            $ escolha = "inv"
+            jump opcoes_quarto
+            
+        "Take a nap" if hora_do_dia < 20:
+            jump take_nap
+            
+        "Scratch your balls":
+            $ escolha = "cocar_saco"
+            jump opcoes_quarto
+            
+        "Go back":
+            jump chegada_em_casa
 
 # Nap function
 label take_nap:
@@ -123,12 +131,10 @@ label take_nap:
     # Go directly to night scene
     jump quanaite
 
-# Action options handler
-label opcoes:
+# Action options handler - RENAMED for bedroom
+label opcoes_quarto:
     # Here you can customize what happens depending on the choice
-    if escolha == "cozinha":
-        "You go to the kitchen."
-    elif escolha == "bob":
+    if escolha == "bob":
         show bobmorto
         "Spoogebob is unconscious"
         hide bobmorto
@@ -143,24 +149,29 @@ label opcoes:
         else:
             "Nothing more to investigate."
         $ vezes_investigou += 1
-    elif escolha == "gary":
-        # Temporarily disable typing sound
-        $ temp_callbacks = config.all_character_callbacks[:]
-        $ config.all_character_callbacks = []
+    elif escolha == "cocar_saco":
+        $ dialogo_random = renpy.random.randint(1, 5)
         
-        play sound "gary1.wav"
-        $ renpy.music.set_volume(0.2, channel="sound")
-        "Gary" "Meow"
-        
-        # Restore typing sound system
-        $ config.all_character_callbacks = temp_callbacks
-        
-        jump salabob     
+        if dialogo_random == 1:
+            "You scratch your balls with satisfaction."
+            "Ah, that feels good. Nothing like a good ball scratch."
+        elif dialogo_random == 2:
+            "You scratch your balls vigorously."
+            "Prison habits die hard. At least here you have privacy."
+        elif dialogo_random == 3:
+            "You give your balls a proper scratch."
+            "Being underwater doesn't stop the itch. Some things never change."
+        elif dialogo_random == 4:
+            "You scratch your balls and sigh with relief."
+            "Life's simple pleasures. Even criminals need comfort."
+        else:
+            "You scratch your balls like a true man."
+            "Spoogebob probably never did this with such style."
 
-    # Automatically return to options menu after a choice
-    jump chegada_em_casa
+    # Automatically return to actions menu after a choice
+    jump menu_acoes_quarto
 
-# Living room
+# Living room - REORGANIZED
 label salabob:
     # Check if it's after 8 PM to redirect to night scene
     if hora_do_dia >= 20:
@@ -180,7 +191,7 @@ label salabob:
             "You are in the living room"  
             $ sala_mensagem_exibida = True 
 
-        # Menu with Mrs. Puffy option after day 12
+        # Menu with Mrs. Puffy option after day 8 and actions submenu
         if dia >= 8:
             menu:
                 "Go back to bedroom":
@@ -192,56 +203,8 @@ label salabob:
 
                     jump chegada_em_casa
 
-                "Watch TV":
-                    $ hora_do_dia += 1
-                    if not tv_quebrada:
-                        # First time watching TV
-                        # Show anchor fish animation
-                        scene bg room4
-                        show tv_reporter_anim
-                        
-                        # Anchor fish dialogue
-                        "News Anchor" "Breaking news! A dangerous human criminal escaped from prison in a boat!"
-                        
-                        "News Anchor" "The boat crashed near Bikini Bottom! Any information should be reported to the author-"
-                        
-                        # Batavo punches the TV
-                        hide tv_reporter_anim
-                        show tv_batavo_soco
-                        
-                        play sound "soco.mp3" volume 0.8
-                        with hpunch
-                        
-                        b "SHUT THE FUCK UP!"
-                        
-                        # Broken TV
-                        hide tv_batavo_soco
-                        show tv_quebrada
-                        
-                        "You broke the TV with a punch."
-                        
-                        # Mark TV as permanently broken
-                        $ tv_quebrada = True
-                    else:
-                        # TV already broken
-                        scene bg room4
-                        show tv_quebrada
-                        
-                        "The TV is broken."
-                    
-                    # Return to living room menu
-                    scene bg room4
-                    show batavo1 at Transform(xzoom=-1):
-                        zoom 1.0 xpos 1000 ypos 400
-                    
-                    show gary at left:
-                        zoom 0.3 xpos 500 ypos 1000
-                    
-                    jump salabob
-
-                "Gary":
-                    $ escolha = "gary"
-                    jump opcoes
+                "Actions":
+                    jump menu_acoes_sala
                     
                 "Go to the boating school":
                     "You go there "
@@ -266,7 +229,7 @@ label salabob:
                         $ mapa_disponivel = True
                         call screen bobCasas # From second time onwards, show screen
         else:
-            # Normal menu for days < 12
+            # Normal menu for days < 8 with actions submenu
             menu:
                 "Go back to bedroom":
                     $ hora_do_dia += 1
@@ -277,56 +240,8 @@ label salabob:
 
                     jump chegada_em_casa
 
-                "Watch TV":
-                    $ hora_do_dia += 1
-                    if not tv_quebrada:
-                        # First time watching TV
-                        # Show anchor fish animation
-                        scene bg room4
-                        show tv_reporter_anim
-                        
-                        # Anchor fish dialogue
-                        "News Anchor" "Breaking news! A dangerous human criminal escaped from prison in a boat!"
-                        
-                        "News Anchor" "The boat crashed near Bikini Bottom! Any information should be reported to the author-"
-                        
-                        # Batavo punches the TV
-                        hide tv_reporter_anim
-                        show tv_batavo_soco
-                        
-                        play sound "soco.mp3" volume 0.8
-                        with hpunch
-                        
-                        b "SHUT THE FUCK UP!"
-                        
-                        # Broken TV
-                        hide tv_batavo_soco
-                        show tv_quebrada
-                        
-                        "You broke the TV with a punch."
-                        
-                        # Mark TV as permanently broken
-                        $ tv_quebrada = True
-                    else:
-                        # TV already broken
-                        scene bg room4
-                        show tv_quebrada
-                        
-                        "The TV is broken."
-                    
-                    # Return to living room menu
-                    scene bg room4
-                    show batavo1 at Transform(xzoom=-1):
-                        zoom 1.0 xpos 1000 ypos 400
-                    
-                    show gary at left:
-                        zoom 0.3 xpos 500 ypos 1000
-                    
-                    jump salabob
-
-                "Gary":
-                    $ escolha = "gary"
-                    jump opcoes
+                "Actions":
+                    jump menu_acoes_sala
 
                 "Exit":
                     $ hora_do_dia += 1
@@ -346,6 +261,89 @@ label salabob:
                     else:
                         $ mapa_disponivel = True
                         call screen bobCasas # From second time onwards, show screen
+
+# NEW: Actions submenu for living room
+label menu_acoes_sala:
+    menu:
+        "What action do you want to take?"
+        
+        "Watch TV":
+            $ hora_do_dia += 1
+            jump assistir_tv
+            
+        "Talk to Gary":
+            $ escolha = "gary"
+            jump opcoes_sala
+            
+        "Go back":
+            jump salabob
+
+# TV watching function - SEPARATED
+label assistir_tv:
+    if not tv_quebrada:
+        # First time watching TV
+        # Show anchor fish animation
+        scene bg room4
+        show tv_reporter_anim
+        
+        # Anchor fish dialogue
+        "News Anchor" "Breaking news! A dangerous human criminal escaped from prison in a boat!"
+        
+        "News Anchor" "The boat crashed near Bikini Bottom! Any information should be reported to the author-"
+        
+        # Batavo punches the TV
+        hide tv_reporter_anim
+        show tv_batavo_soco
+        
+        play sound "soco.mp3" volume 0.8
+        with hpunch
+        
+        b "SHUT THE FUCK UP!"
+        
+        # Broken TV
+        hide tv_batavo_soco
+        show tv_quebrada
+        
+        "You broke the TV with a punch."
+        
+        # Mark TV as permanently broken
+        $ tv_quebrada = True
+    else:
+        # TV already broken
+        scene bg room4
+        show tv_quebrada
+        
+        "The TV is broken."
+    
+    # Return to living room menu
+    scene bg room4
+    show batavo1 at Transform(xzoom=-1):
+        zoom 1.0 xpos 1000 ypos 400
+    
+    show gary at left:
+        zoom 0.3 xpos 500 ypos 1000
+    
+    jump menu_acoes_sala
+
+# Action options handler for living room
+label opcoes_sala:
+    # Here you can customize what happens depending on the choice
+    if escolha == "gary":
+        # Temporarily disable typing sound
+        $ temp_callbacks = config.all_character_callbacks[:]
+        $ config.all_character_callbacks = []
+        
+        play sound "gary1.wav"
+        $ renpy.music.set_volume(0.2, channel="sound")
+        "Gary" "Meow"
+        
+        # Restore typing sound system
+        $ config.all_character_callbacks = temp_callbacks
+        
+        jump menu_acoes_sala     
+
+    # Automatically return to actions menu after a choice
+    jump menu_acoes_sala
 
 # Night scene at home
 label casanoite:

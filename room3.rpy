@@ -1,647 +1,529 @@
-label room3:
-  "Money = [money]"
-  
-  scene bg room3
+# plugtonlab.rpy - Plugton's Laboratory System (English) - CLEANED VERSION
 
-  "Welcome to room 3"with fade
-  
+# Define Plugton and Karen characters
+define plug = Character("Plugton", who_color="#00ff00")
+define karen = Character("Karen (Computer Wife)", who_color="#ff00ff")
 
-  menu: 
-     "Leave":
-       call screen mapScreen
-      
-     "Work at the Chum Bucket":
-       $ money += 1
-       "[money]" 
+# Variables to track Plugton's state
+default ja_visitou_plugton = False
+default pontos_relacionamento_plugton = 0
+default nivel_relacionamento_plugton = 0
+default palitos_lixo_comprados = 0
+default laboratorio_desbloqueado = False
+default karen_primeira_vez = False
 
-  menu: 
-     "Leave":
-       call screen mapScreen
+# Crafting variables
+default receitas_desbloqueadas = []
+default ultimo_dia_craft = -1
 
-     "Work at the Chum Bucket":
-       $ money += 2
-       "[money]" 
+# Images for Plugton areas
+image bg_balde_lixo = "images/balde_lixo.png"
+image bg_laboratorio = "images/laboratorio_plugton.png"
+image plugton_normal = "images/plugton_normal.png"
+image plugton_bravo = "images/plugton_bravo.png"
+image plugton_feliz = "images/plugton_feliz.png"
+image karen_tela = "images/karen_computer.png"
 
-  menu: 
-     "Leave":
-       call screen mapScreen  
+# Add new items to shop dictionary
+init 1 python:
+    # Add trash sticks to shop
+    if 25 not in itens_loja:
+        itens_loja[25] = {"nome": "Trash Stick", "preco": 8}
+    
+    # Add craftable items (not sold in shop)
+    if 26 not in itens_loja:
+        itens_loja[26] = {"nome": "Reef Powder", "preco": 0}
+    if 27 not in itens_loja:
+        itens_loja[27] = {"nome": "Jaguar Power", "preco": 0}
+    if 28 not in itens_loja:
+        itens_loja[28] = {"nome": "Mind Control Serum", "preco": 0}
+    if 29 not in itens_loja:
+        itens_loja[29] = {"nome": "Fake Krabby Patty Formula", "preco": 0}
 
-### Jogo de Pôquer "Apostando Segredos" - Batavo Esponja ###
-# Este código implementa um minijogo de pôquer simplificado onde o jogador (Batavo)
-# aposta contra Plankton para ganhar segredos sobre os personagens da Fenda do Biquíni
+# List of items that actually appear in the shop (excludes special items)
+define itens_mostrados_loja = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 25]
 
-# Definições de imagens para cartas e fundos
+# Function to update relationship level
 init python:
-    # Importações necessárias
-    import random
+    def atualizar_relacionamento_plugton():
+        global pontos_relacionamento_plugton, nivel_relacionamento_plugton
+        nivel_relacionamento_plugton = pontos_relacionamento_plugton // 10
+        if nivel_relacionamento_plugton > 10:
+            nivel_relacionamento_plugton = 10
+    
+    def pode_craftar_hoje():
+        global ultimo_dia_craft, dia
+        return ultimo_dia_craft != dia
+    
+    def processar_craft(item_id, ingredientes_necessarios, custo_dinheiro=0):
+        global inventario, money, ultimo_dia_craft
+        
+        # Check if has ingredients
+        for ingrediente_id, quantidade in ingredientes_necessarios.items():
+            if inventario.count(ingrediente_id) < quantidade:
+                return False, f"You need {quantidade} {itens_loja[ingrediente_id]['nome']}"
+        
+        # Check money
+        if money < custo_dinheiro:
+            return False, f"You need ${custo_dinheiro}"
+        
+        # Remove ingredients
+        for ingrediente_id, quantidade in ingredientes_necessarios.items():
+            for i in range(quantidade):
+                inventario.remove(ingrediente_id)
+        
+        # Remove money
+        money -= custo_dinheiro
+        
+        # Add crafted item
+        inventario.append(item_id)
+        
+        # Mark crafting done today
+        ultimo_dia_craft = dia
+        
+        return True, "Item crafted successfully!"
 
-    # Definição das cartas
-    NAIPES = ['copas', 'espadas', 'ouros', 'paus']
-    VALORES = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A']
-    
-    # Classe para representar uma carta
-    class Carta:
-        def __init__(self, naipe, valor):
-            self.naipe = naipe
-            self.valor = valor
-            
-        def __str__(self):
-            return f"{self.valor} de {self.naipe}"
-            
-        # Para comparação de cartas
-        def valor_numerico(self):
-            if self.valor == 'A':
-                return 14
-            elif self.valor == 'K':
-                return 13
-            elif self.valor == 'Q':
-                return 12
-            elif self.valor == 'J':
-                return 11
-            else:
-                return int(self.valor)
-    
-    # Classe para o baralho
-    class Baralho:
-        def __init__(self):
-            self.cartas = []
-            for naipe in NAIPES:
-                for valor in VALORES:
-                    self.cartas.append(Carta(naipe, valor))
-            self.embaralhar()
-            
-        def embaralhar(self):
-            random.shuffle(self.cartas)
-            
-        def tirar_carta(self):
-            if len(self.cartas) > 0:
-                return self.cartas.pop()
-            else:
-                return None
-    
-    # Classe para avaliar mãos de pôquer
-    class AvaliadorMao:
-        @staticmethod
-        def avaliar(cartas):
-            # Ordenar cartas por valor
-            cartas_ordenadas = sorted(cartas, key=lambda carta: carta.valor_numerico())
-            
-            # Verificar combinações
-            if AvaliadorMao.tem_par(cartas_ordenadas):
-                return 1, "Par"
-            if AvaliadorMao.tem_dois_pares(cartas_ordenadas):
-                return 2, "Dois Pares" 
-            if AvaliadorMao.tem_trinca(cartas_ordenadas):
-                return 3, "Trinca"
-            if AvaliadorMao.tem_sequencia(cartas_ordenadas):
-                return 4, "Sequência"
-            if AvaliadorMao.tem_flush(cartas_ordenadas):
-                return 5, "Flush"
-            if AvaliadorMao.tem_full_house(cartas_ordenadas):
-                return 6, "Full House"
-            if AvaliadorMao.tem_quadra(cartas_ordenadas):
-                return 7, "Quadra"
-            if AvaliadorMao.tem_straight_flush(cartas_ordenadas):
-                return 8, "Straight Flush"
-            if AvaliadorMao.tem_royal_flush(cartas_ordenadas):
-                return 9, "Royal Flush"
-            
-            # Se nenhuma combinação especial
-            return 0, "Carta Alta"
-        
-        @staticmethod
-        def tem_par(cartas):
-            valores = [carta.valor for carta in cartas]
-            for valor in VALORES:
-                if valores.count(valor) >= 2:
-                    return True
-            return False
-            
-        @staticmethod
-        def tem_dois_pares(cartas):
-            valores = [carta.valor for carta in cartas]
-            pares = 0
-            for valor in VALORES:
-                if valores.count(valor) >= 2:
-                    pares += 1
-            return pares >= 2
-            
-        @staticmethod
-        def tem_trinca(cartas):
-            valores = [carta.valor for carta in cartas]
-            for valor in VALORES:
-                if valores.count(valor) >= 3:
-                    return True
-            return False
-            
-        @staticmethod
-        def tem_sequencia(cartas):
-            valores_numericos = [carta.valor_numerico() for carta in cartas]
-            valores_numericos.sort()
-            
-            # Verificar sequência normal
-            for i in range(1, len(valores_numericos)):
-                if valores_numericos[i] != valores_numericos[i-1] + 1:
-                    return False
-            return True
-            
-        @staticmethod
-        def tem_flush(cartas):
-            naipe = cartas[0].naipe
-            for carta in cartas:
-                if carta.naipe != naipe:
-                    return False
-            return True
-            
-        @staticmethod
-        def tem_full_house(cartas):
-            valores = [carta.valor for carta in cartas]
-            tem_trinca = False
-            tem_par = False
-            
-            for valor in VALORES:
-                if valores.count(valor) == 3:
-                    tem_trinca = True
-                elif valores.count(valor) == 2:
-                    tem_par = True
-                    
-            return tem_trinca and tem_par
-            
-        @staticmethod
-        def tem_quadra(cartas):
-            valores = [carta.valor for carta in cartas]
-            for valor in VALORES:
-                if valores.count(valor) >= 4:
-                    return True
-            return False
-            
-        @staticmethod
-        def tem_straight_flush(cartas):
-            return (AvaliadorMao.tem_sequencia(cartas) and 
-                    AvaliadorMao.tem_flush(cartas))
-                    
-        @staticmethod
-        def tem_royal_flush(cartas):
-            if not AvaliadorMao.tem_flush(cartas):
-                return False
-                
-            valores = [carta.valor for carta in cartas]
-            return (('10' in valores) and 
-                    ('J' in valores) and 
-                    ('Q' in valores) and 
-                    ('K' in valores) and 
-                    ('A' in valores))
-    
-    # Sistema de trapaça
-    class SistemaTrapaça:
-        def __init__(self):
-            self.nivel_suspeita = 0
-            self.max_suspeita = 100
-            
-        def trocar_carta(self, baralho, carta_desejada):
-            # Aumenta a suspeita
-            self.nivel_suspeita += 15
-            # Retorna a carta desejada
-            return carta_desejada
-            
-        def espiar_mao_oponente(self):
-            # Aumenta bastante a suspeita
-            self.nivel_suspeita += 25
-            return True
-            
-        def marcar_cartas(self):
-            # Suspeita moderada
-            self.nivel_suspeita += 20
-            return True
-            
-        def resetar_suspeita(self):
-            self.nivel_suspeita = 0
-            
-        def ser_pego(self):
-            return random.random() * 100 < self.nivel_suspeita
-
-    # Lista de segredos que podem ser apostados/ganhos
-    SEGREDOS = {
-        # Segredos do Sr. Siriguejo
-        "siririca_1": "O Siririca esconde uma segunda cópia da fórmula em uma caixa dentro do colchão.",
-        "siririca_2": "O Siririca tem um relacionamento secreto com a Sra. Puff.",
-        "siririca_3": "O Siririca tem um cofre escondido sob o assoalho de seu escritório.",
-        "siririca_4": "A senha do cofre do Siririca são os números do aniversário da filha dele: 2-4-7-6.",
-        "siririca_5": "O Siririca tem pavor de formigas depois de um incidente em sua juventude.",
-        
-        # Segredos do Lula Molusco
-        "lula_1": "O Lula Molusco tem uma coleção de fotos da Sandy em seu quarto.",
-        "lula_2": "O Lula Molusco já tentou fugir da Fenda do Biquíni 8 vezes.",
-        "lula_3": "O Lula Molusco secretamente admira o talento musical de Patrick.",
-        "lula_4": "O Lula Molusco tem uma peruca escondida para ocasiões especiais.",
-        "lula_5": "O verdadeiro nome do Lula Molusco é Alfredo.",
-        
-        # Segredos da Sandy
-        "sandy_1": "A Sandy foi banida do Texas por um experimento que deu errado.",
-        "sandy_2": "A Sandy mantém um diário onde admite sentir atração pelo Bob Esponja.",
-        "sandy_3": "O oxigênio na cúpula da Sandy é parcialmente sintético e causa leve euforia.",
-        "sandy_4": "A Sandy tem um dispositivo que pode drenar todo o oceano em 24 horas.",
-        "sandy_5": "A Sandy consegue ficar sem seu capacete por até 1 hora com treinamento especial.",
-        
-        # Segredos do Patrick
-        "patrick_1": "O Patrick é na verdade um gênio que finge ser burro.",
-        "patrick_2": "O Patrick é o verdadeiro herdeiro de um reino submarino distante.",
-        "patrick_3": "Sob a pedra do Patrick existe uma mansão subterrânea luxuosa.",
-        "patrick_4": "O Patrick sabe exatamente onde está o verdadeiro Bob Esponja.",
-        "patrick_5": "O Patrick já foi casado três vezes, mas ninguém se lembra disso.",
-        
-        # Segredos do próprio Plankton
-        "plankton_1": "Karen não é realmente esposa do Plankton, mas sim sua carcereiro.",
-        "plankton_2": "Plankton e Sr. Siriguejo já foram melhores amigos na infância.",
-        "plankton_3": "Plankton já provou o Hambúrguer de Siri uma vez e não achou tão bom assim.",
-        "plankton_4": "Plankton tem um clone dele mesmo que pode ativar em emergências.",
-        "plankton_5": "Plankton não quer a fórmula para o negócio, mas para um experimento genético."
-    }
-
-# Variáveis do jogo de pôquer
-default poker_dinheiro_jogador = 1000
-default poker_dinheiro_plankton = 1000
-default segredos_descobertos = []
-default nivel_trapaca = 0
-default suspeita_plankton = 0
-
-# Imagens do jogo
-image bg mesa_poker = "tutinha.webp"
-image carta_verso = "cardsverso.png"
-
-# Definição de personagens para o jogo de pôquer
-define p = Character("Plankton", color="#00ff00")
-define b = Character("Batavo", color="#ff9900")
-define n = Character("Narrador", color="#ffffff")
-
-# Tela de início do jogo de pôquer
-label iniciar_jogo_poker:
-    scene bg mesa_poker
-    show plankton normal at right
-    
-    $ sistema_trapaca = SistemaTrapaça()
-    $ segredo_atual = None  # O segredo sendo apostado nesta rodada
-    
-    p "Então você quer jogar pôquer, hein? Interessante..."
-    p "Vamos tornar as coisas mais interessantes. Além de apostar dinheiro, vamos apostar... segredos."
-    
-    b "Segredos? Que tipo de segredos?"
-    
-    p "Oh, você sabe... informações que ninguém mais conhece. Coisas sobre o Siririca, Lula Molusco, Sandy..."
-    p "Se você ganhar, eu revelo um segredo. Se eu ganhar, você me conta algo que eu queira saber."
-    
-    menu:
-        "Aceitar o desafio":
-            b "Parece justo. Vamos jogar."
-            p "Excelente! Vamos começar então."
-            jump jogo_poker_comecar
-            
-        "Recusar":
-            b "Acho que não estou com sorte hoje. Talvez outra hora."
-            p "Covarde. Sabia que você não tinha coragem."
-            jump menu_plankton  # Retorna ao menu principal
-
-# Tela principal do jogo de pôquer
-label jogo_poker_comecar:
-    $ baralho = Baralho()
-    $ mao_jogador = []
-    $ mao_plankton = []
-    $ pot = 0
-    $ rodada = 0
-    $ jogo_ativo = True
-    
-    # Distribuir cartas iniciais
-    python:
-        for i in range(5):
-            mao_jogador.append(baralho.tirar_carta())
-            mao_plankton.append(baralho.tirar_carta())
-    
-    # Selecionar um segredo para apostar
-    python:
-        segredos_disponiveis = [k for k in SEGREDOS.keys() if k not in segredos_descobertos]
-        if segredos_disponiveis:
-            segredo_atual = random.choice(segredos_disponiveis)
-        else:
-            segredo_atual = None
-        
-    jump jogo_poker_round
-
-# Rodada de pôquer
-label jogo_poker_round:
-    scene bg mesa_poker
-    show plankton normal at right
-    
-    if rodada == 0:
-        p "Vou apostar um segredo muito interessante nessa rodada."
-        
-        if segredo_atual:
-            if "siririca" in segredo_atual:
-                p "É algo sobre o seu chefe, o velho Siririca. Aposto que você vai gostar de saber."
-            elif "lula" in segredo_atual:
-                p "É um segredinho suculento sobre seu vizinho rabugento de tentáculos."
-            elif "sandy" in segredo_atual:
-                p "É sobre a esquilo cientista. Coisas que ela não quer que ninguém saiba."
-            elif "patrick" in segredo_atual:
-                p "É sobre seu amigo rosa. Ele não é tão simples quanto parece."
-            elif "plankton" in segredo_atual:
-                p "Vou revelar algo sobre mim mesmo que ninguém mais sabe. É um risco, mas confio em minha habilidade."
-    
-    # Exibir as cartas do jogador
-    n "Suas cartas:"
-    python:
-        for carta in mao_jogador:
-            renpy.say(n, str(carta))
-    
-    # Avaliar a mão atual
-    $ pontuacao, tipo_mao = AvaliadorMao.avaliar(mao_jogador)
-    n "Você tem: [tipo_mao]"
-    
-    # Menu de opções de jogo
-    menu:
-        "Apostar $100":
-            $ pot += 100
-            $ poker_dinheiro_jogador -= 100
-            p "Hmm, apostando. Vou cobrir."
-            $ pot += 100
-            $ poker_dinheiro_plankton -= 100
-        
-        "Verificar (não apostar)":
-            p "Verificando, huh? Fraco. Vou apostar $50 então."
-            $ pot += 50
-            $ poker_dinheiro_plankton -= 50
-            
-            menu:
-                "Cobrir os $50":
-                    $ pot += 50
-                    $ poker_dinheiro_jogador -= 50
-                    p "Ao menos tem coragem de continuar."
-                    
-                "Desistir":
-                    p "Ha! Eu sabia. Fraco demais para jogar com os grandes."
-                    $ poker_dinheiro_plankton += pot
-                    jump fim_jogo_poker
-        
-        "Desistir da mão":
-            p "Desistindo já? Patético."
-            $ poker_dinheiro_plankton += pot
-            jump fim_jogo_poker
-        
-        "Menu de trapaças" if rodada < 2:
-            menu:
-                "Espiar as cartas do Plankton ($+25% suspeita)":
-                    $ sistema_trapaca.espiar_mao_oponente()
-                    n "Cartas do Plankton:"
-                    python:
-                        for carta in mao_plankton:
-                            renpy.say(n, str(carta))
-                    $ pontuacao_plankton, tipo_mao_plankton = AvaliadorMao.avaliar(mao_plankton)
-                    n "Ele tem: [tipo_mao_plankton]"
-                    
-                "Marcar as cartas ($+20% suspeita)":
-                    $ sistema_trapaca.marcar_cartas()
-                    n "Você marcou sutilmente algumas cartas do baralho."
-                    n "Isso lhe dará uma vantagem na troca de cartas."
-                    
-                "Trocar uma carta por uma específica ($+15% suspeita)":
-                    n "Qual carta você quer adicionar à sua mão?"
-                    menu:
-                        "Ás de espadas":
-                            $ carta_nova = Carta("espadas", "A")
-                            $ mao_jogador.pop()  # Remove a última carta
-                            $ mao_jogador.append(carta_nova)
-                            $ sistema_trapaca.trocar_carta(baralho, carta_nova)
-                            
-                        "Rei de copas":
-                            $ carta_nova = Carta("copas", "K")
-                            $ mao_jogador.pop()  # Remove a última carta
-                            $ mao_jogador.append(carta_nova)
-                            $ sistema_trapaca.trocar_carta(baralho, carta_nova)
-                            
-                        "Dama de ouros":
-                            $ carta_nova = Carta("ouros", "Q")
-                            $ mao_jogador.pop()  # Remove a última carta
-                            $ mao_jogador.append(carta_nova)
-                            $ sistema_trapaca.trocar_carta(baralho, carta_nova)
-                            
-                        "Valete de paus":
-                            $ carta_nova = Carta("paus", "J")
-                            $ mao_jogador.pop()  # Remove a última carta
-                            $ mao_jogador.append(carta_nova)
-                            $ sistema_trapaca.trocar_carta(baralho, carta_nova)
-                    
-                    # Verificar se foi pego trapaceando
-                    if sistema_trapaca.ser_pego():
-                        p "Ei! O que você está fazendo? Você está trapaceando!"
-                        p "Jogo cancelado! Fora do meu estabelecimento!"
-                        jump trapaca_descoberta
-                
-                "Voltar":
-                    pass
-            
-            jump jogo_poker_round
-    
-    # Troca de cartas (se ainda não trocou)
-    if rodada == 0:
-        n "Quais cartas você deseja trocar? (Você pode trocar até 3 cartas)"
-        
-        $ cartas_para_trocar = []
-        python:
-            for i in range(5):
-                carta = mao_jogador[i]
-                escolha = renpy.display_menu([
-                    ("Trocar " + str(carta), True),
-                    ("Manter " + str(carta), False)
-                ])
-                
-                if escolha:
-                    cartas_para_trocar.append(i)
-                
-                # Limitar a 3 cartas
-                if len(cartas_para_trocar) == 3:
-                    break
-        
-        # Substituir as cartas selecionadas
-        python:
-            for indice in sorted(cartas_para_trocar, reverse=True):
-                mao_jogador.pop(indice)
-                mao_jogador.insert(indice, baralho.tirar_carta())
-        
-        # Plankton também troca cartas
-        $ num_cartas_plankton = random.randint(0, 3)
-        p "Vou trocar [num_cartas_plankton] cartas."
-        
-        python:
-            for i in range(num_cartas_plankton):
-                indice_remover = random.randint(0, len(mao_plankton)-1)
-                mao_plankton.pop(indice_remover)
-                mao_plankton.insert(indice_remover, baralho.tirar_carta())
-    
-    # Segunda rodada de apostas
-    $ rodada += 1
-    
-    if rodada < 2:
-        jump jogo_poker_round
-    
-    # Mostrar resultado final
-    n "Suas cartas finais:"
-    python:
-        for carta in mao_jogador:
-            renpy.say(n, str(carta))
-    
-    $ pontuacao_final, tipo_mao_final = AvaliadorMao.avaliar(mao_jogador)
-    n "Você tem: [tipo_mao_final]"
-    
-    p "Muito bem, vamos ver quem ganhou."
-    p "Minhas cartas são:"
-    
-    python:
-        for carta in mao_plankton:
-            renpy.say(p, str(carta))
-    
-    $ pontuacao_plankton_final, tipo_mao_plankton_final = AvaliadorMao.avaliar(mao_plankton)
-    p "Eu tenho: [tipo_mao_plankton_final]"
-    
-    # Determinar o vencedor
-    if pontuacao_final > pontuacao_plankton_final:
-        p "Você ganhou desta vez. Impressionante."
-        $ poker_dinheiro_jogador += pot
-        $ pot = 0
-        
-        # Revelar segredo
-        if segredo_atual:
-            p "Como prometido, vou revelar um segredo para você."
-            $ segredo_texto = SEGREDOS[segredo_atual]
-            p "[segredo_texto]"
-            $ segredos_descobertos.append(segredo_atual)
-            
-            # Salvar o segredo no arquivo do jogador
-            python:
-                with open("segredos_descobertos.txt", "a") as arquivo:
-                    arquivo.write(segredo_atual + ": " + segredo_texto + "\n")
-    
-    elif pontuacao_final < pontuacao_plankton_final:
-        p "Eu ganhei! Sua mão é fraca demais para me vencer."
-        $ poker_dinheiro_plankton += pot
-        $ pot = 0
-        
-        p "Agora você me deve um segredo. Hmm, deixe-me pensar..."
-        
-        # Plankton pede um segredo
-        $ pedido_segredo = random.choice([
-            "Onde você esconde suas coisas mais valiosas na casa abacaxi?",
-            "Qual é o ponto fraco do Siririca que você conhece?",
-            "Você já viu o Gary fazer algo estranho ultimamente?",
-            "O que aconteceu com o verdadeiro Bob Esponja? Vamos, pode me contar...",
-            "Você tem algum plano para assumir o controle do Siri Cascudo?"
-        ])
-        
-        p "[pedido_segredo]"
+# External exploration label
+label explorar_balde_lixo:
+    if hora_do_dia >= 20:
+        scene insidecbs
+        "The Cum Bucket is closed at night. Even evil schemes need rest."
         
         menu:
-            "Mentir descaradamente":
-                $ mentira = random.choice([
-                    "O Siririca tem medo de borboletas. Ele desmaia só de ver uma.",
-                    "Eu guardo tudo de valor dentro do abacaxi do Gary. Ninguém suspeita.",
-                    "Eu vi Gary abrindo o cofre do Siririca usando seus olhos como chaves.",
-                    "O verdadeiro Bob Esponja está em uma expedição submarina.",
-                    "Meu plano é colocar laxante no molho especial dos hambúrgueres."
-                ])
-                
-                b "[mentira]"
-                
-                # Plankton pode suspeitar de mentira
-                python:
-                    if random.random() < 0.3:
-                        renpy.say(p, "Hmm... isso não parece verdade. Mas vou investigar mesmo assim.")
-                    else:
-                        renpy.say(p, "Interessante... muito interessante.")
-                
-            "Revelar uma meia-verdade":
-                $ meia_verdade = random.choice([
-                    "O Siririca sempre conta o dinheiro três vezes antes de guardar.",
-                    "Eu mantenho um diário escondido em uma lata embaixo da cama.",
-                    "Gary consegue abrir fechaduras com sua gosma, é surpreendente.",
-                    "O verdadeiro Bob Esponja tem um segredo que ninguém conhece...",
-                    "Tenho observado a rotina do Siririca para encontrar padrões."
-                ])
-                
-                b "[meia_verdade]"
-                p "Hmm, isso parece útil. Vou guardar essa informação."
-    
-    else:  # Empate
-        p "Parece que temos um empate. Ninguém ganha o pote."
-        $ metade_pot = pot // 2
-        $ poker_dinheiro_jogador += metade_pot
-        $ poker_dinheiro_plankton += pot - metade_pot
-        $ pot = 0
+            "Go back home":
+                jump room4
+    else:
+        scene insidecbs
         
-        p "Que tal continuarmos jogando para desempatar?"
+        if not ja_visitou_plugton:
+            "You arrive at the infamous Cum Bucket - Plugton's failed restaurant."
+            "The place reeks of rotten food and broken dreams."
+            $ ja_visitou_plugton = True
+        
+        menu:
+            "Enter the Cum Bucket":
+                jump area_plugton
+                
+            "Go back to map":
+                call screen mapScreen
+
+# Main Plugton area
+label area_plugton:
+    scene bg_balde_lixo
     
-    # Verificar se quer continuar jogando
+    if not ja_visitou_plugton:
+        "You enter the Cum Bucket and immediately regret it."
+        "The smell hits you like a truck full of sewage."
+        $ ja_visitou_plugton = True
+    
+    show plugton_normal :
+        xalign 0.5
+        yalign 0.8
+        zoom 0.2
+    
+    plug "Well, well! If it isn't Spoogebob Squirtpants!"
+    plug "Welcome to my shitty establishment! Care to try a delicious Cum Burger?"
+    
+    jump menu_plugton
+
+# Plugton's main menu
+label menu_plugton:
+    scene bg_balde_lixo
+
+    show plugton_normal :
+        xalign 0.5
+        yalign 0.8
+        zoom 0.2
+    
+    # Show current relationship status
+    "Relationship with Plugton: [pontos_relacionamento_plugton] points (Level [nivel_relacionamento_plugton])"
+    
     menu:
-        "Jogar outra rodada":
-            p "Excelente! Vamos continuar."
-            $ sistema_trapaca.resetar_suspeita()
-            jump jogo_poker_comecar
+        "What do you want to do with Plugton?"
+        
+        "Dialogue options":
+            jump menu_dialogar_plugton
             
-        "Parar de jogar":
-            p "Já desistindo? Bem, pelo menos você teve coragem de jogar."
-            jump fim_jogo_poker
-
-# Quando o jogador é pego trapaceando
-label trapaca_descoberta:
-    p "Eu devia saber que você era desonesto. Bem, isso acaba com nosso jogo."
-    p "Vai embora antes que eu chame a polícia da Fenda do Biquíni!"
-    
-    # Penalidade por ser pego
-    $ poker_dinheiro_jogador -= 200
-    python:
-        if poker_dinheiro_jogador < 0:
-            poker_dinheiro_jogador = 0
-    
-    jump menu_plankton  # Retorno ao menu principal
-
-# Fim do jogo de pôquer
-label fim_jogo_poker:
-    # Resumo da sessão de jogo
-    n "Sessão de pôquer finalizada."
-    n "Seu dinheiro: $[poker_dinheiro_jogador]"
-    n "Dinheiro do Plankton: $[poker_dinheiro_plankton]"
-    n "Segredos descobertos: [len(segredos_descobertos)]/[len(SEGREDOS)]"
-    
-    if len(segredos_descobertos) > 0:
-        n "Último segredo descoberto:"
-        python:
-            if segredo_atual in segredos_descobertos:
-                renpy.say(n, SEGREDOS[segredo_atual])
-    
-    p "Podemos jogar de novo quando quiser. Eu sempre tenho mais segredos para apostar..."
-    p "Ou talvez você não tenha mais coragem de enfrentar um mestre do pôquer como eu."
-    
-    # Retornar ao menu principal
-    jump menu_plankton
-
-# Placeholder para o menu principal
-label menu_plankton:
-    scene bg balde_lixo
-    show plankton normal at right
-    
-    menu:
-        "Jogar pôquer apostando segredos":
-            jump iniciar_jogo_poker
-        
-        "Conversar com Plankton":
-            p "O que você quer agora, falso Bob Esponja?"
-            jump menu_plankton
-        
-        "Sair do Balde de Lixo":
-            p "Vai embora então. Mas lembre-se que eu sei quem você realmente é..."
+        "Sell items":
+            jump vender_itens_plugton
+            
+        "Talk about creating items" if pontos_relacionamento_plugton >= 30:
+            jump falar_criar_itens
+            
+        "Go to the laboratory" if laboratorio_desbloqueado:
+            jump laboratorio_plugton
+            
+        "Buy trash sticks ($8 each)":
+            jump comprar_palitos_lixo
+            
+        "Leave":
             jump sair_balde_lixo
 
-# Placeholder para saída
-label sair_balde_lixo:
-    scene black
-    "Você sai do Balde de Lixo e retorna à Fenda do Biquíni..."
+# Dialogue submenu
+label menu_dialogar_plugton:
+    scene bg_balde_lixo
+    show plugton_normal at center
     
-    # Aqui retornaria ao mapa principal do jogo
-    return
+    # Show current relationship status
+    "Relationship with Plugton: [pontos_relacionamento_plugton] points (Level [nivel_relacionamento_plugton])"
+    
+    menu:
+        "How do you want to talk to Plugton?"
+        
+        "Talk normally":
+            jump conversar_plugton
+            
+        "Flatter him":
+            jump bajular_plugton
+            
+        "Insult him":
+            jump xingar_plugton
+            
+        "Provoke him":
+            jump provocar_plugton
+            
+        "Go back":
+            jump menu_plugton
+
+# Flatter Plugton
+label bajular_plugton:
+    $ bajulacao_random = renpy.random.randint(1, 3)
+    $ pontos_iniciais = pontos_relacionamento_plugton
+    
+    hide plugton_normal
+    show plugton_feliz at center
+    
+    if bajulacao_random == 1:
+        b "You're such an evil genius, Plugton! Your plans are absolutely diabolical!"
+        plug "Finally! Someone who recognizes my fucking brilliance!"
+        plug "You have excellent taste in evil masterminds, asshole!"
+        $ pontos_relacionamento_plugton += 8
+        
+    elif bajulacao_random == 2:
+        b "This restaurant has such... unique character! Very avant-garde!"
+        plug "Avant-garde! Yes! That's exactly what I was going for!"
+        plug "Not 'health code violation' like that bastard inspector said!"
+        $ pontos_relacionamento_plugton += 7
+        
+    else:
+        b "Your scientific knowledge is incredible! You could rule the world!"
+        plug "RULE THE WORLD! Now you're thinking like a true fucking villain!"
+        plug "With your appreciation for genius, you could be my right-hand asshole!"
+        $ pontos_relacionamento_plugton += 9
+    
+    $ pontos_ganhos = pontos_relacionamento_plugton - pontos_iniciais
+    $ atualizar_relacionamento_plugton()
+    
+    "You gained [pontos_ganhos] relationship points with Plugton!"
+    #"Total relationship: [pontos_relacionamento_plugton] points (Level [nivel_relacionamento_plugton])"
+    
+    if pontos_relacionamento_plugton >= 30:
+        "Plugton considers you a valuable ally! Lab access available!"
+    
+    jump menu_dialogar_plugton
+
+# Conversation with Plugton
+label conversar_plugton:
+    $ dialogo_random = renpy.random.randint(1, 5)
+    $ pontos_iniciais = pontos_relacionamento_plugton
+    
+    if dialogo_random == 1:
+        show plugton_normal at center
+        plug "You know, Spoogebob, you seem different lately..."
+        plug "More... fat. Less yellow."
+        b "Maybe I'm finally growing up, you anal plug?"
+        plug "Growing up? You? HAHAHA! That'll be the goddamn day!"
+        $ pontos_relacionamento_plugton += 2
+        
+    elif dialogo_random == 2:
+        show plugton_feliz at center
+        plug "I've been working on a new fucking plan to steal the Krabby Patty formula!"
+        plug "This time it's foolproof! Well, mostly foolproof, shit!"
+        b "What happened to the last 'foolproof' plan, dickhead?"
+        plug "We don't talk about Plan Z-47..."
+        $ pontos_relacionamento_plugton += 1
+        
+    elif dialogo_random == 3:
+        plug "Business has been fucking terrible lately. Nobody wants to eat chum!"
+        plug "I don't understand it! It's perfectly good rotted fish shit!"
+        b "Maybe try adding some seasoning, you dumbass?"
+        plug "Genius! Why didn't I think of that? You're smarter than you look, asshole!"
+        $ pontos_relacionamento_plugton += 3
+
+    elif dialogo_random == 4:
+        b "So uh... what's up?"
+        plug "What?"
+        b "Just trying to make some conversation here"
+        plug "Oh ok"
+        plug "Not doing much right now..."
+        plug "You?"
+        b "Nah same"
+        $ pontos_relacionamento_plugton += 1    
+        
+    else:
+        plug "Karen's been nagging my ass about the laboratory again."
+        plug "She says I need to 'upgrade my equipment' and 'stop using rusty fucking spoons'."
+        b "Sounds like good advice, moron."
+        plug "Whose side are you on, you piece of shit?!"
+        $ pontos_relacionamento_plugton += 1
+    
+    $ pontos_ganhos = pontos_relacionamento_plugton - pontos_iniciais
+    $ atualizar_relacionamento_plugton()
+    
+    "You gained [pontos_ganhos] relationship points with Plugton!"
+    #"Total relationship: [pontos_relacionamento_plugton] points (Level [nivel_relacionamento_plugton])"
+    
+    if pontos_relacionamento_plugton == 10:
+        "Plugton seems to be warming up to you!"
+    elif pontos_relacionamento_plugton == 30:
+        "Plugton considers you a valuable ally! Lab access available!"
+    
+    jump menu_dialogar_plugton
+
+# Insult Plugton
+label xingar_plugton:
+    $ insulto_random = renpy.random.randint(1, 3)
+    $ pontos_iniciais = pontos_relacionamento_plugton
+    
+    hide plugton_normal
+    show plugton_bravo at center
+    
+    if insulto_random == 1:
+        b "You're shorter than a sea cucumber's dick!"
+        plug "HEY! I'll have you know I'm EVIL-sized, asshole!"
+        plug "Size doesn't matter when you have FUCKING INTELLECT!"
+        $ pontos_relacionamento_plugton -= 2
+        
+    elif insulto_random == 2:
+        b "Your restaurant smells like a whale's ass after Taco Tuesday!"
+        plug "That's... that's actually a compliment! Chum is SUPPOSED to smell like shit!"
+        plug "Wait, no! I mean... CURSE YOU, dickwad!"
+        $ pontos_relacionamento_plugton -= 1
+        
+    else:
+        b "No wonder nobody eats here. Your food could kill bacteria!"
+        plug "IT'S SUPPOSED TO BE DEADLY! That's the fucking point!"
+        plug "Though the health inspector disagrees... bastard shut me down twice."
+        $ pontos_relacionamento_plugton -= 3
+    
+    $ pontos_ganhos = pontos_relacionamento_plugton - pontos_iniciais
+    $ atualizar_relacionamento_plugton()
+    
+    "You lost [abs(pontos_ganhos)] relationship points with Plugton!"
+    #"Total relationship: [pontos_relacionamento_plugton] points (Level [nivel_relacionamento_plugton])"
+    
+    jump menu_dialogar_plugton
+
+# Provoke Plugton
+label provocar_plugton:
+    $ provocacao_random = renpy.random.randint(1, 3)
+    $ pontos_iniciais = pontos_relacionamento_plugton
+    
+    if provocacao_random == 1:
+        b "How many times has Mr. Krotch kicked your ass this week, plug?"
+        hide plugton_normal
+        show plugton_bravo at center
+        plug "SEVEN! But who's counting, you fucking dickhead?!"
+        plug "Next time will be different! I have a NEW goddamn plan!"
+        $ pontos_relacionamento_plugton += 1
+        
+    elif provocacao_random == 2:
+        b "I bet even Patrick could run a better restaurant, you anal disaster."
+        plug "PATRICK?! That pink fucking buffoon couldn't run a bath!"
+        plug "Although... he did eat 47 Krabby Patties in one sitting..."
+        plug "Maybe he knows something about food appeal... shit."
+        $ pontos_relacionamento_plugton += 2
+        
+    else:
+        b "What's your success rate? 0.001 percent?"
+        plug "It's 0.003 percent, thank you very fucking much!"
+        plug "And that's rounded UP, asshole!"
+        $ pontos_relacionamento_plugton += 1
+    
+    $ pontos_ganhos = pontos_relacionamento_plugton - pontos_iniciais
+    $ atualizar_relacionamento_plugton()
+    
+    "You gained [pontos_ganhos] relationship points with Plugton!"
+    "Total relationship: [pontos_relacionamento_plugton] points (Level [nivel_relacionamento_plugton])"
+    
+    jump menu_dialogar_plugton
+
+# Sell items to Plugton
+label vender_itens_plugton:
+    "What items do you want to sell to Plugton?"
+    
+    menu:
+        "Jellyfish Net - $12 (+5 points)" if 7 in inventario:
+            $ inventario.remove(7)
+            $ money += 12
+            plug "A jellyfish net! Ok I can do some traps with this thing."
+            $ pontos_relacionamento_plugton += 5
+            $ pontos_ganhos = 5
+            jump vender_resultado
+            
+        "Captured Jellyfish - $2 (+3 points)" if 21 in inventario:
+            $ inventario.remove(21)
+            $ money += 2
+            plug "Excellent! I can use this shit for my new chum recipe!"
+            $ pontos_relacionamento_plugton += 3
+            $ pontos_ganhos = 3
+            jump vender_resultado
+            
+        "Nuts - $3 (+1 point)" if 3 in inventario:
+            $ inventario.remove(3)
+            $ money += 3
+            plug "Nuts! Karen loves these... I mean, for EVIL fucking purposes!"
+            $ pontos_relacionamento_plugton += 1
+            $ pontos_ganhos = 1
+            jump vender_resultado
+            
+        "Chocolate - $2 (+1 point)" if 2 in inventario:
+            $ inventario.remove(2)
+            $ money += 2
+            plug "Chocolate! This will make my chum more palatable... shit!"
+            $ pontos_relacionamento_plugton += 1
+            $ pontos_ganhos = 1
+            jump vender_resultado
+            
+        "Don't sell anything":
+            plug "Fine! But come back when you have something useful, dickhead!"
+            jump menu_plugton
+    
+    # If no items available
+    plug "You don't have anything I want! Come back when you have something useful, dickhead!"
+    jump menu_plugton
+
+# Label for selling result
+label vender_resultado:
+    $ atualizar_relacionamento_plugton()
+    "You sold the item to Plugton!"
+    "You gained [pontos_ganhos] relationship points with Plugton!"
+    "Total relationship: [pontos_relacionamento_plugton] points (Level [nivel_relacionamento_plugton])"
+    
+    if pontos_relacionamento_plugton >= 30:
+        "Plugton considers you a valuable ally! Lab access available!"
+    
+    jump menu_plugton
+
+# Buy trash sticks
+label comprar_palitos_lixo:
+    if money >= 8:
+        $ money -= 8
+        $ inventario.append(25)
+        $ palitos_lixo_comprados += 1
+        $ pontos_relacionamento_plugton += 1  # +1 point per trash stick
+        $ atualizar_relacionamento_plugton()
+        
+        plug "One delicious trash stick! Made from 100 percent authentic fucking garbage!"
+        plug "You've bought [palitos_lixo_comprados] so far. A loyal customer, asshole!"
+        
+        "You gained 1 relationship point with Plugton!"
+        "Total relationship: [pontos_relacionamento_plugton] points (Level [nivel_relacionamento_plugton])"
+        
+        if palitos_lixo_comprados == 5:
+            plug "Wait a minute... you've bought 5 fucking trash sticks!"
+            plug "Either you have terrible taste, or you're up to some shit..."
+            plug "I like that in a potential business partner, dickhead!"
+            "Progress: You can now ask about creating items if you have 30+ relationship points!"
+    else:
+        plug "You need $8 for a trash stick! Come back when you're not fucking broke!"
+    
+    jump menu_plugton
+
+# Talk about creating items
+label falar_criar_itens:
+    if pontos_relacionamento_plugton < 30:
+        plug "Create items? Why would I help YOU with that shit?"
+        plug "We're not exactly fucking friends, you know!"
+        plug "You need at least 30 relationship points to access my lab, asshole!"
+        "Current relationship: [pontos_relacionamento_plugton]/30 points"
+        jump menu_plugton
+    
+    plug "Hmm, creating items, you say? Interesting as fuck..."
+    plug "I suppose my laboratory could use a test subject... I mean, assistant, asshole!"
+    
+    menu:
+        "I want to learn evil science!":
+            plug "EVIL SCIENCE! Now you're speaking my fucking language!"
+            plug "Very well! I'll grant you access to my secret laboratory, dickhead!"
+            $ laboratorio_desbloqueado = True
+            $ pontos_relacionamento_plugton += 10
+            $ atualizar_relacionamento_plugton()
+            "You gained 10 relationship points with Plugton!"
+            
+        "I just want to make useful stuff":
+            plug "Useful? How fucking boring! But... I suppose evil and useful can overlap."
+            plug "Fine! You can use my lab, but only for EVIL fucking purposes!"
+            $ laboratorio_desbloqueado = True
+            $ pontos_relacionamento_plugton += 5
+            $ atualizar_relacionamento_plugton()
+            "You gained 5 relationship points with Plugton!"
+            
+        "Never mind":
+            plug "Coward! Come back when you're ready for REAL fucking science!"
+    
+    if laboratorio_desbloqueado:
+        "LABORATORY ACCESS UNLOCKED!"
+        "You can now access Plugton's secret laboratory!"
+        "Total relationship: [pontos_relacionamento_plugton] points (Level [nivel_relacionamento_plugton])"
+    
+    jump menu_plugton
+
+# Plugton's Laboratory
+label laboratorio_plugton:
+    scene bg_laboratorio
+    
+    if not karen_primeira_vez:
+        "You enter Plugton's secret laboratory hidden beneath the Chum Bucket."
+        "The room is filled with bubbling beakers, strange machines, and blinking computers."
+        
+        show karen_tela at right
+        karen "Well, well. What do we have here?"
+        karen "Another one of Plugton's 'brilliant' fucking schemes, I suppose?"
+        
+        plug "Karen! Meet my new... business associate, bitch!"
+        plug "He's going to help us with our evil experiments!"
+        
+        karen "Oh great. Another test subject for your half-baked shit inventions."
+        karen "Try not to blow up the lab again, you pathetic plug."
+        
+        $ karen_primeira_vez = True
+    else:
+        show karen_tela at right
+        karen "Back again? I suppose you didn't learn your fucking lesson last time."
+    
+    jump menu_laboratorio
+
+# Laboratory menu
+label menu_laboratorio:
+    scene bg_laboratorio
+    show karen_tela at right
+    
+    menu:
+        "What do you want to do in the laboratory?"
+        
+        "Talk to Karen":
+            jump conversar_karen
+            
+        "Craft items" if pode_craftar_hoje():
+            jump menu_craft
+            
+        "Craft items (already crafted today)" if not pode_craftar_hoje():
+            karen "The laboratory equipment is cooling down. Come back tomorrow."
+            jump menu_laboratorio
+            
+        "Learn about recipes":
+            jump aprender_receitas
+            
+        "Go back to Chum Bucket":
+            jump menu_plugton
+
+# Exit Chum Bucket
+label sair_balde_lixo:
+    plug "Leaving so fucking soon? Come back anytime! My door is always open!"
+    plug "Mainly because the lock is broken, but still, asshole!"
+    
+    scene black with dissolve
+    "You leave the smelly Chum Bucket..."
+    
+    jump explorar_balde_lixo

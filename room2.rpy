@@ -1,10 +1,13 @@
-# room2.rpy - Krusty Krotch Restaurant
+# room2.rpy - Krusty Krotch Restaurant - COM INTEGRAÇÃO DA PÉROLA
 
 define lu = "Squirtward"
 default cozinha_mensagem = False
 default contador_agridoce = 0  # Counter for jellyfish milking
 default molho_agridoce_desbloqueado = False  # Controls if sweet and sour sauce is unlocked
 define audio.gozada = "gozada.mp3"
+
+# VARIÁVEIS DA PÉROLA SERÃO DEFINIDAS NO ARQUIVO perola.rpy
+# Aqui apenas verificamos se elas existem
 
 # Images for jellyfish "milking" animation
 image ordenha_frame1 = "images/ordenha1.png"  # Frame 1: Initial (outside)
@@ -59,7 +62,17 @@ init python:
     if not renpy.loadable("images/ordenha3.png"):
         renpy.image("ordenha_frame3", Solid("#FFB0DF", xsize=340, ysize=340))
 
+# FUNÇÃO PARA VERIFICAR SE DEVE ATIVAR DESCOBERTA DA PÉROLA
+init python:
+    def deve_ativar_descoberta_perola():
+        global dia, perola_descoberta_financeira
+        return dia >= 12 and not perola_descoberta_financeira
+
 label room2:
+    # VERIFICAR SE DEVE ATIVAR A DESCOBERTA DA PÉROLA LOGO AO ENTRAR
+    if deve_ativar_descoberta_perola():
+        jump descoberta_financeira_perola
+    
     scene kk
     "You arrive at the Krusty Krotch" 
 
@@ -88,7 +101,7 @@ label room2:
             $escolha = "comituamae"
             jump siricas
 
-        "My snail got sick Mr. Krack":
+        "My snail got sick Mr. Krotch":
             $escolha = "gary"
             jump siricas
 
@@ -127,7 +140,7 @@ label siricas:
         show krab4:
             zoom 0.5 xpos 1000 ypos 520  
 
-        k "How about frying some crab burgers to feel better?"
+        k "How about frying some Krotch Burgers to feel better?"
 
 label cozinha:
     # Hide xerequinha interface during kitchen
@@ -138,31 +151,164 @@ label cozinha:
     show batavo1 at Transform(xzoom=-1):
         zoom 1.5 xpos 700 ypos 30
     
+    # SE A PÉROLA ESTIVER NO RESTAURANTE, MOSTRAR ELA OBSERVANDO
+    if perola_no_restaurante:
+        show perola_observando at right:
+            zoom 0.8
+        "Pearl is watching your every move from the corner..."
+        "Her eyes follow everything you do with suspicious intensity."
+    
     while True:
         if not cozinha_mensagem:
             "This is the Krusty Krotch kitchen"  
             $ cozinha_mensagem = True 
 
+        # MENU DA COZINHA COM OPÇÃO DA PÉROLA SE ELA ESTIVER PRESENTE
+        if perola_no_restaurante:
+            menu:
+                "Add a secret sauce":
+                    $ escolha = "gozo"
+                    jump chapa_com_perola
+
+                "Cook with jellyfish sweet and sour sauce" if 21 in inventario:
+                    $ escolha = "agridoce"
+                    jump ordenhar_aguaviva_com_perola
+
+                "Cook with jellyfish jelly" if 23 in inventario:
+                    $ escolha = "geleia"
+                    jump chapa_geleia_com_perola
+                    
+                "Cook with special sauce and pineapple" if 19 in inventario:
+                    $ escolha = "abacaxi"
+                    jump chapa_abacaxi_com_perola
+
+                "Cook a normal Krotch burger":
+                    $ escolha = "burguer"
+                    jump chapa_com_perola
+                    
+                "Talk to Pearl":
+                    jump interagir_com_perola_cozinha
+        else:
+            # MENU NORMAL QUANDO PÉROLA NÃO ESTÁ PRESENTE
+            menu:
+                "Add a secret sauce":
+                    $ escolha = "gozo"
+                    jump chapa
+
+                "Cook with jellyfish sweet and sour sauce" if 21 in inventario:
+                    $ escolha = "agridoce"
+                    jump ordenhar_aguaviva
+
+                "Cook with jellyfish jelly" if 23 in inventario:
+                    $ escolha = "geleia"
+                    jump chapa_geleia
+                    
+                "Cook with special sauce and pineapple" if 19 in inventario:
+                    $ escolha = "abacaxi"
+                    jump chapa_abacaxi
+
+                "Cook a normal Krotch burger":
+                    $ escolha = "burguer"
+                    jump chapa
+
+# NOVA FUNÇÃO: INTERAGIR COM PÉROLA NA COZINHA
+label interagir_com_perola_cozinha:
+    show perola_suspeita at right:
+        zoom 0.8
+    
+    prl "Cooking something... special... Spoogebob?"
+    prl "I'm watching everything you do..."
+    
+    menu:
+        "Just normal cooking":
+            prl "Normal? Nothing about you is normal anymore."
+            $ perola_suspeita_nivel += 1
+            
+        "Mind your own business":
+            prl "This IS my business now, you fake!"
+            $ perola_suspeita_nivel += 1
+            
+        "Want to help?":
+            prl "Help you? I'm here to WATCH you, not help!"
+    
+    prl "Continue cooking... I'll be watching."
+    
+    jump cozinha
+
+# VERSÕES DAS RECEITAS COM REAÇÕES DA PÉROLA
+label chapa_com_perola:
+    # REAÇÃO DA PÉROLA BASEADA NA ESCOLHA
+    if escolha == "gozo":
+        show perola_muito_suspeita at right:
+            zoom 0.8
+        prl "What kind of sauce is that, Spoogebob?"
+        prl "It looks... weird. And smells strange too..."
+        
         menu:
-            "Add a secret sauce":
-                $ escolha = "gozo"
-                jump chapa
-
-            "Cook with jellyfish sweet and sour sauce" if 21 in inventario:
-                $ escolha = "agridoce"
-                jump ordenhar_aguaviva
-
-            "Cook with jellyfish jelly" if 23 in inventario:
-                $ escolha = "geleia"
-                jump chapa_geleia
+            "It's a new recipe I invented":
+                prl "Since when do you invent recipes?!"
+                prl "The old Spoogebob could barely fry a normal burger!"
+                $ perola_suspeita_nivel += 2
                 
-            "Cook with special sauce and pineapple" if 19 in inventario:
-                $ escolha = "abacaxi"
-                jump chapa_abacaxi
+            "It's a trade secret":
+                prl "Trade secret? From who? What kind of trade?"
+                prl "You're hiding something, I know it!"
+                $ perola_suspeita_nivel += 1
+                
+            "Don't worry about the details":
+                prl "Don't worry?! You used to explain EVERYTHING to me!"
+                prl "Now you're all mysterious and secretive!"
+                $ perola_suspeita_nivel += 2
+    
+    elif escolha == "burguer":
+        show perola_normal at right:
+            zoom 0.8
+        prl "At least this looks normal..."
+        prl "But your technique is different. More... aggressive."
+    
+    # CONTINUAR COM A RECEITA NORMAL
+    jump chapa
 
-            "Cook a normal Krotch burger":
-                $ escolha = "burguer"
-                jump chapa
+label ordenhar_aguaviva_com_perola:
+    show perola_chocada at right:
+        zoom 0.8
+    
+    prl "WHAT THE HELL ARE YOU DOING TO THAT JELLYFISH?!"
+    prl "That's... that's disgusting! And perverted!"
+    
+    b "It's just extracting the sauce, relax."
+    
+    prl "EXTRACTING?! IT LOOKS LIKE YOU'RE... YOU'RE..."
+    prl "The old Spoogebob would NEVER do something so gross!"
+    
+    $ perola_suspeita_nivel += 3
+    
+    # CONTINUAR COM A ORDENHA NORMAL
+    jump ordenhar_aguaviva
+
+label chapa_geleia_com_perola:
+    show perola_normal at right:
+        zoom 0.8
+    
+    prl "Jellyfish jelly? That's actually... creative."
+    prl "But since when are you so creative in the kitchen?"
+    
+    $ perola_suspeita_nivel += 1
+    
+    # CONTINUAR COM A RECEITA NORMAL
+    jump chapa_geleia
+
+label chapa_abacaxi_com_perola:
+    show perola_pensativa at right:
+        zoom 0.8
+    
+    prl "Pineapple on burgers? That's... different."
+    prl "Where did you learn about these combinations?"
+    
+    $ perola_suspeita_nivel += 1
+    
+    # CONTINUAR COM A RECEITA NORMAL
+    jump chapa_abacaxi
 
 # Label for cooking with special sauce and pineapple
 label chapa_abacaxi:
@@ -382,7 +528,7 @@ label chapa:
 
         show molho3
         
-        "You added the SECRET SAUCE to all the crab burgers"
+        "You added the SECRET SAUCE to all the Krotch Burgers"
 
         pause(2)
 
@@ -486,9 +632,10 @@ label luleta:
         pause(3)
 
         show caixa kk lula
-        lu "Whatever, I only come here to use the bathroom anyway"
+        lu "Whatever, I only come here to use the gloryhole anyway"
         jump cozinha
 
+# LOBBY SEM A VERIFICAÇÃO DA PÉROLA (já foi movida para room2)
 label lobbykk: 
     play music "siricracudo.mp3" fadein 2.0
 
@@ -516,7 +663,16 @@ label lobbykk:
             ypos 200
             idle "porta kk idle.png"
             hover "porta kk hover.png" 
-            action Jump("sala_siririca")           
+            action Jump("sala_siririca")
+            
+        # NOVO BOTÃO PARA INTERAGIR COM A PÉROLA (só aparece se ela estiver no restaurante)
+        if perola_no_restaurante:
+            imagebutton:
+                xpos 400
+                ypos 300
+                idle "perola_button_idle.png"
+                hover "perola_button_hover.png"
+                action Jump("interagir_com_perola")
 
 label banheirao: 
     scene banheirao 

@@ -68,7 +68,7 @@ init python:
             "Sharkplier wants to lick something from you",
             "Kai Seanat is hyped to taste that ice cream!",
             "A really big fish approaches the stand!",
-            "Pokimanta opens her mouth and sticks her tongue out, ready for your goods!"
+            "Pokimane fish version opens her mouth and sticks her tongue out, ready for your goods!"
         ]
         return random.choice(clientes)
     
@@ -230,15 +230,15 @@ label menu_sorvete:
             "You already worked here today. The stand needs a break too!"
             jump menu_sorvete
             
-        "Eat ice cream ($2)":
-            if money >= 2:
-                jump comer_sorvete
-            else:
-                "You don't have enough money for ice cream. You need $2."
-                jump menu_sorvete
+        #"Eat ice cream ($2)":
+            #if money >= 2:
+                #jump comer_sorvete
+            #else:
+                #"You don't have enough money for ice cream. You need $2."
+                #jump menu_sorvete
                 
-        "Make homemade ice cream":
-            jump fazer_sorvete_caseiro_menu
+        #"Make homemade ice cream":
+            #jump fazer_sorvete_caseiro_menu
             
         "Go to Larry's area":
             $ limpar_telas_sorvete()

@@ -1,4 +1,5 @@
 # sandyfucks.rpy - Sandy Sexual Content (English)
+# UPDATED with Sexual Enhancement System
 
 # Animations for Sandy scenes
 image sandy_peitos:
@@ -110,12 +111,12 @@ image nozes_cuzinho_anim_rapida:
 # Sound for cumshots
 define audio.gozada = "audio/porra.mp3"
 
-# See Sandy's tits (level 1+)
+# See Sandy's tits (level 1+) - UPDATED
 label ver_peitos_sandy:
     # Check if already saw 3 times - if yes, go directly to see quickly
     if vezes_mostrou_peitos >= 3:
-        # Check if already performed sexual action today
-        if ultimo_dia_acao_sexual == dia:
+        # Use new system
+        if not pode_fazer_acao_sexual():
             show sandy seducao at center
             $ dialogo = obter_dialogo_recusa()
             sd "[dialogo]"
@@ -123,15 +124,15 @@ label ver_peitos_sandy:
         else:
             jump ver_peitos_rapido
     
-    # Check if already performed sexual action today
-    if ultimo_dia_acao_sexual == dia:
+    # Use new system
+    if not pode_fazer_acao_sexual():
         show sandy seducao at center
         $ dialogo = obter_dialogo_recusa()
         sd "[dialogo]"
         jump mostrar_menu_sandy
     
-    # Mark that sexual action was performed today
-    $ ultimo_dia_acao_sexual = dia
+    # CONSUME ACTION using new system
+    $ consumir_acao_sexual()
     
     # Normal sequence for first times
     # Get dialogue sequence according to progress
@@ -221,10 +222,10 @@ label ver_peitos_sandy:
     
     jump finalizar_sandy  # Go to interaction end
 
-# See tits quickly (after 3 times)
+# See tits quickly (after 3 times) - UPDATED
 label ver_peitos_rapido:
-    # Mark that sexual action was performed today
-    $ ultimo_dia_acao_sexual = dia
+    # CONSUME ACTION using new system
+    $ consumir_acao_sexual()
     
     show sandy seducao at center
     sd "Want to see my tits again? Here's a quick glimpse..."
@@ -253,12 +254,12 @@ label ver_peitos_rapido:
     $ hora_do_dia += 2
     jump finalizar_sandy  # Go to interaction end
 
-# See Sandy's pussy (level 5+ and after 3 handjobs)
+# See Sandy's pussy (level 5+ and after 3 handjobs) - UPDATED
 label ver_buceta_sandy:
     # Check if already saw 3 times - if yes, go directly to see quickly
     if vezes_mostrou_buceta >= 3:
-        # Check if already performed sexual action today
-        if ultimo_dia_acao_sexual == dia:
+        # Use new system
+        if not pode_fazer_acao_sexual():
             show sandy seducao at center
             $ dialogo = obter_dialogo_recusa()
             sd "[dialogo]"
@@ -266,15 +267,15 @@ label ver_buceta_sandy:
         else:
             jump ver_buceta_rapido
     
-    # Check if already performed sexual action today
-    if ultimo_dia_acao_sexual == dia:
+    # Use new system
+    if not pode_fazer_acao_sexual():
         show sandy seducao at center
         $ dialogo = obter_dialogo_recusa()
         sd "[dialogo]"
         jump mostrar_menu_sandy
     
-    # Mark that sexual action was performed today
-    $ ultimo_dia_acao_sexual = dia
+    # CONSUME ACTION using new system
+    $ consumir_acao_sexual()
     
     # Show random dialogue before main sequence
     $ dialogo = obter_dialogo_buceta()
@@ -326,10 +327,10 @@ label ver_buceta_sandy:
     
     jump finalizar_sandy  # Go to interaction end
 
-# See pussy quickly (after 3 times)
+# See pussy quickly (after 3 times) - UPDATED
 label ver_buceta_rapido:
-    # Mark that sexual action was performed today
-    $ ultimo_dia_acao_sexual = dia
+    # CONSUME ACTION using new system
+    $ consumir_acao_sexual()
     
     show sandy seducao at center
     sd "Want to see my pussy again? Here's a quick glimpse..."
@@ -353,17 +354,17 @@ label ver_buceta_rapido:
     $ hora_do_dia += 2
     jump finalizar_sandy  # Go to interaction end
 
-# Ask for handjob (level 3+)
+# Ask for handjob (level 3+) - UPDATED
 label punheta_sandy:   
-    # Check if already performed sexual action today
-    if ultimo_dia_acao_sexual == dia:
+    # Use new system
+    if not pode_fazer_acao_sexual():
         show sandy seducao at center
         $ dialogo = obter_dialogo_recusa()
         sd "[dialogo]"
         jump mostrar_menu_sandy
     
-    # Mark that sexual action was performed today
-    $ ultimo_dia_acao_sexual = dia
+    # CONSUME ACTION using new system
+    $ consumir_acao_sexual()
     
     # Get dialogue sequence according to progress
     $ indice = min(vezes_punheta, 2)
@@ -441,17 +442,17 @@ label punheta_sandy:
     
     jump finalizar_sandy  # Go to interaction end
 
-# Blowjob (level 7)
+# Blowjob (level 7) - UPDATED
 label boquete_sandy:
-    # Check if already performed sexual action today
-    if ultimo_dia_acao_sexual == dia:
+    # Use new system
+    if not pode_fazer_acao_sexual():
         show sandy seducao at center
         $ dialogo = obter_dialogo_recusa()
         sd "[dialogo]"
         jump mostrar_menu_sandy
     
-    # Mark that sexual action was performed today
-    $ ultimo_dia_acao_sexual = dia
+    # CONSUME ACTION using new system
+    $ consumir_acao_sexual()
     
     # Get dialogue sequence according to progress
     $ indice = min(vezes_boquete, 2)
@@ -530,17 +531,17 @@ label boquete_sandy:
     
     jump finalizar_sandy  # Go to interaction end
 
-# Fuck her pussy (level 10)
+# Fuck her pussy (level 10) - UPDATED
 label foder_buceta_sandy:
-    # Check if already performed sexual action today
-    if ultimo_dia_acao_sexual == dia:
+    # Use new system
+    if not pode_fazer_acao_sexual():
         show sandy seducao at center
         $ dialogo = obter_dialogo_recusa()
         sd "[dialogo]"
         jump mostrar_menu_sandy
     
-    # Mark that sexual action was performed today
-    $ ultimo_dia_acao_sexual = dia
+    # CONSUME ACTION using new system
+    $ consumir_acao_sexual()
     
     # Get dialogue sequence according to progress
     $ indice = min(vezes_foder_buceta, 2)
@@ -603,7 +604,7 @@ label foder_buceta_sandy:
             hide sandypohadas
     
     # Show satisfied Sandy
-    show sandy satisfeita at center
+    show sandy envergonhada at center
     
     sd "Ahhh! I'm feeling everything inside! It's so hot!"
     "Sandy is completely satisfied."
@@ -622,17 +623,17 @@ label foder_buceta_sandy:
     
     jump finalizar_sandy  # Go to interaction end
 
-# Stick nuts in ass (level 15)
+# Stick nuts in ass (level 15) - UPDATED
 label nozes_cuzinho_sandy:
-    # Check if already performed sexual action today
-    if ultimo_dia_acao_sexual == dia:
+    # Use new system
+    if not pode_fazer_acao_sexual():
         show sandy seducao at center
         $ dialogo = obter_dialogo_recusa()
         sd "[dialogo]"
         jump mostrar_menu_sandy
     
-    # Mark that sexual action was performed today
-    $ ultimo_dia_acao_sexual = dia
+    # CONSUME ACTION using new system
+    $ consumir_acao_sexual()
     
     # Get dialogue sequence according to time
     $ indice = min(vezes_nozes_cuzinho, 0)
@@ -723,17 +724,17 @@ label nozes_cuzinho_sandy:
     
     jump finalizar_sandy  # Go to interaction end
 
-# Fuck Sandy's ass (level 20)
+# Fuck Sandy's ass (level 20) - UPDATED
 label comer_cuzinho:
-    # Check if already performed sexual action today
-    if ultimo_dia_acao_sexual == dia:
+    # Use new system
+    if not pode_fazer_acao_sexual():
         show sandy seducao at center
         $ dialogo = obter_dialogo_recusa()
         sd "[dialogo]"
         jump mostrar_menu_sandy
     
-    # Mark that sexual action was performed today
-    $ ultimo_dia_acao_sexual = dia
+    # CONSUME ACTION using new system
+    $ consumir_acao_sexual()
     
     # Get dialogue sequence according to progress
     $ indice = min(vezes_cuzinho, 2)
@@ -798,7 +799,7 @@ label comer_cuzinho:
             hide sandypohadas
     
     # Show satisfied Sandy
-    show sandy satisfeita at center
+    show sandy envergonhada at center
     
     $ hora_do_dia += 2
     $ vezes_cuzinho += 1

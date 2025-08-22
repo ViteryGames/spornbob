@@ -7,7 +7,7 @@ define b = Character("You", who_color="#ffff00")  # The protagonist pretending t
 
 # Image definitions for Mrs. Puff
 image mrs_puff normal = "images/puffy_idle.png"
-image mrs_puff seducao = "images/mrs_puff_seducao.png"
+image mrs_puff seducao = "images/puffyflirt.png"
 image bg_escola_puffy = "images/bg_escola_puffy.png"
 
 # Animations for handjob (Lesson 2) - 3 frames
@@ -152,7 +152,7 @@ label puffy:
         b "What kind of methods?"
         
         hide puffyhappy
-        show mrs_puff_seducao at center
+        show puffyflirt at center
         
         puff "Well, let's say they're more practical techniques. Hands-on, you know?"
         
@@ -659,8 +659,10 @@ label menu_favores_puffy:
             puff "We already did that today, dear! Come back tomorrow!"
             jump menu_puffy
             
-        "Anal Sex ($9)" if pode_fazer_favor_anal():
-            jump favor_anal
+        "Anal sex (Patreon only)":
+             $ renpy.run(OpenURL("https://www.patreon.com/FRANKTOPIAGAMESTUDIO"))
+             "Be a member and find out sweetheart"
+             jump sou_puta
             
         "Anal Sex (already done today)" if not pode_fazer_favor_anal():
             puff "We already did that today, dear! Come back tomorrow!"

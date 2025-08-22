@@ -41,8 +41,12 @@ label explorar_siricascudo:
         
         menu:
             "Enter the Krusty Krotch":
-                # Call lobbykk screen instead of room2
-                call screen lobbykk with fade
+                # VERIFICAR SE DEVE ATIVAR A DESCOBERTA DA PÉROLA (DIA 12+)
+                if dia >= 12 and not perola_descoberta_financeira:
+                    jump descoberta_financeira_perola
+                else:
+                    # Call lobbykk screen normally
+                    call screen lobbykk with fade
                 
             "Go back to map":
                 call screen mapScreen
@@ -143,7 +147,7 @@ label explorar_praia:
         # Show description only on first visit
         if not visitou_praia_exterior:
             "You're at the entrance to Goon Lagoon Beach."
-            
+
             "You can hear the sound of waves and see muscular sea creatures working out."
             $ visitou_praia_exterior = True
         
@@ -180,12 +184,12 @@ screen mapScreen():
         action [Hide("mapScreen"), Jump("explorar_siricascudo")]
         
     #Room 3
-   # imagebutton:
-       # xpos 130
-       # ypos 385
-       # idle "R3 idle.png"
-       # hover "R3 hover.png"
-       # action [Hide("mapScreen"), Jump("room3")]
+    imagebutton:
+        xpos 130
+        ypos 385
+        idle "R3 idle.png"
+        hover "R3 hover.png"
+        action [Hide("mapScreen"), Jump("explorar_balde_lixo")]
         
     #Room 4 - Sandy
     imagebutton:
