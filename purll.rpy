@@ -15,9 +15,9 @@ default endereco_perola_descoberto = False  # Player knows where Pearl lives
 # Pearl images
 image perola_normal = "images/perola_normal.png"
 image perola_furiosa = "images/perola_furiosa.png"
-image perola_suspeita = "images/perola_suspeita.png"
+image perola_suspeita = "images/pesus.png"
 image perola_envergonhada = "images/perola_envergonhada.png"
-image perola_irritada = "images/perola_irritada.png"
+image perola_irritada = "images/reclavulva.png"
 image envelopes_dinheiro = "images/envelopes_scattered.png"
 
 # Sound effects
@@ -27,30 +27,47 @@ define audio.papeis_caindo = "papers_scatter.mp3"
 # Pearl's financial discovery scene - MAIN EVENT
 label descoberta_financeira_perola:
     # This scene triggers automatically when entering Krusty Krotch after day 12
-    scene lobbykrab
+    scene cutkrab
     
     # Dramatic door slam
-    play sound audio.porta_batendo volume 0.8
+    play music "tbcdrama.mp3" volume 0.8
+    play audio "soco.mp3"
     with hpunch
     
     # Pearl bursts through the door
-    show perola_furiosa at center with moveinright
+    show reclavulva with moveinright:
+        xalign -2.2
+        yalign 1.2
+        zoom 1.3
     
-    prl "PAI! EU VI AS CONTAS DO SEU CARTÃO, SEU VELHO TARADO!"
+    prl "PAPAAAAAAAAAAAAAI! EU VI AS CONTAS DO SEU CARTÃO, SEU VELHO TARADO!"
+
+    stop music
+    play music "susmusic.mp3"
     
     # Mr. Krotch comes running from his office
-    show krabpanico at right with moveinright
+    show krab2 with moveinleft:
+        xalign 1.5
+        yalign 1.2
+        zoom 0.9
     
     k "PÉROLA! PORRA! O que você está fazendo aqui?!"
-    
+    hide reclavulva
     # Pearl waves credit card statements angrily
-    show perola_furiosa at center
+    show perola_furiosa:
+        xalign -2.2
+        yalign 1.2
+        zoom 1.3
     
     prl "VOCÊ GASTOU $500 EM QUÊ?! BONECAS INFLÁVEIS?! SEU PERVERTIDO NOJENTO!"
     
     # Mr. Krotch panics and looks around nervously
-    hide krabpanico
-    show krab nervoso at right
+    hide krab2
+
+    show krab_talk :
+        xalign 1.5
+        yalign 1.2
+        zoom 0.9
     
     k "Pérola! Caralho! Não é bem assim..."
     
@@ -58,15 +75,15 @@ label descoberta_financeira_perola:
     prl "E AINDA TEM UMAS COMPRAS ESTRANHAS! 'CAMISINHAS'?! 'LIVROS ADULTOS'?!"
     prl "QUE PORRA É ESSA, PAI?! VOCÊ VIROU UM TARADO COMPLETO?!"
     
-    # She scatters papers on the floor
-    play sound audio.papeis_caindo
-    show envelopes_dinheiro at center with vpunch
     
-    prl "EXPLICA ESSA MERDA TODA!"
+    prl "EXPLICA ESSA MERDA TODA!" with vpunch
     
     # Pearl turns to look at the player suspiciously
     hide perola_furiosa
-    show perola_suspeita at center
+    show pesus :
+        xalign -2.2
+        yalign 1.2
+        zoom 1.3
     
     prl "E você, Spoogebob... você sabia dessa putaria toda?"
     
@@ -90,15 +107,21 @@ label defender_krotch_grosso:
     b "Todo macho precisa de umas coisas... se você me entende."
     
     # Pearl gets furious with the insult
-    hide perola_suspeita
-    show perola_furiosa at center
+    hide pesus
+    show perola_furiosa with vpunch:
+        xalign -2.2
+        yalign 1.2
+        zoom 1.3 
     
     prl "BALEIA GORDA?! QUEM VOCÊ PENSA QUE É, SEU BOSTA?!"
     prl "E QUE PORRA É ESSA DE 'TODO MACHO'?!"
     
     # Mr. Krotch tries to calm down but makes it worse
-    hide krab nervoso
-    show krab sudando at right
+    hide krabnervoso
+    show krab4 :
+        xalign 1.5
+        yalign 1.2
+        zoom 0.9
     
     k "Calma, Pérola... o Spoogebob só está sendo... masculino..."
     
@@ -107,7 +130,10 @@ label defender_krotch_grosso:
     
     # Pearl is shocked by the crude language
     hide perola_furiosa
-    show perola_chocada at center
+    show perola_chocada with vpunch:
+        xalign -2.2
+        yalign 1.2
+        zoom 1.3 
     
     prl "DESDE QUANDO VOCÊ FALA ASSIM, SPOOGEBOB?!"
     prl "VOCÊ ERA EDUCADO! INOCENTE!"
@@ -116,7 +142,10 @@ label defender_krotch_grosso:
     b "Bandido é o caralho! Só cresci e parei de ser otário!"
     
     hide perola_chocada
-    show perola_muito_suspeita at center
+    show pesus with vpunch:
+        xalign -2.2
+        yalign 1.2
+        zoom 1.3 
     
     prl "CRESCEU?! OU VIROU OUTRA PESSOA?!"
     prl "EU VOU DESCOBRIR QUE PORRA ESTÁ ACONTECENDO AQUI!"
@@ -134,8 +163,11 @@ label fingir_que_eh_burro:
     b "Que boneca inflável? É pra festa de aniversário?"
     
     # Pearl gets irritated by the stupidity
-    hide perola_suspeita
-    show perola_irritada at center
+    hide pesus
+    show reclavulva with vpunch :
+        xalign -2.2
+        yalign 1.2
+        zoom 1.3
     
     prl "FESTA DE ANIVERSÁRIO?! SEU IDIOTA!"
     prl "BONECA INFLÁVEL SEXUAL, CARALHO!"
@@ -144,22 +176,26 @@ label fingir_que_eh_burro:
     b "Deve ser tipo aquelas bonecas que falam quando aperta, né?"
     
     # Mr. Krotch facepalms
-    hide krab nervoso
-    show krab vergonha at right
+    hide krabnervoso
+    show krab4 :
+        xalign 1.5
+        yalign 1.2
+        zoom 0.9
     
     k "Spoogebob... pelo amor de Netuno..."
     
     # Pearl realizes he's either very stupid or pretending
-    hide perola_irritada
-    show perola_suspeita at center
+    hide reclavulva
+    show pesus :
+        xalign -2.2
+        yalign 1.2
+        zoom 1.3
     
     prl "Ou você ficou retardado... ou está fingindo ser burro!"
     prl "O Spoogebob que eu conhecia era inocente, mas não era BURRO!"
     
     b "Eh... burro sou eu mesmo... hehe..."
     
-    hide perola_suspeita
-    show perola_determinada at center
     
     prl "ALGUMA COISA ESTÁ MUITO ERRADA AQUI!"
     prl "VOU INVESTIGAR ESSA MERDA TODA!"
@@ -177,13 +213,19 @@ label zoar_perola:
     b "Sem falar que não enche o saco nem pede dinheiro."
     
     # Everyone is shocked by the crude response
-    hide perola_suspeita
-    show perola_chocada at center
+    hide pesus
+    show perola_furiosa :
+        xalign -2.2
+        yalign 1.2
+        zoom 1.3
     
     prl "QUE PORRA VOCÊ ACABOU DE FALAR?!"
     
-    hide krab nervoso
-    show krab surpreso at right
+    hide krabnervoso
+    show krab4 :
+        xalign 1.5
+        yalign 1.2
+        zoom 0.9
     
     k "SPOOGEBOB! QUE COMENTÁRIO FOI ESSE?!"
     
@@ -192,7 +234,10 @@ label zoar_perola:
     
     # Pearl gets extremely angry
     hide perola_chocada
-    show perola_furiosa at center
+    show perola_furiosa :
+        xalign -2.2
+        yalign 1.2
+        zoom 1.3
     
     prl "INEXPERIENTE?! SEU FILHO DA PUTA!"
     prl "QUEM VOCÊ PENSA QUE É PRA FALAR COMIGO ASSIM?!"
@@ -201,7 +246,10 @@ label zoar_perola:
     b "Falaria sim, só que agora eu tenho culhões pra falar a verdade."
     
     hide perola_furiosa
-    show perola_muito_suspeita at center
+    show reclavulva with vpunch :
+        xalign -2.2
+        yalign 1.2
+        zoom 1.3
     
     prl "CULHÕES?! DESDE QUANDO VOCÊ USA ESSA PALAVRA?!"
     prl "VOCÊ PARECE UM EX-PRESIDIÁRIO, SEU DESGRAÇADO!"
@@ -209,8 +257,11 @@ label zoar_perola:
     # Dangerous territory - too close to truth
     b "Ex-presidiário é o caralho! Só parei de ser frouxo!"
     
-    hide perola_muito_suspeita
-    show perola_determinada at center
+    hide reclavulva
+    show pesus with vpunch:
+        xalign -2.2
+        yalign 1.2
+        zoom 1
     
     prl "EU VOU DESCOBRIR QUEM VOCÊ É DE VERDADE!"
     prl "E QUANDO DESCOBRIR, VOU FERRAR COM VOCÊ!"
@@ -224,18 +275,23 @@ label zoar_perola:
 # Final scene conclusion (crude version)
 label final_descoberta_perola_grosso:
     # Mr. Krotch tries to end the confrontation
-    hide krab vergonha
-    hide krab surpreso
-    hide krab sudando
-    show krab nervoso at right
+    hide krabvergonha
+    hide krabsurpreso
+    hide krabsudando
+    show krab2:
+        xalign 1.5
+        yalign 1.2
+        zoom 0.9
     
     k "Bom... já que conversamos sobre essa merda toda..."
     k "Que tal você ir pra casa, Pérola?"
     
     # Pearl's reaction depends on suspicion level and revenge desire
     if perola_suspeita_nivel >= 4:
-        hide perola_determinada
-        show perola_vingativa at center
+        show reclavulva :
+         xalign -2.2
+         yalign 1.2
+         zoom 1.3
         
         prl "IR PRA CASA UMA PORRA!"
         prl "EU VOU FICAR AQUI E DESCOBRIR QUE MERDA VOCÊS ESTÃO APRONTANDO!"
@@ -257,8 +313,10 @@ label final_descoberta_perola_grosso:
         $ endereco_perola_descoberto = True
         
     elif perola_suspeita_nivel >= 3:
-        hide perola_determinada
-        show perola_irritada at center
+        show pesus with vpunch :
+         xalign -2.2
+         yalign 1.2
+         zoom 1
         
         prl "Tá bom, vou embora... MAS ISSO NÃO VAI FICAR ASSIM!"
         prl "EU VOU DESCOBRIR QUE PORRA ESTÁ ACONTECENDO!"
@@ -271,8 +329,10 @@ label final_descoberta_perola_grosso:
         $ endereco_perola_descoberto = True
         
     else:
-        hide perola_irritada
-        show perola_envergonhada at center
+        show pesus with vpunch :
+         xalign -2.2
+         yalign 1.2
+         zoom 1
         
         prl "Tá... desculpa ter gritado, pai."
         prl "Mas essa merda foi constrangedora pra caralho!"
@@ -292,13 +352,16 @@ label final_descoberta_perola_grosso:
     # Pearl exits
     if perola_no_restaurante:
         hide perola_vingativa
-        show perola_observando at left
+        show pesus :
+         xalign -2.2
+         yalign 1.2
+         zoom 1.3
         
         "Pearl positions herself in a corner, watching you with hatred..."
         "She's planning something. This is very dangerous."
         
     else:
-        hide perola_irritada
+        hide pesus
         hide perola_envergonhada
         
         prl "TCHAU, PAI! TCHAU, 'SPOOGEBOB'!"
@@ -311,8 +374,9 @@ label final_descoberta_perola_grosso:
             "You now know where she lives. This could be useful... or dangerous."
     
     # Mr. Krotch's reaction
-    hide krab nervoso
-    show krab preocupado at center
+    hide krab_talk
+    hide krab2
+    show krab4 at center
     
     k "Puta merda, Spoogebob... isso foi... complicado pra caralho."
     k "Minha filha nunca teve essa linguagem... ela tá puta da vida."
@@ -337,7 +401,10 @@ label interagir_com_perola:
         jump cozinha
     
     scene lobbykrab
-    show perola_observando at left
+    show pesus :
+        xalign -2.2
+        yalign 1.2
+        zoom 1.3
     
     prl "E aí, seu merda? Vamos conversar?"
     
@@ -447,7 +514,10 @@ label teste_identidade_perola_grosso:
 label final_conversa_perola_grosso:
     if perola_suspeita_nivel >= 6:
         hide perola_observando
-        show perola_determinada at left
+        show reclavulva with vpunch :
+         xalign -2.2
+         yalign 1.2
+         zoom 1
         
         prl "EU TENHO CERTEZA! VOCÊ NÃO É O SPOOGEBOB!"
         prl "EU VOU DESCOBRIR QUEM VOCÊ É E FODER COM VOCÊ!"

@@ -79,7 +79,7 @@ label chegada_em_casa:
                 "Actions":
                     jump menu_acoes_quarto
 
-# NEW: Actions submenu for bedroom
+# NEW: Actions submenu for bedroom - UPDATED WITH MYSTERIOUS ITEM
 label menu_acoes_quarto:
     menu:
         "What action do you want to take?"
@@ -100,8 +100,46 @@ label menu_acoes_quarto:
             $ escolha = "cocar_saco"
             jump opcoes_quarto
             
+        # NEW: Mysterious Item option - only appears if player has item ID 20
+        "Look at mysterious item" if 20 in inventario:
+            jump ver_item_misterioso
+            
         "Go back":
             jump chegada_em_casa
+
+# NEW: Label for mysterious item
+label ver_item_misterioso:
+    play music "tensada.mp3"
+
+    "You decide to take a look at that mysterious item you bought..."
+    "You carefully unwrap it, curious about what could be so expensive..."
+    "It HAS to be something really awesome and worth your time"
+    "Right?"
+    "What could it be?"
+    "So much mystery!"
+    "You waited so long for this, it's going to be worth it!!"
+    "You finally open it"
+    # Show the mysterious image
+    stop music
+    play audio "quackbob.mp3"
+    scene mr_krotch_calcinha
+    
+    pause (4.0)
+    y"What?"
+
+    y"What the fuck is this?"
+    
+    "You quickly hide the photo again, your hands shaking."
+    "Some things cannot be unseen..."
+    
+    $ hora_do_dia += 1
+    
+    # Return to bedroom
+    scene quartobob
+    show batavo1 at Transform(xzoom=-1):
+        zoom 1.3 xpos 1000 ypos 200
+    
+    jump menu_acoes_quarto
 
 # Nap function
 label take_nap:

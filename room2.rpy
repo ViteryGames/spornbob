@@ -153,8 +153,10 @@ label cozinha:
     
     # SE A PÉROLA ESTIVER NO RESTAURANTE, MOSTRAR ELA OBSERVANDO
     if perola_no_restaurante:
-        show perola_observando at right:
-            zoom 0.8
+        show pesus :
+         xalign -2.2
+         yalign 1.2
+         zoom 1.3
         "Pearl is watching your every move from the corner..."
         "Her eyes follow everything you do with suspicious intensity."
     
@@ -213,8 +215,12 @@ label cozinha:
 
 # NOVA FUNÇÃO: INTERAGIR COM PÉROLA NA COZINHA
 label interagir_com_perola_cozinha:
-    show perola_suspeita at right:
-        zoom 0.8
+    hide pesus
+    show perola_furiosa at right:
+         xalign -2.2
+         yalign 1.2
+         zoom 1.3
+         
     
     prl "Cooking something... special... Spoogebob?"
     prl "I'm watching everything you do..."
@@ -239,8 +245,11 @@ label interagir_com_perola_cozinha:
 label chapa_com_perola:
     # REAÇÃO DA PÉROLA BASEADA NA ESCOLHA
     if escolha == "gozo":
-        show perola_muito_suspeita at right:
-            zoom 0.8
+        hide pesus
+        show perola_furiosa at right:
+         xalign -2.2
+         yalign 1.2
+         zoom 1.3
         prl "What kind of sauce is that, Spoogebob?"
         prl "It looks... weird. And smells strange too..."
         
@@ -261,8 +270,7 @@ label chapa_com_perola:
                 $ perola_suspeita_nivel += 2
     
     elif escolha == "burguer":
-        show perola_normal at right:
-            zoom 0.8
+        
         prl "At least this looks normal..."
         prl "But your technique is different. More... aggressive."
     
@@ -270,8 +278,11 @@ label chapa_com_perola:
     jump chapa
 
 label ordenhar_aguaviva_com_perola:
-    show perola_chocada at right:
-        zoom 0.8
+    hide pesus
+    show reclavulva :
+         xalign -2.2
+         yalign 1.2
+         zoom 1.3
     
     prl "WHAT THE HELL ARE YOU DOING TO THAT JELLYFISH?!"
     prl "That's... that's disgusting! And perverted!"
@@ -287,8 +298,7 @@ label ordenhar_aguaviva_com_perola:
     jump ordenhar_aguaviva
 
 label chapa_geleia_com_perola:
-    show perola_normal at right:
-        zoom 0.8
+    
     
     prl "Jellyfish jelly? That's actually... creative."
     prl "But since when are you so creative in the kitchen?"
@@ -299,8 +309,7 @@ label chapa_geleia_com_perola:
     jump chapa_geleia
 
 label chapa_abacaxi_com_perola:
-    show perola_pensativa at right:
-        zoom 0.8
+    
     
     prl "Pineapple on burgers? That's... different."
     prl "Where did you learn about these combinations?"
@@ -668,10 +677,10 @@ label lobbykk:
         # NOVO BOTÃO PARA INTERAGIR COM A PÉROLA (só aparece se ela estiver no restaurante)
         if perola_no_restaurante:
             imagebutton:
-                xpos 400
+                xpos 20
                 ypos 300
                 idle "perola_button_idle.png"
-                hover "perola_button_hover.png"
+                hover "perola_button_idle.png"
                 action Jump("interagir_com_perola")
 
 label banheirao: 

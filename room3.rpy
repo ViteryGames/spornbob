@@ -40,8 +40,8 @@ init 1 python:
     if 29 not in itens_loja:
         itens_loja[29] = {"nome": "Fake Krabby Patty Formula", "preco": 0}
 
-# List of items that actually appear in the shop (excludes special items)
-define itens_mostrados_loja = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 25]
+# FIXED: List of items that actually appear in the shop - NOW WITH MAP PIECE 3 FIRST
+define itens_mostrados_loja = [30, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 19, 20, 25]
 
 # Function to update relationship level
 init python:
@@ -110,7 +110,8 @@ label explorar_balde_lixo:
 # Main Plugton area
 label area_plugton:
     scene bg_balde_lixo
-    
+    play music "cumbucketsong.mp3"
+
     if not ja_visitou_plugton:
         "You enter the Cum Bucket and immediately regret it."
         "The smell hits you like a truck full of sewage."
@@ -478,24 +479,33 @@ label laboratorio_plugton:
         "The room is filled with bubbling beakers, strange machines, and blinking computers."
         
         show karen_tela at right
+        #play music "karenhi.mp3"
         karen "Well, well. What do we have here?"
         karen "Another one of Plugton's 'brilliant' fucking schemes, I suppose?"
+
+        #stop music
         
         plug "Karen! Meet my new... business associate, bitch!"
         plug "He's going to help us with our evil experiments!"
         
+        #play music "karenv2.mp3"
         karen "Oh great. Another test subject for your half-baked shit inventions."
         karen "Try not to blow up the lab again, you pathetic plug."
-        
+        #stop music 
+
         $ karen_primeira_vez = True
+        hide karen_tela
+
     else:
         show karen_tela at right
         karen "Back again? I suppose you didn't learn your fucking lesson last time."
-    
+        hide karen_tela 
+
     jump menu_laboratorio
 
 # Laboratory menu
 label menu_laboratorio:
+    play music "cumbucketsong.mp3"
     scene bg_laboratorio
     show karen_tela at right
     

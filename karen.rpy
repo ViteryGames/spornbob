@@ -19,7 +19,7 @@ label conversar_karen:
         
     elif dialogo_karen == 3:
         karen "Plugton's plans fail 99.7 of the fucking time."
-        karen "But with your help, we might get that up to 99.6%!"
+        karen "But with your help, we might get that up to 99.6!"
         karen "That's practically a miracle by his pathetic standards."
         
     else:
@@ -69,10 +69,18 @@ label aprender_receitas:
 
 # Main crafting menu
 label menu_craft:
+    #play audio "craftkaren.mp3"
+
     karen "What would you like to create today, dumbass?"
     karen "Remember, you can only craft once per day. Choose wisely, fuckface."
     karen "The equipment needs time to cool down after each synthesis."
-    
+    stop voice
+
+
+   # play sound "metatones.mp3" fadein 0.0
+   # $ renpy.pause(1.0)
+   # stop sound fadeout 0.1
+
     menu:
         "Reef Powder (3 Nuts + 2 Jellyfish + $15)":
             jump craft_reef_powder
@@ -93,8 +101,10 @@ label menu_craft:
 label craft_reef_powder:
     $ ingredientes = {3: 3, 21: 2}
     $ sucesso, mensagem = processar_craft(26, ingredientes, 15)
-    
+
     if sucesso:
+       # play audio "reef powder karen.mp3"
+
         karen "Initiating Reef Powder synthesis, asshole..."
         "Karen activates several machines that start bubbling and smoking."
         karen "Mixing nuts with jellyfish extract... this shit is getting weird."

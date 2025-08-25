@@ -1,21 +1,25 @@
-# script.rpy - Main Script File (English Version)
+# script.rpy - Main Script File (English Version) - SAVE COMPATIBLE VERSION
 
-# Define sounds for typing effects
-define audio.typing = "bubbles.mp3"  # Sound for character dialogues
-define audio.narration = "generic.mp3"  # Sound for narration/text without character
+# Define sounds for typing effects - EXPANDED SYSTEM
+define audio.typing_bubbles = "bubbles.mp3"     # Sound for normal characters
+define audio.typing_computer = "generic.mp3"    # Sound for narration/text without character
+define audio.typing_karen = "metatones.mp3"    # Special sound for Karen (computer)
+define audio.typing_evil = "bubbles.mp3"     # Evil sound for Plugton
+define audio.typing_deep = "krotch_voice.mp3"   # Deep sound for Mr. Krotch
+define audio.typing_robot = "bubbles.mp3"   # Robot sound for special characters
 
-# Code to control typing sound
+# Code to control typing sound - SAVE COMPATIBLE VERSION
 init python:
     # Global variable to control if sound is playing
     typing_sound_playing = False
     
-    # Function to start and stop sound during typing
+    # ORIGINAL FUNCTION - Keep for save compatibility
     def typing_sound_callback(event, **kwargs):
         global typing_sound_playing
         
         if event == "show":
             # Start sound when text begins to show
-            renpy.music.play(audio.typing, channel="sound", loop=True)
+            renpy.music.play(audio.typing_bubbles, channel="sound", loop=True)
             typing_sound_playing = True
         
         elif event == "slow_done" or event == "end":
@@ -30,7 +34,7 @@ init python:
         
         if event == "show":
             # Start sound when text begins to show
-            renpy.music.play(audio.narration, channel="sound", loop=True)
+            renpy.music.play(audio.typing_computer, channel="sound", loop=True)
             typing_sound_playing = True
         
         elif event == "slow_done" or event == "end":
@@ -38,19 +42,77 @@ init python:
             if typing_sound_playing:
                 renpy.music.stop(channel="sound")
                 typing_sound_playing = False
+    
+    # Character-specific callbacks for different sounds
+    def karen_callback(event, **kwargs):
+        global typing_sound_playing
+        
+        if event == "show":
+            renpy.music.play(audio.typing_karen, channel="sound", loop=True)
+            typing_sound_playing = True
+        elif event == "slow_done" or event == "end":
+            if typing_sound_playing:
+                renpy.music.stop(channel="sound")
+                typing_sound_playing = False
+    
+    def evil_callback(event, **kwargs):
+        global typing_sound_playing
+        
+        if event == "show":
+            renpy.music.play(audio.typing_evil, channel="sound", loop=True)
+            typing_sound_playing = True
+        elif event == "slow_done" or event == "end":
+            if typing_sound_playing:
+                renpy.music.stop(channel="sound")
+                typing_sound_playing = False
+    
+    def deep_callback(event, **kwargs):
+        global typing_sound_playing
+        
+        if event == "show":
+            renpy.music.play(audio.typing_deep, channel="sound", loop=True)
+            typing_sound_playing = True
+        elif event == "slow_done" or event == "end":
+            if typing_sound_playing:
+                renpy.music.stop(channel="sound")
+                typing_sound_playing = False
 
-# Defining the narrator with narration callback
+# Definindo o narrador com callback de narração
 define narrator = Character(None, callback=narration_sound_callback)
 
-# Configure callback to be called on character text events
-init python:
-    config.all_character_callbacks.append(typing_sound_callback)
+# DEFINIÇÕES DE PERSONAGENS COM SONS ESPECÍFICOS
 
-# Background images
+# Personagens normais com som de bolhas (usando função original para compatibilidade)
+define p = Character("Fatrick Star", callback=typing_sound_callback)
+define bs = Character("Spoogebob Squirtpants", callback=typing_sound_callback)
+define sd = Character("Sandy Cunts", who_color="#ff69b4", callback=typing_sound_callback)
+define prl = Character("Purrl", who_color="#ff69b4", callback=typing_sound_callback)
+define l = Character("Larry the Pornstar", who_color="#ff4400", callback=typing_sound_callback)
+define puff = Character("Mrs. Puffy", who_color="#ff69b4", callback=typing_sound_callback)
+define lou = Character("Lou (Angry Employee)", who_color="#8B0000", callback=typing_sound_callback)
+
+# Karen com som especial
+define karen = Character("Karen (Computer Wife)", who_color="#ff00ff", callback=karen_callback)
+
+# Plugton com som malvado
+define plug = Character("Plugton", who_color="#00ff00", callback=evil_callback)
+
+# Mr. Krotch com som profundo
+define k = Character("Mr. Krotch", callback=deep_callback)
+
+# Flying Dutchman com som malvado
+define h = Character("Flying Fuckman", color="#34A65F", callback=evil_callback)
+
+# Você (protagonista) com som profundo
+define b = Character("You", who_color="#ffff00", callback=deep_callback)
+define you = Character("You", who_color="#ffff00", callback=deep_callback)
+define y = Character("You", who_color="#ffff00", callback=deep_callback)
+
+# Imagens de fundo
 image fundo_dia = "fundo_dia.jpg"
 image fundo_noite = "fundo_noite.jpg"
 
-# Background display function
+# Função para exibir fundo
 label mostrar_fundo():
     if hora_do_dia >= 6 and hora_do_dia < 18:
         show fundo_dia
@@ -58,75 +120,71 @@ label mostrar_fundo():
         show fundo_noite
     return 
 
-# Test label for day/night system
+# Label de teste para sistema dia/noite
 label inicio:
-    call mostrar_fundo from _call_mostrar_fundo
-    "It's dawn."  # Will use generic.mp3
+    call mostrar_fundo
+    "It's dawn."
     
-    "Do you want to wait or continue?"  # Will use generic.mp3
+    "Do you want to wait or continue?"
     
     menu:
         "Wait":
-            $ hora_do_dia += 6  # Pass 6 hours
-            call mostrar_fundo from _call_mostrar_fundo_1
-            "Now it's [hora_do_dia] o'clock."  # Will use generic.mp3
+            $ hora_do_dia += 6
+            call mostrar_fundo
+            "Now it's [hora_do_dia] o'clock."
         "Continue":
-            "You moved forward."  # Will use generic.mp3
+            "You moved forward."
 
     return
 
-# Time advancement function
+# Função para avançar tempo
 label avancar_tempo():
     $ hora_do_dia += 6
     if hora_do_dia >= 24:
-        $ hora_do_dia = 0  # Return to midnight
+        $ hora_do_dia = 0
     return
 
-# Main game start
+# Início principal do jogo
 label start:
-    # Play background music
+    # Tocar música de fundo
     play music "bobesponja.mp3" fadein 2.0
     
-    # Game variables - Default values
+    # Variáveis do jogo - Valores padrão
     default contrap1 = False
     default nugget = False 
     default mainmap = False
     default money = 0
     default macaca = False
     default sala_mensagem_exibida = False
-    default hora_do_dia = 8  # Starts at 8 AM
+    default hora_do_dia = 8
     default mapa_disponivel = False
     
-    # Character definitions with English names
-    define p = Character("Fatrick Star", callback=typing_sound_callback)
-    define bs = Character("Spoogebob Squirtpants", callback=typing_sound_callback)
-    
-    # Sound definitions
+    # Definições de som
     define som_opcao = "open.wav"
     
     $ money = 0 
 
-    # Override default menu behavior to play sound
+    # Sobrescrever comportamento padrão do menu para tocar som
     init python:
-        # Store reference to original menu
+        # Armazenar referência ao menu original
         original_menu = renpy.display_menu
 
-        # Custom function to play sound when choosing
+        # Função personalizada para tocar som ao escolher
         def custom_menu(choices, *args, **kwargs):
-            # Play sound when player makes a choice
+            # Tocar som quando jogador faz escolha
             renpy.play(som_opcao, channel="sound")
-            # Call original menu
+            # Chamar menu original
             return original_menu(choices, *args, **kwargs)
 
-        # Replace default menu with custom one
+        # Substituir menu padrão pelo personalizado
         renpy.display_menu = custom_menu
 
-    # Start the main cutscene
+    # Começar a cutscene principal
     jump cutscene
 
-# Main cutscene sequence
+# Sequência principal da cutscene
 label cutscene:
-    # Start with suspense music
+    # Começar com música de suspense
     scene disclaimer
 
     pause 2.0
@@ -143,27 +201,27 @@ label cutscene:
     
     show cuts1
 
-    "Spoogebob Squirtpants" "La lala lala"  # Will use bubbles.mp3 because it has character name
+    bs "La lala lala"
 
-    # When franky appears, play the scream
+    # Quando franky aparece, tocar o grito
     play audio "classicdrama.mp3"
     play audio "gritobob.mp3" volume 0.18
     show frankys with hpunch
 
-    "Spoogebob Squirtpants" "AHHHHHHHHHHH"  # Will use bubbles.mp3 because it has character name
+    bs "AHHHHHHHHHHH"
     
-    # Fade to black screen after last image
+    # Fade para tela preta depois da última imagem
     scene black with fade
     
-    # Play ripping sound on black screen
+    # Tocar som de rasgar na tela preta
     play audio "rasgazzo.mp3"
-    # Wait a bit for sound to play
+    # Esperar um pouco para o som tocar
     pause 5.0
 
     play audio "gritobob.mp3" volume 0.18
-    "Spoogebob Squirtpants" "NO! STOP! MY CLOTHES! MY FACE! WHAT ARE YOU DOING!"
+    bs "NO! STOP! MY CLOTHES! MY FACE! WHAT ARE YOU DOING!"
     play audio "franklaugh.mp3"
-    "You" "SHUT THE FUCK UP!"
+    you "SHUT THE FUCK UP!"
 
     scene black with fade
     play audio "fewmom.mp3"
@@ -178,88 +236,7 @@ label cutscene:
     stop music
     stop audio
 
+    # Jump para room4 que está definido no room4.rpy
     jump room4
-# Configure o callback para ser chamado nos eventos de texto de personagens
 
-if mainmap = True:
-  call screen mapScreen
-   
- 
-
-    # Show a background. This uses a placeholder by default, but you can
-    # add a file (named either "bg room.png" or "bg room.jpg") to the
-    # images directory to show it.
-   #scene areia
-    #Código para exibir texto na tela
-    #text "{size=40}{color=#008000}[money]/[oppois_hit]{/color}{/size} Money" xpos 1100 ypos 50
-
-    #image areia:
-    # "areia.png"
-    # zoom 1.5 
-     
-    #show areia
-    # This shows a character sprite. A placeholder is used, but you can
-    # replace it by adding a file named "eileen happy.png" to the images
-    # directory.
-
-    #image batavo:
-    # "batavo.png"
-    # zoom 1.35 
-
-    #image hard:
-     #"hard.png"
-    # zoom 1.35 
-     
-   # show batavo at left
-    
-
-    # These display lines of dialogue.
-
-  #  "Bob Estrupo" "Oi bem?" 
-   # "Bob Estrupro" "Caguei nas calças"
-  #  with fade
-
-    # This ends the game.
-    
-  #  "Dou you like niggers"
-  #  menu: 
-
-   #  "Yes": 
-
-   #       jump choices1_a
-
-   #  "Fuck you SpornBob":
-
-   #       jump choices1_b
-
-   # label choices1_a:
-   #           "Good"
-
-   # label choices1_b:
-   #          "Uuuh"  with fade
-
-   # "Dou you like raping for fun?"
-   # menu: 
-
-   #  "Yes": 
-
-   #       jump choices2_a
-
-    # "Fuck you SpornBob":
-
-   #       jump choices2_b
-
-  #  label choices2_a:
-  #            "Good"
-              
-  #            show hard at left
-              
-   # label choices2_b:
-   #          "Uuuh"
-
-# (Continuação do código anterior)
-
-# Dia 4 (Continuação)
-
-    
-return
+# Fim do arquivo script principal
