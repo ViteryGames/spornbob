@@ -1,4 +1,4 @@
-# krotchhouse.rpy - Pearl's House Visit System (English) - DESCOBERTA SEXUAL COM VIDEO
+# krotchhouse_main.rpy - Pearl's House Visit System (Main) - COMPLETE VERSION
 
 # Variables for Pearl's house system
 default perola_nivel_intimidade = 0  # Pearl's intimacy level with player
@@ -20,7 +20,7 @@ image perola_pijama = "images/perola_pijama.png"
 image perola_provocante = "images/perola_provocante.png"
 image perola_excitada = "images/perola_excitada.png"
 
-# NOVO: Definições de frames para twerk (8 frames - sem frame0)
+# ORIGINAL: Definições de frames para twerk (8 frames - sem frame0)
 image perola_twerk_frame1 = "images/perola_twerk_frame1.png"
 image perola_twerk_frame2 = "images/perola_twerk_frame2.png"
 image perola_twerk_frame3 = "images/perola_twerk_frame3.png"
@@ -30,8 +30,17 @@ image perola_twerk_frame6 = "images/perola_twerk_frame6.png"
 image perola_twerk_frame7 = "images/perola_twerk_frame7.png"
 image perola_twerk_frame8 = "images/perola_twerk_frame8.png"
 
-# NOVO: Animações de twerk - velocidade normal (CORRIGIDA)
-# Começando do frame1 e mais rápida
+# NOVO: Frames para twerk profissional (desbloqueado na 3ª visita)
+image perola_twerk_pro_frame1 = "images/perola_twerk_pro_frame1.png"
+image perola_twerk_pro_frame2 = "images/perola_twerk_pro_frame2.png"
+image perola_twerk_pro_frame3 = "images/perola_twerk_pro_frame3.png"
+image perola_twerk_pro_frame4 = "images/perola_twerk_pro_frame4.png"
+image perola_twerk_pro_frame5 = "images/perola_twerk_pro_frame5.png"
+image perola_twerk_pro_frame6 = "images/perola_twerk_pro_frame6.png"
+image perola_twerk_pro_frame7 = "images/perola_twerk_pro_frame7.png"
+image perola_twerk_pro_frame8 = "images/perola_twerk_pro_frame8.png"
+
+# ORIGINAL: Animações de twerk básico (mantendo sua versão)
 image perola_twerk_anim_normal:
     "perola_twerk_frame1"
     pause 0.15
@@ -77,8 +86,6 @@ image perola_twerk_anim_normal:
     pause 0.1
     repeat
 
-# NOVO: Animações de twerk - velocidade rápida (CORRIGIDA)
-# Começando do frame1 e bem mais rápida
 image perola_twerk_anim_rapida:
     "perola_twerk_frame1"
     pause 0.1
@@ -108,6 +115,45 @@ image perola_twerk_anim_rapida:
     pause 0.05
     repeat
 
+# NOVO: Animações de twerk profissional (3ª visita+)
+image perola_twerk_pro_anim_normal:
+    "perola_twerk_pro_frame1"
+    pause 0.2
+    "perola_twerk_pro_frame2"
+    pause 0.2
+    "perola_twerk_pro_frame3"
+    pause 0.2
+    "perola_twerk_pro_frame4"
+    pause 0.2
+    "perola_twerk_pro_frame5"
+    pause 0.2
+    "perola_twerk_pro_frame6"
+    pause 0.2
+    "perola_twerk_pro_frame7"
+    pause 0.2
+    "perola_twerk_pro_frame8"
+    pause 0.2
+    repeat
+
+image perola_twerk_pro_anim_rapida:
+    "perola_twerk_pro_frame1"
+    pause 0.08
+    "perola_twerk_pro_frame2"
+    pause 0.08
+    "perola_twerk_pro_frame3"
+    pause 0.08
+    "perola_twerk_pro_frame4"
+    pause 0.08
+    "perola_twerk_pro_frame5"
+    pause 0.08
+    "perola_twerk_pro_frame6"
+    pause 0.08
+    "perola_twerk_pro_frame7"
+    pause 0.08
+    "perola_twerk_pro_frame8"
+    pause 0.08
+    repeat
+
 # Sound effects
 define audio.twerk_music = "twerksong.mp3"
 define audio.porta_casa = "house_door.mp3"
@@ -135,8 +181,12 @@ init python:
 label visitar_casa_perola:
     # Check if address is known
     if not endereco_perola_descoberto:
-        "You don't know where Pearl lives yet."
-        jump room4
+        "You don't know where Purrl lives yet."
+        return
+    
+    scene casa_perola_externa
+    "You arrive at Purrl's house on Whale Street, 69."
+    "It's a large, luxurious house... Mr. Krotch's money shows."
     
     # Check if already visited today
     if not pode_visitar_perola_hoje():
@@ -152,379 +202,32 @@ label visitar_casa_perola:
     # Check if Mr. Krotch is home
     $ mr_krotch_em_casa = mr_krotch_esta_em_casa()
     
-    scene casa_perola_externa
-    "You arrive at the address Pearl gave you: Rua das Baleias, 69."
-    "It's a large, luxurious house... Mr. Krotch's money shows."
-    
-    # Different scenarios based on visit number and intimacy level
+    # Sistema de progressão baseado em visitas
     if visitas_casa_perola == 1:
         jump primeira_visita_perola
     elif perola_nivel_intimidade == 0:
         jump visita_confronto_perola  
+    elif visitas_casa_perola >= 6:
+        jump visita_intima_avancada_perola  # CONECTA COM PURRLFUCKS
+    elif visitas_casa_perola >= 3:
+        jump visita_pro_perola  # Twerk profissional
     elif perola_nivel_intimidade < 3:
         jump visita_curiosidade_perola
     else:
         jump visita_intima_perola
 
-# First visit - Confrontation and awakening
-label primeira_visita_perola:
-    play sound audio.porta_casa
-    
-    "You knock on the door aggressively."
-    
-    if mr_krotch_em_casa:
-        scene sala_perola
-        show krab surpreso at right
-        show perola_irritada at left
-        
-        k "Spoogebob?! What are you doing here?!"
-        
-        prl "I called him here, dad! We need to have a serious talk!"
-        
-        k "About what, for Neptune's sake?!"
-        
-        prl "About his... changes lately."
-        
-        menu:
-            "Mr. Krotch, can we talk privately?":
-                k "Privately? About what?"
-                prl "See, dad? Even his way of talking is different!"
-                $ perola_nivel_intimidade += 1
-                
-            "Pearl wants to discuss business":
-                k "Business? What business?"
-                prl "The 'business' of him being weird as hell!"
-                
-            "Nothing important, just passing by":
-                k "Just passing by? At our house?"
-                prl "Nobody 'just passes by' here, dad!"
-                $ perola_nivel_intimidade += 1
-        
-        k "Well... I need to go back to the restaurant anyway."
-        k "You two... don't cause any trouble."
-        
-        hide krab surpreso with moveoutright
-        
-        jump perola_sozinha_primeira_vez
-    
-    else:
-        # Mr. Krotch is not home
-        scene quarto_perola
-        show perola_pijama at center
-        
-        prl "So... you actually came, you bastard."
-        prl "I wasn't sure you'd have the balls."
-        
-        jump perola_sozinha_primeira_vez
-
-# Pearl alone for the first time
-label perola_sozinha_primeira_vez:
-    scene quarto_perola
-    show perola_provocante at center
-    
-    prl "Alright, now it's just you and me."
-    prl "Time to find out who you really are."
-    
-    b "I already told you, I'm Spoogebob."
-    
-    prl "Bullshit! The Spoogebob I knew was innocent, pure..."
-    prl "You're... different. Rougher. More... manly."
-    
-    # She gets closer, studying him
-    show perola_provocante at center:
-        linear 2.0 xalign 0.7
-    
-    prl "You know what? I've been thinking..."
-    prl "Maybe I don't want to expose you."
-    
-    b "Oh yeah? And why's that?"
-    
-    prl "Because... you're more interesting this way."
-    prl "The real Spoogebob was boring as hell."
-    
-    # First moment of sexual tension
-    prl "You've awakened something in me..."
-    prl "Something I didn't even know existed."
-    
-    menu:
-        "What kind of 'something'?":
-            prl "Curiosity... about things I never experienced."
-            prl "About what it's like to be with a real man."
-            $ perola_nivel_intimidade += 2
-            jump despertar_sexual_perola
-            
-        "You're just a spoiled kid":
-            prl "Spoiled kid?! I'll show you who's a kid!"
-            $ perola_nivel_intimidade += 1
-            jump perola_se_provoca
-            
-        "Maybe we can make a deal":
-            prl "A deal? What kind of deal?"
-            $ perola_nivel_intimidade += 1
-            jump proposta_acordo_perola
-
-# Sexual awakening scene
-label despertar_sexual_perola:
-    hide perola_provocante
-    show perola_excitada at center
-    
-    prl "I've never felt like this before..."
-    prl "With school boys, it was all innocent kisses and hand-holding."
-    prl "But you... you make me feel... different."
-    
-    b "Different how?"
-    
-    prl "Like I want to do... dangerous things."
-    prl "Things that would shock my father."
-    prl "Things that would shock everyone."
-    
-    # She starts getting bolder
-    prl "I've been watching videos online... learning things..."
-    prl "Want to see something I learned?"
-    
-    menu:
-        "Show me bitch":
-            jump primeira_cena_twerk
-            
-        "Nah I don't give a fuck":
-            prl "Well too bad!!"
-            prl "I want to experience everything!"
-            jump primeira_cena_twerk
-            
-        "Your dad could come back":
-            prl "That makes it even more exciting!"
-            jump primeira_cena_twerk
-
-# NOVO: First twerking scene - COM ANIMAÇÕES CORRIGIDAS
-label primeira_cena_twerk:
-    $ primeiro_twerk = True
-    $ perola_acordou_sexualmente = True
-    
-    hide perola_excitada
-    
-    prl "I learned this thing called... twerking."
-    prl "It's supposed to be... provocative."
-    
-    # Music starts
-    play music audio.twerk_music fadein 1.0
-    
-    prl "Don't laugh, okay? This is my first time doing this for someone..."
-    
-    # Pearl starts twerking - VELOCIDADE NORMAL (CORRIGIDA)
-    scene quarto_perola
-    show perola_twerk_anim_normal at center
-    
-    "She's clearly inexperienced but enthusiastic."
-    
-    prl "Am I... am I doing it right?"
-    prl "The videos made it look so easy..."
-    
-    b "Holy shit, Purrl..."
-    
-    # She gets more confident
-    prl "You like it? I can feel something... awakening inside me..."
-    prl "This feeling is incredible!"
-    
-    # The music and movement continue
-    "Purrl gets more and more into it, discovering her sexuality."
-    
-    prl "I feel so... powerful! So sexy!"
-    prl "Is this what being a woman feels like?"
-    
-    menu:
-        "You're a natural":
-            prl "Really? I feel like I was born for this!"
-            $ perola_nivel_intimidade += 2
-            
-        "Fuck yeah! Don't stop now":
-            prl "I don't want to stop! This feels amazing!"
-            $ perola_nivel_intimidade += 1
-            jump twerk_keep_going
-            
-        "Your father would have a heart attack":
-            prl "Good! I'm tired of being his innocent little girl!"
-            $ perola_nivel_intimidade += 2
-    
-    jump twerk_climax
-
-# NOVO: Quando jogador escolhe "Keep going" (CORRIGIDO)
-label twerk_keep_going:
-    prl "Yes! I want to keep going!"
-    prl "I can feel the rhythm getting stronger!"
-    
-    # MUDAR PARA ANIMAÇÃO RÁPIDA (CORRIGIDA)
-    hide perola_twerk_anim_normal
-    show perola_twerk_anim_rapida at center
-    
-    "Purrl's movements become faster and more intense!"
-    
-    prl "Oh my God! This is so much better!"
-    prl "I can't stop! My body is moving on its own!"
-    
-    b "That's it, Purrl! Let yourself go!"
-    
-    prl "I'm getting so excited! I never knew I could feel like this!"
-    prl "My whole body is tingling!"
-    
-    "The faster rhythm makes Purrl lose all inhibitions."
-    
-    prl "I feel like... like I'm going to explode with pleasure!"
-    prl "This is better than anything I've ever experienced!"
-    
-    jump twerk_climax
-
-# NOVO: Clímax da cena
-label twerk_climax:
-    # Climax of the scene
-    hide perola_twerk_anim_normal
-    hide perola_twerk_anim_rapida
-    show perola_excitada at center
-    
-    prl "Oh my God... I'm so... excited!"
-    prl "I never felt anything like this before!"
-    prl "My body is tingling all over!"
-    
-    stop music fadeout 2.0
-    
-    # Post-twerk conversation
-    prl "This is our secret, right?"
-    prl "Nobody can know about this... especially not dad."
-    
-    b "Your secret is safe with me."
-    
-    prl "Good... because this is just the beginning."
-    prl "I want to learn more... experience more..."
-    prl "Will you teach me?"
-    
-    $ perola_nivel_intimidade += 3
-    $ hora_do_dia += 2
-    
-    jump final_primeira_visita
-
-# Pearl provokes herself (alternative path)
-label perola_se_provoca:
-    hide perola_provocante
-    show perola_determinada at center
-    
-    prl "Spoiled kid? I'll show you what this 'kid' can do!"
-    
-    # She starts doing something provocative
-    prl "I've been learning things online... things that would blow your mind!"
-    prl "Want to see how 'spoiled' I really am?"
-    
-    jump primeira_cena_twerk
-
-# Deal proposal (alternative path)
-label proposta_acordo_perola:
-    prl "What kind of deal are we talking about?"
-    
-    b "I keep being interesting, you keep your mouth shut."
-    
-    prl "Hmm... and what do I get out of it?"
-    prl "Besides your... 'interesting' company?"
-    
-    b "What do you want?"
-    
-    prl "I want to experience things... learn things..."
-    prl "Things a boring Spoogebob could never teach me."
-    
-    jump despertar_sexual_perola
-
-# End of first visit
-label final_primeira_visita:
-    scene quarto_perola
-    show perola_satisfeita at center
-    
-    prl "This was... incredible."
-    prl "I feel like I discovered a whole new side of myself."
-    prl "When can you come back?"
-    
-    b "Whenever you want."
-    
-    prl "Tomorrow then. Same time."
-    prl "And next time... I want to learn more."
-    
-    "Pearl's eyes sparkle with newfound desire and curiosity."
-    "You've successfully awakened something in her."
-    
-    "Visit completed! Purrl's intimacy level: [perola_nivel_intimidade]"
-    
-    jump room4
-
-# Confrontation visit (if intimacy is still 0)
-label visita_confronto_perola:
-    scene quarto_perola
-    show perola_irritada at center
-    
-    prl "You came back... I wasn't sure you would."
-    prl "We still need to resolve this situation between us."
-    
-    menu:
-        "What situation?":
-            prl "The situation where you're pretending to be someone you're not!"
-            $ perola_nivel_intimidade += 1
-            
-        "There's nothing to resolve":
-            prl "Nothing?! You've completely changed!"
-            
-        "Maybe we can work something out":
-            prl "Work something out? I'm listening..."
-            $ perola_nivel_intimidade += 2
-    
-    jump despertar_sexual_perola
-
-# Subsequent visits - Curiosity phase
-label visita_curiosidade_perola:
-    scene quarto_perola
-    
-    if mr_krotch_em_casa:
-        show perola_sussurrando at center
-        prl "*whispering* Dad's home... we need to be quiet."
-        prl "Come to my room."
-    else:
-        show perola_excitada at center
-        prl "Perfect! Dad's at the restaurant."
-        prl "We have the house to ourselves."
-    
-    prl "I've been thinking about yesterday all day..."
-    prl "I want to learn more things."
-    
-    menu:
-        "What do you want to learn?":
-            jump menu_ensinar_perola
-            
-        "Show me that twerk again":
-            jump repetir_twerk
-            
-        "Maybe we should slow down":
-            prl "Slow down? I'm just getting started!"
-            jump menu_ensinar_perola
-
-# Teaching menu
-label menu_ensinar_perola:
-    menu:
-        "What should I teach you?"
-        
-        "More advanced twerking":
-            jump twerk_avancado
-            
-        "Other types of dancing":
-            jump danca_sensual
-            
-        "How to be more confident":
-            jump licao_confianca
-            
-        "Let's talk first":
-            jump conversa_perola_casa
-
-# NOVO: Advanced twerking com animações CORRIGIDAS
+# Sistema de twerk com progressão
 label twerk_avancado:
+    if visitas_casa_perola >= 3:
+        jump twerk_profissional_avancado
+    else:
+        jump twerk_basico_avancado
+
+label twerk_basico_avancado:
     prl "Yes! I want to get better at it!"
     prl "Teach me your techniques!"
     
     play music audio.twerk_music fadein 1.0
-    
-    # Começar com velocidade normal (CORRIGIDA)
     scene quarto_perola
     show perola_twerk_anim_normal at center
     
@@ -542,7 +245,6 @@ label twerk_avancado:
     
     menu:
         "Keep going faster":
-            # MUDAR PARA VELOCIDADE RÁPIDA (CORRIGIDA)
             hide perola_twerk_anim_normal
             show perola_twerk_anim_rapida at center
             
@@ -571,13 +273,70 @@ label twerk_avancado:
     $ hora_do_dia += 2
     jump final_visita_perola
 
-# NOVO: Repeat twerking com animações CORRIGIDAS
+label twerk_profissional_avancado:
+    prl "Now I can show you my REAL skills!"
+    prl "I've been perfecting my professional techniques!"
+    
+    play music audio.twerk_music fadein 1.0
+    scene quarto_perola
+    show perola_twerk_pro_anim_normal at center
+    
+    prl "This is what months of practice gets you!"
+    prl "Every movement is calculated, every rhythm perfected."
+    
+    b "Holy shit, Pearl... you're incredible now."
+    
+    prl "Incredible? This is just my warm-up routine!"
+    prl "Watch what I can do at full speed..."
+    
+    "Her professional technique is mesmerizing."
+    
+    prl "I can maintain this pace for so much longer now."
+    prl "All that stamina training was worth it!"
+    
+    menu:
+        "Show me your full speed":
+            hide perola_twerk_pro_anim_normal
+            show perola_twerk_pro_anim_rapida at center
+            
+            prl "Like this?! I can go even faster if you want!"
+            prl "I've built up incredible stamina just for you!"
+            
+            "Pearl's professional moves at maximum speed are hypnotic."
+            
+            prl "This is what dedication to my craft looks like!"
+            prl "Every second of practice was thinking about this moment!"
+            
+            $ perola_nivel_intimidade += 3
+            
+        "Your technique is flawless":
+            prl "Flawless? I'm always finding ways to improve!"
+            prl "Next time I'll show you some moves you've never seen before!"
+            $ perola_nivel_intimidade += 2
+    
+    stop music fadeout 1.0
+    
+    hide perola_twerk_pro_anim_normal
+    hide perola_twerk_pro_anim_rapida
+    show perola_satisfeita at center
+    
+    prl "That's what happens when you combine natural talent with dedication!"
+    prl "And I did it all for you..."
+    
+    $ hora_do_dia += 2
+    jump final_visita_perola
+
+# Repeat twerking com sistema de progressão
 label repetir_twerk:
+    if visitas_casa_perola >= 3:
+        jump repetir_twerk_profissional
+    else:
+        jump repetir_twerk_basico
+
+label repetir_twerk_basico:
     prl "I've been practicing!"
     
     play music audio.twerk_music fadein 1.0
-    
-    # Começar diretamente com velocidade mais rápida (já que ela praticou) - CORRIGIDA
     scene quarto_perola
     show perola_twerk_anim_rapida at center
     
@@ -602,262 +361,39 @@ label repetir_twerk:
     
     jump final_visita_perola
 
-# Sensual dancing
-label danca_sensual:
-    prl "Other dances? Like what?"
+label repetir_twerk_profissional:
+    prl "I've been perfecting my professional routine!"
+    prl "Wait until you see how much I've improved!"
     
-    b "Slower, more sensual movements."
+    play music audio.twerk_music fadein 1.0
+    scene quarto_perola
+    show perola_twerk_pro_anim_rapida at center
     
-    play music "sensual_music.mp3" fadein 1.0
+    "Pearl's professional twerking is now at an expert level."
     
-    show perola_danca_sensual at center
+    prl "This is what dedication looks like!"
+    prl "I can maintain this intensity for so much longer now!"
+    prl "Every move is perfected... just for you!"
     
-    prl "This feels so... intimate."
-    prl "I love how you look at me when I move like this..."
+    "Her technique is flawless, mesmerizing, completely professional."
     
-    $ perola_nivel_intimidade += 1
-    $ hora_do_dia += 2
+    prl "I've been practicing new variations too..."
+    prl "This routine is constantly evolving!"
     
-    jump final_visita_perola
-
-# Confidence lesson
-label licao_confianca:
-    prl "Confidence? I want to feel more powerful!"
+    b "You're incredible, Pearl."
     
-    b "It's about knowing what you want and taking it."
-    
-    prl "What I want... is to feel more of what I felt yesterday."
-    prl "That excitement, that energy..."
+    prl "Incredible? This is what happens when passion meets practice!"
+    prl "And you're my inspiration for every single move!"
     
     $ perola_nivel_intimidade += 2
-    
-    jump despertar_mais_profundo
-
-# Deeper awakening
-label despertar_mais_profundo:
-    prl "I've been having... dreams... about you."
-    prl "About the things we could do together."
-    prl "Is that normal?"
-    
-    b "Completely normal."
-    
-    prl "I want to explore these feelings more..."
-    prl "Will you help me?"
-    
-    $ perola_nivel_intimidade += 2
-    $ hora_do_dia += 2
-    
-    jump final_visita_perola
-
-# Intimate visits (higher levels)
-label visita_intima_perola:
-    scene quarto_perola
-    show perola_provocante at center
-    
-    prl "I've been waiting for you..."
-    prl "I have so much to show you now."
-    
-    if perola_nivel_intimidade >= 8:
-        prl "I'm ready for... everything."
-        jump menu_atos_sexuais_perola
-    elif perola_nivel_intimidade >= 5:
-        prl "I want to try new things today."
-        jump menu_exploracao_perola
-    else:
-        prl "I've been practicing more moves..."
-        jump menu_danca_avancada
-
-# Sexual acts menu (high intimacy)
-label menu_atos_sexuais_perola:
-    menu:
-        "What do you want to do?"
-        
-        "Advanced intimacy":
-            jump cena_sexual_perola
-            
-        "Twerking performance":
-            jump show_twerk_perola
-            
-        "Teaching session":
-            jump ensinar_perola_avancado
-
-# Advanced exploration menu
-label menu_exploracao_perola:
-    menu:
-        "What should we explore?"
-        
-        "Physical intimacy":
-            jump exploracao_fisica
-            
-        "Twerking with contact":
-            jump twerk_com_contato
-            
-        "Confidence building":
-            jump construir_confianca
-
-# Enhanced menu for Pearl's house with gifts and conversations
-label menu_perola_casa_completo:
-    scene quarto_perola
-    show perola_normal at center
-    
-    prl "What do you want to do today?"
-    
-    menu:
-        "Talk to Pearl":
-            jump menu_conversa_perola_casa
-            
-        "Give a gift to Pearl":
-            jump menu_presentes_perola
-            
-        "Sexual activities" if perola_nivel_intimidade >= 8:
-            jump menu_atos_sexuais_perola
-            
-        "Advanced twerking" if perola_nivel_intimidade >= 5:
-            jump twerk_avancado
-            
-        "Leave":
-            jump room4
-
-# Conversation menu for Pearl
-label menu_conversa_perola_casa:
-    menu:
-        "What do you want to talk about?"
-        
-        "Ask about her life":
-            jump conversa_vida_perola
-            
-        "Talk about her father":
-            jump conversa_pai_perola
-            
-        "Ask about school":
-            jump conversa_escola_perola
-            
-        "Talk about her interests":
-            jump conversa_interesses_perola
-            
-        "Compliment her":
-            jump elogiar_perola
-            
-        "Ask about her dreams":
-            jump conversa_sonhos_perola
-            
-        "Go back":
-            jump menu_perola_casa_completo
-
-# Conversation about her life
-label conversa_vida_perola:
-    $ dialogo_random = renpy.random.randint(1, 4)
-    
-    if "vida" not in perola_ultimas_conversas:
-        if dialogo_random == 1:
-            prl "My life? It's... complicated."
-            prl "Being the daughter of the richest crab in town has its pros and cons."
-            prl "Everyone expects me to be perfect, but I want to be... wild."
-            
-        elif dialogo_random == 2:
-            prl "I've been so sheltered all my life..."
-            prl "Dad never let me experience real things."
-            prl "That's why meeting you has been so... exciting."
-            
-        elif dialogo_random == 3:
-            prl "I used to be such a good girl..."
-            prl "But you've awakened something in me that I can't ignore."
-            prl "I want to explore this new side of myself."
-            
-        else:
-            prl "My life changed completely since you appeared."
-            prl "Before, everything was boring and predictable."
-            prl "Now every day is an adventure!"
-        
-        $ perola_nivel_intimidade += 1
-        $ perola_ultimas_conversas.append("vida")
-    else:
-        prl "We already talked about my life recently..."
-        prl "But I love that you're interested in me."
-    
     $ hora_do_dia += 1
-    jump menu_conversa_perola_casa
-
-# Compliment Pearl
-label elogiar_perola:
-    $ dialogo_random = renpy.random.randint(1, 4)
     
-    menu:
-        "What compliment do you want to give?"
-        
-        "You're beautiful":
-            if dialogo_random <= 2:
-                prl "Really? I've been working out more..."
-                prl "I want to have the perfect body for you."
-                $ perola_nivel_intimidade += 1
-            else:
-                prl "Thank you! I love when you notice me."
-                $ perola_nivel_intimidade += 1
-                
-        "You're very smart":
-            if dialogo_random <= 2:
-                prl "Smart enough to know what I want..."
-                prl "And what I want is you."
-                $ perola_nivel_intimidade += 2
-            else:
-                prl "I'm smart enough to keep our secret safe."
-                $ perola_nivel_intimidade += 1
-                
-        "You're incredibly sexy":
-            if perola_nivel_intimidade >= 5:
-                prl "I love being sexy for you..."
-                prl "You make me feel like a real woman."
-                $ perola_nivel_intimidade += 2
-            else:
-                prl "Sexy? I'm still learning to be sexy..."
-                prl "But I'm glad you think so."
-                $ perola_nivel_intimidade += 1
-                
-        "You're perfect":
-            prl "Perfect? Only when I'm with you."
-            prl "You bring out the best in me."
-            $ perola_nivel_intimidade += 2
+    stop music fadeout 1.0
     
-    $ hora_do_dia += 1
-    jump menu_conversa_perola_casa
-
-# Conversation about dreams
-label conversa_sonhos_perola:
-    $ dialogo_random = renpy.random.randint(1, 3)
+    hide perola_twerk_pro_anim_rapida
+    show perola_satisfeita at center
     
-    if "sonhos" not in perola_ultimas_conversas:
-        if dialogo_random == 1:
-            prl "I dream about traveling the world..."
-            prl "Experiencing everything life has to offer."
-            prl "And I want you to be part of that journey."
-            
-        elif dialogo_random == 2:
-            prl "I dream about being free from all expectations..."
-            prl "Just being myself, wild and uninhibited."
-            prl "With you, I feel like I can be that person."
-            
-        else:
-            prl "Lately I've been having... different kinds of dreams..."
-            prl "Dreams about you... about us..."
-            prl "They're so vivid and exciting."
-        
-        $ perola_nivel_intimidade += 2
-        $ perola_ultimas_conversas.append("sonhos")
-    else:
-        prl "My dreams keep getting more intense..."
-        prl "All of them involve you somehow."
-    
-    $ hora_do_dia += 1
-    jump menu_conversa_perola_casa
-
-# Conversation at Pearl's house
-label conversa_perola_casa:
-    prl "You know... you've changed my life."
-    prl "Before you, I was just a boring rich girl."
-    prl "Now I feel... alive."
-    
-    $ perola_nivel_intimidade += 1
-    $ hora_do_dia += 1
+    prl "That's my professional level... and it keeps getting better!"
     
     jump final_visita_perola
 
@@ -929,17 +465,11 @@ label presente_chocolate_perola:
     $ inventario.remove(2)
     $ perola_presentes_dados.append(2)
     
-    if 2 not in perola_presentes_dados or perola_presentes_dados.count(2) == 1:
-        show perola_feliz at center
-        prl "Chocolate! I love chocolate!"
-        prl "You remembered that I have a sweet tooth."
-        prl "This is so thoughtful of you!"
-        $ perola_nivel_intimidade += 2
-    else:
-        show perola_normal at center
-        prl "More chocolate! You know me so well."
-        prl "I could eat chocolate all day."
-        $ perola_nivel_intimidade += 1
+    show perola_feliz at center
+    prl "Chocolate! I love chocolate!"
+    prl "You remembered that I have a sweet tooth."
+    prl "This is so thoughtful of you!"
+    $ perola_nivel_intimidade += 2
     
     $ money += 3
     "Pearl gives you $3 as thanks!"
@@ -1061,186 +591,25 @@ label final_visita_perola:
         prl "I want to discover everything."
     
     "Pearl's intimacy level: [perola_nivel_intimidade]"
-    "Next visit will unlock new options."
+    "Visits completed: [visitas_casa_perola]"
+    
+    if visitas_casa_perola == 2:
+        "Next visit: Professional twerking unlocked!"
+    elif visitas_casa_perola == 5:
+        "Next visit: Intimate activities unlocked!"
+    elif visitas_casa_perola >= 6:
+        "All activities unlocked! Pearl is completely yours!"
+    else:
+        "Keep visiting to unlock new content!"
     
     jump room4
 
-# NOVO: Show twerking performance (high level)
-label show_twerk_perola:
-    prl "You want a private show? I've gotten so much better..."
-    
-    play music audio.twerk_music fadein 1.0
-    
-    scene quarto_perola
-    show perola_twerk_anim_rapida at center
-    
-    "Pearl performs an incredible twerking show just for you."
-    "Her movements are confident and hypnotic."
-    
-    prl "Do you like what you see?"
-    prl "I've been practicing just for you..."
-    
-    $ perola_nivel_intimidade += 2
-    $ hora_do_dia += 1
-    
-    stop music fadeout 1.0
-    jump final_visita_perola
-
-# NOVO: Twerking with contact (advanced level)
-label twerk_com_contato:
-    prl "I want to try something... more intimate."
-    
-    play music audio.twerk_music fadein 1.0
-    
-    scene quarto_perola
-    show perola_twerk_anim_normal at center
-    
-    "Pearl starts twerking closer to you..."
-    "The intimacy is electric."
-    
-    prl "This feels so much more intense..."
-    prl "I can feel your energy..."
-    
-    $ perola_nivel_intimidade += 3
-    $ hora_do_dia += 2
-    
-    stop music fadeout 1.0
-    jump final_visita_perola
-
-# Placeholder labels for future expansion
-label cena_sexual_perola:
-    "Content for future updates..."
-    $ hora_do_dia += 3
-    jump final_visita_perola
-
-label ensinar_perola_avancado:
-    "Advanced teaching content for future updates..."
-    $ hora_do_dia += 2
-    jump final_visita_perola
-
-label exploracao_fisica:
-    "Physical exploration content for future updates..."
-    $ hora_do_dia += 2
-    jump final_visita_perola
-
-label construir_confianca:
-    "Confidence building content for future updates..."
-    $ hora_do_dia += 1
-    jump final_visita_perola
-
-label menu_danca_avancada:
-    "Advanced dance menu for future updates..."
-    jump twerk_avancado
-
-# Integration function - add this to the main game day progression
+# Integration functions
 label resetar_conversas_perola_diario:
     $ novo_dia_perola()
     return
     
-# Function to add Pearl's house to map (call this after address is discovered)
 label unlock_perola_house:
     $ mapa_disponivel = True
     "Pearl's house location added to map!"
     return
-
-# Conversation about her father
-label conversa_pai_perola:
-    $ dialogo_random = renpy.random.randint(1, 4)
-    
-    if "pai" not in perola_ultimas_conversas:
-        if dialogo_random == 1:
-            prl "Dad is... obsessed with money."
-            prl "Sometimes I feel like he cares more about his coins than about me."
-            prl "That's why I like rebelling against him."
-            
-        elif dialogo_random == 2:
-            prl "He thinks I'm still his innocent little girl..."
-            prl "If he knew what we do together, he'd have a heart attack!"
-            prl "But that makes it even more exciting."
-            
-        elif dialogo_random == 3:
-            prl "Dad wants to control everything in my life..."
-            prl "My friends, my clothes, my activities..."
-            prl "But with you, I feel free for the first time."
-            
-        else:
-            prl "I love dad, but he's so old-fashioned..."
-            prl "He doesn't understand that I'm becoming a woman."
-            prl "You understand me better than he ever will."
-        
-        $ perola_nivel_intimidade += 1
-        $ perola_ultimas_conversas.append("pai")
-    else:
-        prl "We already talked about dad..."
-        prl "I prefer talking about us."
-    
-    $ hora_do_dia += 1
-    jump menu_conversa_perola_casa
-
-# Conversation about school
-label conversa_escola_perola:
-    $ dialogo_random = renpy.random.randint(1, 4)
-    
-    if "escola" not in perola_ultimas_conversas:
-        if dialogo_random == 1:
-            prl "School is so boring compared to this!"
-            prl "All the boys there are so immature..."
-            prl "They have no idea what a real woman wants."
-            
-        elif dialogo_random == 2:
-            prl "My friends at school would be so jealous if they knew..."
-            prl "They all talk big but none of them have really lived."
-            prl "I'm getting experiences they could never imagine."
-            
-        elif dialogo_random == 3:
-            prl "I can barely concentrate on classes anymore..."
-            prl "All I think about is coming home to see you."
-            prl "You've become my favorite subject."
-            
-        else:
-            prl "Sometimes I want to tell my friends about you..."
-            prl "But this is our secret, isn't it?"
-            prl "It makes everything more special."
-        
-        $ perola_nivel_intimidade += 1
-        $ perola_ultimas_conversas.append("escola")
-    else:
-        prl "School is still boring..."
-        prl "But being here with you never gets old."
-    
-    $ hora_do_dia += 1
-    jump menu_conversa_perola_casa
-
-# Conversation about her interests
-label conversa_interesses_perola:
-    $ dialogo_random = renpy.random.randint(1, 4)
-    
-    if "interesses" not in perola_ultimas_conversas:
-        if dialogo_random == 1:
-            prl "I used to love cheerleading and shopping..."
-            prl "But now I'm interested in... more adult things."
-            prl "You've opened my eyes to a whole new world."
-            
-        elif dialogo_random == 2:
-            prl "I've been watching videos online... learning things..."
-            prl "I want to try everything I see."
-            prl "Will you help me explore?"
-            
-        elif dialogo_random == 3:
-            prl "My biggest interest now is... you."
-            prl "Learning what you like, how to please you..."
-            prl "I think about it all the time."
-            
-        else:
-            prl "I love music and dancing now..."
-            prl "Especially that twerking you taught me."
-            prl "It makes me feel so powerful and sexy."
-        
-        $ perola_nivel_intimidade += 1
-        $ perola_ultimas_conversas.append("interesses")
-    else:
-        prl "My interests keep evolving..."
-        prl "Especially the ones involving you."
-    
-    $ hora_do_dia += 1
-    jump menu_conversa_perola_casa

@@ -5,7 +5,7 @@
 # Define Sandy character
 define sd = Character("Sandy Cunts", who_color="#ff69b4")
 define you = Character("You", who_color="#ffff00")
-
+define b =  Character("Frank", who_color="#ff69b4")
 # Variables to track Sandy's state
 default sandy_tesao = False  # Initially not horny
 default ja_visitou_sandy = False  # Tracks if already visited Sandy before

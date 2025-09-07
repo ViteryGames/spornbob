@@ -2,7 +2,7 @@
 
 # Sound for cumshots - reusing existing sound
 define audio.gozada = "audio/porra.mp3"
-
+define b = "You"
 init python:
     def obter_dialogo_peitos():
         # Returns random dialogue for when Sandy shows her tits
@@ -165,7 +165,7 @@ init python:
                 ],
                 # Line 7 - three variations
                 [
-                    ["sd", "Ah, fuck! That look of yours is making me all wet! You're too different..."],
+                    ["sd", "Great gallopin’ gophers! That look of yours is making me all wet! You're too different..."],
                     ["sd", "Shit, Spoogebob! You're exciting me just with that look! What did they do to you?"],
                     ["sd", "Holy shit! This way of yours is making me all shivery! Where did you learn this?"]
                 ],
@@ -372,7 +372,7 @@ init python:
                 ["", "Sandy slowly removes her shorts, with shyness"],
                 ["sd", "So... what do you think, partner? Why do you have that stupid look?"],
                 ["", "You look admiringly at her intimacy as if you'd never seen one"],
-                ["you", "Fuck, it's beautiful, Sandy... much better than humans..."],
+                ["b", "Fuck, it's beautiful, Sandy... much better than humans..."],
                 ["sd", "Wow Spoogebob, you really like a Texas pussy..."],
                 ["sd", "You can only look okay?"],
                 ["", "You start drooling seeing that pussy all juicy staring at you"],
@@ -387,7 +387,7 @@ init python:
                 ["", "Sandy removes her shorts with more confidence"],
                 ["sd", "Enjoying it, partner? Your friend certainly is!"],
                 ["", "Your dick gets so hard it starts throbbing"],
-                ["sd", "Fuck! Your dick is even shaking hahaha"],
+                ["sd", "Tarnation! Your dick is even shaking hahaha"],
                 ["sd", "You must be dying to fuck me right?"],
                 ["", "You even try to answer but if you open your mouth you'll talk shit."],
                 ["sd", "What's the problem buddy?"],
@@ -471,8 +471,8 @@ init python:
                 ["sd", "YES! Just like that! Harder! By the devil's horns, show who you really are!"],
                 ["sd", "Fuck my ass, Spoogebob! Go deep! Holy shit!"],
                 ["", "The rhythm becomes intense and wild"],
-                ["sd", "I'm almost there! Don't stop! Wreck my ass!"],
-                ["you", "Sandy! I'm going to cum too, fuck!"],
+                ["sd", "I'm almost there! Don't stop! Wreck my ass! My hole is hotter than two rats screwin’ in a wool sock."],
+                ["b", "Sandy! I'm going to cum too, fuck!"],
                 ["sd", "TOGETHER! NOW! YOU DELICIOUS TEXAN!"],
                 ["", "You reach climax simultaneously in an explosive orgasm"]
             ],
@@ -484,10 +484,10 @@ init python:
                 ["sd", "Fuck me real good today, Spoogebob... I love it..."],
                 ["", "You penetrate her with force, knowing her limits well"],
                 ["sd", "THAT'S IT! LIKE THAT! HARD! DAMN, YOU'RE AN ANIMAL, NOT A SPONGE!"],
-                ["sd", "My God, Spoogebob! How do you make me feel this? Holy shit, you're so different now!"],
+                ["sd", "FUCK, Spoogebob! How do you make me feel this? Great gravy, you're so different now!"],
                 ["", "You find the perfect rhythm you know works"],
-                ["sd", "Go! Go! I'm almost there! By the devil's horns, show who you really are!"],
-                ["you", "Sandy! I can't take it anymore, fuck!"],
+                ["sd", "Go! Go! I'm almost there! My honeypot’s singin’ hotter than a Texas sunset!"],
+                ["b", "Sandy! I can't take it anymore, fuck!"],
                 ["sd", "CUM INSIDE! I WANT TO FEEL IT!!"],
                 ["", "You reach a mutual orgasm that seems to last forever"]
             ]
@@ -501,46 +501,46 @@ init python:
         sequencias = [
             # First time
             [
-                ["you", "You want to suck my dick? Come on, squirrel, show me what you know how to do."],
+                ["b", "You want to suck my dick? Come on, squirrel, show me what you know how to do."],
                 ["sd", "Never did this before... but I'm curious, partner..."],
                 ["", "Sandy kneels timidly in front of you"],
                 ["sd", "Let me know if I do something wrong, okay? In Texas we don't usually practice this..."],
                 ["", "She starts licking you gently"],
-                ["you", "Fuck, what a strange sensation... but you're doing well, squirrel..."],
-                ["you", "Go with more enthusiasm, squirrel, I don't have all day."],
+                ["b", "Fuck, what a strange sensation... but you're doing well, squirrel..."],
+                ["b", "Go with more enthusiasm, squirrel, I don't have all day."],
                 ["", "Sandy starts putting you in her mouth slowly"],
                 ["sd", "Mmm... is this good, cowboy?"],
-                ["you", "Yeah, it's getting better. Didn't know Texas squirrels sucked so well."],
-                ["you", "Fuck, Sandy! This is awesome! I'm going to cum, shit!"],
+                ["b", "Yeah, it's getting better. Didn't know Texas squirrels sucked so well."],
+                ["b", "Fuck, Sandy! This is awesome! I'm going to cum, shit!"],
                 ["", "You reach climax while Sandy seems surprised, but satisfied"]
             ],
             # Second time
             [
-                ["you", "Come here, squirrel, I want to feel that furry little mouth again."],
+                ["b", "Come here, squirrel, I want to feel that furry little mouth again."],
                 ["sd", "I liked last time... learned some Texas tricks."],
                 ["", "Sandy kneels with more confidence"],
                 ["sd", "Relax there, Spoogebob. Today I'm going to give you more pleasure, partner."],
                 ["", "She alternates between licks and sucks with more skill"],
-                ["you", "That's it, fuck! Swallow this hard dick you whore!"],
+                ["b", "That's it, fuck! Swallow this hard dick you whore!"],
                 ["sd", "Sandy maintains eye contact while sucking you deeply"],
                 ["sd", "Mmm... *slurp*... enjoying it, cowboy?"],
                 ["", "She accelerates the rhythm, her mouth is so hot you go into a trance"],
-                ["you", "Damn, Sandy! You're going to make me cum fast like this, fuck!"],
+                ["b", "Damn, Sandy! You're going to make me cum fast like this, fuck!"],
                 ["sd", "Cum you bastard!"],
                 ["", "You explode in her mouth, with your mouth open because you've lost facial control"]
             ],
             # Third time
             [
-                ["you", "Bring that squirrel mouth over here again."],
-                ["you", "Today I'm going to show you how to really suck."],
+                ["b", "Bring that squirrel mouth over here again."],
+                ["b", "Today I'm going to show you how to really suck."],
                 ["", "Sandy kneels with an expression of desire"],
                 ["sd", "Holy shit, this dick is always so clean! Doesn't even taste like piss and STDs like the ones in Texas!"],
                 ["", "She starts with a perfect rhythm, knowing exactly what you like"],
-                ["you", "You're lucky I live underwater because I'm not one to wash my dick..."],
+                ["b", "You're lucky I live underwater because I'm not one to wash my dick..."],
                 ["sd", "Sandy sucks you deeply, controlling her breathing like a professional"],
                 ["sd", "Mmm... *deep throat*... *slurp*... yeehaw!"],
-                ["you", "Fuck, how did a squirrel learn to do this? In prison there wasn't this..."],
-                ["you", "Holy shit, Sandy! I'm going to fill your mouth, you little Texan slut!"],
+                ["b", "Fuck, how did a squirrel learn to do this? In prison there wasn't this..."],
+                ["b", "Holy shit, Sandy! I'm going to fill your mouth, you little Texan slut!"],
                 ["sd", "She seems surprised by your words, but doesn't stop sucking"],
                 ["", "You cum violently in her throat, thinking about how easy it is to fool her"]
             ],
@@ -551,11 +551,11 @@ init python:
                 ["", "Sandy kneels and already starts devouring you without hesitation"],
                 ["sd", "Mmm... *glup*... *glup*... yeehaw, I love feeling you like this..."],
                 ["", "She uses advanced techniques that make you see stars"],
-                ["you", "Fuck, you got a lot better. Been sucking who?."],
+                ["b", "Fuck, you got a lot better. Been sucking who?."],
                 ["sd", "Sandy alternates between deep sucks and precise licks"],
                 ["sd", "Mmm... I want to feel you exploding in my mouth again, cowboy..."],
-                ["you", "You grab her head with force, controlling the rhythm"],
-                ["you", "Holy shit! In prison this blowjob is worth more than 10 packs of cigarettes!"],
+                ["b", "You grab her head with force, controlling the rhythm"],
+                ["b", "Holy shit! In prison this blowjob is worth more than 10 packs of cigarettes!"],
                 ["sd", "Mmm... *glup*... *glup*... pris-"],
                 ["", "Before she can process the sentence you flood her with cum"]
             ]
@@ -569,13 +569,13 @@ init python:
         sequencias = [
             # First time
             [
-                ["you", "So, squirrel, how about feeling a real man inside you?"],
+                ["b", "So, squirrel, how about feeling a real man inside you?"],
                 ["sd", "Never did this before... but I trust you, Spoogebob... even though you're being so strange..."],
                 ["", "Sandy lies down and opens her legs timidly"],
                 ["sd", "I hope you're gentle, partner..."],
                 ["", "You position yourself between her legs, laughing internally"],
                 ["sd", "Ow! Easy, Spoogebob... go slow, by the devil's horns!"],
-                ["you", "Damn, you're pretty tight huh?"],
+                ["b", "Damn, you're pretty tight huh?"],
                 ["", "You find a rhythm, with you being more aggressive than Spoogebob would be"],
                 ["sd", "Wow... you seem different today... more intense, fuck!"],
                 ["", "The movements intensify, you don't have patience to go slow"],
@@ -584,46 +584,46 @@ init python:
             ],
             # Second time
             [
-                ["you", "I'm in the mood to stick it in you again."],
+                ["b", "I'm in the mood to stick it in you again."],
                 ["sd", "Wow, Spoogebob... you're so... direct lately"],
                 ["", "Sandy positions herself, a little surprised by your attitude"],
                 ["sd", "You're very different, but I like this new energy of yours, by the devil's horns..."],
                 ["", "You penetrate her without much ceremony"],
-                ["you", "Fuck! Pussy is better than male ass!"],
-                ["you", "Damn, Sandy! Your Texan pussy is very good!"],
+                ["b", "Fuck! Pussy is better than male ass!"],
+                ["b", "Damn, Sandy! Your Texan pussy is very good!"],
                 ["", "The rhythm increases, and you hit her hard"],
-                ["sd", "Harder! Don't stop! Holy shit, you never fucked me like this before!"],
-                ["you", "I'm going to fill this pussy with cum!"],
+                ["b", "Harder! Don't stop! Holy shit, you never fucked me like this before!"],
+                ["b", "I'm going to fill this pussy with cum!"],
                 ["sd", "Yes! Cum inside! Cum inside, fuck!"],
                 ["", "You fill her completely, satisfied that she doesn't suspect anything"]
             ],
             # Third time
             [
-                ["you", "Take off your clothes, squirrel. I'm going to fuck you now."],
+                ["b", "Take off your clothes, squirrel. I'm going to fuck you now."],
                 ["sd", "Wow, Spoogebob... you were never like this before... but damn, I love it, cowboy."],
                 ["", "Sandy positions herself anxiously, already wet with excitement"],
                 ["sd", "You know, I like this more aggressive side of you, fuck..."],
                 ["", "You penetrate her with force, pulling her tail"],
-                ["you", "FUCK! THAT'S IT! WRECK ME!"],
-                ["you", "Swallow this whole dick, you fucking Texan squirrel!"],
+                ["b", "FUCK! THAT'S IT! WRECK ME!"],
+                ["b", "Swallow this whole dick, you fucking Texan squirrel!"],
                 ["", "You find a wild and brutal rhythm"],
                 ["sd", "Deeper! That's it! Tear me all up, by the devil's horns!"],
-                ["you", "I'm going to fill you with cum, Texan!"],
+                ["b", "I'm going to fill you with cum, Texan!"],
                 ["sd", "CUUUUM INSIDE! FLOOD ME ALL, FUCK!"],
                 ["", "You have a violent orgasm, impressed how she doesn't realize you're not Spoogebob"]
             ],
             # Repetitions after completing
             [
-                ["you", "Take off your clothes slut. Now."],
+                ["b", "Take off your clothes slut. Now."],
                 ["sd", "Spoogebob, you're so bossy... holy shit, I love this dominating side of yours, cowboy."],
                 ["", "Sandy positions herself on all fours, already knowing what you want"],
-                ["you", "Fuck me hard, I want to feel you tearing me apart."],
+                ["b", "Fuck me hard, I want to feel you tearing me apart."],
                 ["", "You penetrate her violently, pulling her hair"],
-                ["you", "THAT'S IT! LIKE THAT! DESTROY MY LITTLE PUSSY FUUUCK!"],
-                ["you", "Take this dick, slut! Spoogebob Squirtpants here is different now, fuck!"],
+                ["b", "THAT'S IT! LIKE THAT! DESTROY MY LITTLE PUSSY FUUUCK!"],
+                ["b", "Take this dick, slut! Spoogebob Squirtpants here is different now, fuck!"],
                 ["", "You slap her ass while fucking hard"],
                 ["sd", "Hit me more! Call me names! By the devil's horns, I love this!"],
-                ["you", "I'm going to fill this Texan uterus with cum!"],
+                ["b", "I'm going to fill this Texan uterus with cum! You fucking cowbitch!"],
                 ["sd", "YES! FLOOD ME WITH CUM, FUCK!"],
                 ["", "You cum deeply in her, thinking about how many other women from the bottom of the sea you can fuck"]
             ]
@@ -637,32 +637,32 @@ init python:
         sequencias = [
             # First time
             [
-                ["you", "Hey, squirrel, how about shoving these nuts in your Texan ass?"],
+                ["b", "Hey, squirrel, how about shoving these nuts in your Texan ass?"],
                 ["sd", "In my... what? Holy shit, that's... very strange, Spoogebob."],
                 ["", "Sandy seems shocked, but also curious"],
                 ["sd", "Look, I'm a Texan scientist, so... let's experiment, partner."],
-                ["you", "You prepare the nuts with a malicious smile"],
+                ["b", "You prepare the nuts with a malicious smile"],
                 ["sd", "Is it going to hurt, fuck?"],
-                ["you", "Definitely! Get on all fours now."],
+                ["b", "Definitely! Get on all fours now."],
                 ["", "You start inserting the nuts one by one, without much care"],
-                ["sd", "Ow! Easy! It's different, but... fuck, it's actually interesting."],
+                ["b", "Ow! Easy! It's different, but... fuck, it's actually interesting."],
                 ["", "While you continue, she starts moaning"],
-                ["you", "Fuck, never imagined this would be so good, squirrel!"],
+                ["b", "Fuck, never imagined this would be so good, squirrel!"],
                 ["", "Sandy has an unexpected orgasm, and you laugh at the perversion you managed to do with her"]
             ],
             # Second time or more
             [
-                ["you", "Hey, brought more Texan nuts. I think your ass is hungry, squirrel."],
+                ["b", "Hey, brought more Texan nuts. I think your ass is hungry, squirrel."],
                 ["sd", "Wow, Spoogebob... by the devil's horns, never imagined I'd like this so much."],
                 ["", "Sandy positions herself anxiously on all fours"],
                 ["sd", "Stick more this time, cowboy. I want to feel as much as possible, fuck!"],
-                ["you", "You prepare the nuts, impressed with how perverted she became"],
-                ["you", "Open your ass little squirrel!"],
+                ["b", "You prepare the nuts, impressed with how perverted she became"],
+                ["b", "Open your ass little squirrel!"],
                 ["", "The nuts slide inside her with ease now"],
                 ["sd", "That's it! Yes! Stick it deeper, holy shit!"],
                 ["sd", "More! Put more! I want to feel them all inside me, for the love of Texas God!"],
                 ["", "Her body trembles with each new nut inserted"],
-                ["you", "Damn! This is too much, squirrel! I'm going to... going to..."],
+                ["b", "Damn! This is too much, squirrel! I'm going to... going to..."],
                 ["", "Sandy has an intense orgasm, and some nuts come out like projectiles, making you laugh"]
             ]
         ]

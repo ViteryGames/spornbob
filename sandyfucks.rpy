@@ -1,5 +1,8 @@
 # sandyfucks.rpy - Sandy Sexual Content (English)
 # UPDATED with Sexual Enhancement System
+init python:
+    renpy.music.register_channel("musica1", "music", loop=True)
+    renpy.music.register_channel("musica2", "music", loop=True)
 
 # Animations for Sandy scenes
 image sandy_peitos:
@@ -240,7 +243,8 @@ label ver_peitos_rapido:
         yalign 0.8
     
     # Pause to see image
-    pause 2.0
+    window hide
+    $ renpy.pause(hard=False) 
 
     # Hide tits
     hide sandynua
@@ -288,7 +292,8 @@ label ver_buceta_sandy:
     show sandyxereta at center
     
     # Pause to give time to view image
-    pause 2.0
+    window hide
+    $ renpy.pause(hard=False) 
     
     # Get dialogue sequence according to progress
     $ indice = min(vezes_mostrou_buceta, 2)
@@ -340,7 +345,8 @@ label ver_buceta_rapido:
     show sandyxereta at center
     
     # Pause to give time to view image
-    pause 2.0
+    window hide
+    $ renpy.pause(hard=False) 
     
     # Hide image
     hide sandyxereta
@@ -370,6 +376,7 @@ label punheta_sandy:
     $ indice = min(vezes_punheta, 2)
     $ sequencia = obter_sequencia_punheta(indice)
     
+    play music "sexmusic.wav"
     # Start with animation immediately
     scene fodasandy
     show sandy_punheta_anim
@@ -389,6 +396,8 @@ label punheta_sandy:
     # Change to faster rhythm and continue dialogues
     hide sandy_punheta_anim
     show sandy_punheta_anim_rapida
+    window hide
+    $ renpy.pause(hard=False) 
     
     # Continue dialogues with faster rhythm
     while i < len(sequencia) - 2:  # -2 to stop before climax
@@ -404,8 +413,9 @@ label punheta_sandy:
     # Cum option - Simplified version
     menu:
         "Cum":
-            you "I'm going to cum, Sandy!"
-            
+            stop music
+            b "I'm going to cum, Sandy!"
+            play sound audio.gozada
             # Hide handjob animation
             hide sandy_punheta_anim_rapida
             
@@ -415,11 +425,19 @@ label punheta_sandy:
             # First cum with shake and sound
             with hpunch
             play sound audio.gozada
+
+            window hide
+            $ renpy.pause(hard=False) 
+
             b "That's right, Sandy! Keep going!"
             
             # Second cum with shake and sound
             with hpunch
             play sound audio.gozada
+
+            window hide
+            $ renpy.pause(hard=False) 
+
             "Sandy continues stimulating you while you cum."
             
             # Hide cum image after some time
@@ -458,9 +476,13 @@ label boquete_sandy:
     $ indice = min(vezes_boquete, 2)
     $ sequencia = obter_sequencia_boquete(indice)
     
+    play music "gagau maluco.mp3"
+    play musica2 "sexmusic.wav"
     # Start with animation immediately
     scene fodasandy
     show sandy_boquete_anim
+    window hide
+    $ renpy.pause(hard=False) 
     
     # Show dialogues while animation is at normal rhythm
     $ i = 0
@@ -477,7 +499,9 @@ label boquete_sandy:
     # Change to faster rhythm and continue dialogues
     hide sandy_boquete_anim
     show sandy_boquete_anim_rapida
-    
+    window hide
+    $ renpy.pause(hard=False) 
+
     # Continue dialogues with faster rhythm
     while i < len(sequencia) - 2:  # -2 to stop before climax
         $ quem_fala, texto = sequencia[i]
@@ -492,27 +516,36 @@ label boquete_sandy:
     # Cum option - Simplified version
     menu:
         "Cum":
-            you "I'm going to cum, Sandy!"
-            
+            stop musica2
+            stop music
+            b "I'm going to cum in your hot mouth, Sandy!"
+            play sound audio.gozada
             # Hide blowjob animation
             hide sandy_boquete_anim_rapida
             
             # Show cum image
-            show sandypohadas at center
+            show gozadabocasandy at center
             
             # First cum with shake and sound
             with hpunch
             play sound audio.gozada
+
+            window hide
+            $ renpy.pause(hard=False) 
+
             b "That's right! How delicious!"
             
             # Second cum with shake and sound
             with hpunch
             play sound audio.gozada
+
+            pause (1.0)
+
             "You hold her head while continuing to cum."
             
             # Hide cum image after some time
             $ renpy.pause(2.0)
-            hide sandypohadas
+            hide gozadabocasandy
     
     # Show satisfied Sandy
     show sandy envergonhada at center
@@ -546,7 +579,9 @@ label foder_buceta_sandy:
     # Get dialogue sequence according to progress
     $ indice = min(vezes_foder_buceta, 2)
     $ sequencia = obter_sequencia_foder_buceta(indice)
-    
+
+    play music "sexmusic.wav"
+    play musica2 "botadas.mp3"
     # Start with animation immediately
     scene fodasandy
     show sandy_buceta_anim
@@ -566,7 +601,10 @@ label foder_buceta_sandy:
     # Change to faster rhythm and continue dialogues
     hide sandy_buceta_anim
     show sandy_buceta_anim_rapida
-    
+
+    window hide
+    $ renpy.pause(hard=False) 
+
     # Continue dialogues with faster rhythm
     while i < len(sequencia) - 2:  # -2 to stop before climax
         $ quem_fala, texto = sequencia[i]
@@ -581,33 +619,43 @@ label foder_buceta_sandy:
     # Cum option - Simplified version
     menu:
         "Cum":
-            you "I'm going to cum, Sandy!"
+            
+            stop musica2
+            stop music
+            b "I'm going to cum, Sandy!"
             
             # Hide sex animation
             hide sandy_buceta_anim_rapida
-            
+            play sound audio.gozada
             # Show cum image
-            show sandypohadas at center
-            
+            show cetinhagozadasandy at center
+            play sound audio.gozada
             # First cum with shake and sound
             with hpunch
             play sound audio.gozada
+
+            pause (1.0)
+
             b "That's it! I'm cumming!"
             
             # Second cum with shake and sound
             with hpunch
             play sound audio.gozada
+
+            pause (1.0)
+
             "You continue fucking while cumming hard."
             
             # Hide cum image after some time
             $ renpy.pause(2.0)
-            hide sandypohadas
+            hide cetinhagozadasandy
     
     # Show satisfied Sandy
-    show sandy envergonhada at center
+    show sandybupohadas at center
     
-    sd "Ahhh! I'm feeling everything inside! It's so hot!"
+    sd "Whoo doggies! Feels like my cookie jar’s ridin’ through Death Valley!"
     "Sandy is completely satisfied."
+    pause (2.0)
 
     $ hora_do_dia += 2
     $ vezes_foder_buceta += 1
@@ -740,6 +788,8 @@ label comer_cuzinho:
     $ indice = min(vezes_cuzinho, 2)
     $ sequencia = obter_sequencia_cuzinho(indice)
     
+    play music "sexmusic.wav"
+    play musica2 "botada.mp3"
     # Start with animation immediately
     scene fodasandy
     show sandy_cuzinho_anim
@@ -757,8 +807,12 @@ label comer_cuzinho:
         $ i += 1
     
     # Change to faster rhythm and continue dialogues
+
     hide sandy_cuzinho_anim
     show sandy_cuzinho_anim_rapida
+
+    window hide
+    $ renpy.pause(hard=False) 
     
     # Continue dialogues with faster rhythm
     while i < len(sequencia) - 2:  # -2 to stop before climax
@@ -774,32 +828,45 @@ label comer_cuzinho:
     # Cum option - Simplified version
     menu:
         "Cum":
-            you "I'm going to cum, Sandy!"
-            
+            stop musica2
+            stop music
+            b "I'm going to cum, Sandy!"
+            play sound audio.gozada
             # Hide ass animation
             hide sandy_cuzinho_anim_rapida
             
             # Show cum image
-            show sandypohadas at center
+            show sandycugozada at center
             
             # First cum with shake and sound
             with hpunch
             play sound audio.gozada
+
+            window hide
+            $ renpy.pause(hard=False) 
+
             b "Take this! I'm cumming a lot!"
             
             # Second cum with shake and sound
             with hpunch
             play sound audio.gozada
-            "You continue fucking while releasing jets and more jets."
             
-            sd "Ahhhh! It's so hot! How delicious!"
+            window hide
+            $ renpy.pause(hard=False) 
+
+
+            "You continue fucking while releasing jets and more jets."
+            play sound audio.gozada
+            sd "Holy Moly! Its rainin'cum inside my cave like a cow pissin' on a flat rock"
             
             # Hide cum image after some time
-            $ renpy.pause(2.0)
             hide sandypohadas
     
     # Show satisfied Sandy
-    show sandy envergonhada at center
+    hide sandycugozada
+    show sandycugozadin at center
+    sd"Look at that fucking mess you made inside my asshole cowboy!! It's looking like a warzone in there hihi"
+    pause (2.0)
     
     $ hora_do_dia += 2
     $ vezes_cuzinho += 1
