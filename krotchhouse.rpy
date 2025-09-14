@@ -1,26 +1,28 @@
-# krotchhouse_main.rpy - Pearl's House Visit System (Main) - COMPLETE VERSION
+# krotchhouse_main.rpy - Purrl's House Visit System - TRULY FINAL VERSION
 
-# Variables for Pearl's house system
-default perola_nivel_intimidade = 0  # Pearl's intimacy level with player
-default visitas_casa_perola = 0  # Number of visits to Pearl's house
+# Variables for Purrl's house system
+default perola_nivel_intimidade = 0  # Purrl's intimacy level with player
+default visitas_casa_perola = 0  # Number of visits to Purrl's house
 default primeiro_twerk = False  # Track if first twerking scene happened
-default perola_acordou_sexualmente = False  # Track if Pearl awakened sexually
-default ultimo_dia_visita_perola = -1  # Last day player visited Pearl
-default mr_krotch_em_casa = True  # Track if Mr. Krotch is home
+default perola_acordou_sexualmente = False  # Track if Purrl awakened sexually
+default ultimo_dia_visita_perola = -1  # Last day player visited Purrl
 default perola_chantagem_resolvida = False  # Track if blackmail situation is resolved
 default perola_ultimas_conversas = []  # Track recent conversation topics
-default perola_presentes_dados = []    # Track gifts given to Pearl
-default perola_humor = "normal"        # Pearl's current mood (normal, happy, excited, angry)
+default perola_presentes_dados = []    # Track gifts given to Purrl
+default perola_presentes_hoje = 0  # Track gifts given today
+default dia_ultimo_presente = -1  # Last day a gift was given
 
-# Pearl house images
+# Purrl house images
 image casa_perola_externa = "images/casa_perola_externa.png"
 image quarto_perola = "images/quarto_perola.png"
 image sala_perola = "images/sala_perola.png"
 image perola_pijama = "images/perola_pijama.png"
 image perola_provocante = "images/perola_provocante.png"
 image perola_excitada = "images/perola_excitada.png"
+image perola_satisfeita = "images/perola_satisfeita.png"
+image perola_normal = "images/perola_normal.png"
 
-# ORIGINAL: Definições de frames para twerk (8 frames - sem frame0)
+# Basic twerk frames (8 frames)
 image perola_twerk_frame1 = "images/perola_twerk_frame1.png"
 image perola_twerk_frame2 = "images/perola_twerk_frame2.png"
 image perola_twerk_frame3 = "images/perola_twerk_frame3.png"
@@ -30,7 +32,7 @@ image perola_twerk_frame6 = "images/perola_twerk_frame6.png"
 image perola_twerk_frame7 = "images/perola_twerk_frame7.png"
 image perola_twerk_frame8 = "images/perola_twerk_frame8.png"
 
-# NOVO: Frames para twerk profissional (desbloqueado na 3ª visita)
+# Professional twerk frames
 image perola_twerk_pro_frame1 = "images/perola_twerk_pro_frame1.png"
 image perola_twerk_pro_frame2 = "images/perola_twerk_pro_frame2.png"
 image perola_twerk_pro_frame3 = "images/perola_twerk_pro_frame3.png"
@@ -40,7 +42,7 @@ image perola_twerk_pro_frame6 = "images/perola_twerk_pro_frame6.png"
 image perola_twerk_pro_frame7 = "images/perola_twerk_pro_frame7.png"
 image perola_twerk_pro_frame8 = "images/perola_twerk_pro_frame8.png"
 
-# ORIGINAL: Animações de twerk básico (mantendo sua versão)
+# Basic twerk animations
 image perola_twerk_anim_normal:
     "perola_twerk_frame1"
     pause 0.15
@@ -58,64 +60,28 @@ image perola_twerk_anim_normal:
     pause 0.15
     "perola_twerk_frame8"
     pause 0.15
-    "perola_twerk_frame5"
-    pause 0.15
-    "perola_twerk_frame6"
-    pause 0.15
-    "perola_twerk_frame7"
-    pause 0.15
-    "perola_twerk_frame8"
-    pause 0.15
-    "perola_twerk_frame4"
-    pause 0.15
-    "perola_twerk_frame5"
-    pause 0.15
-    "perola_twerk_frame6"
-    pause 0.15
-    "perola_twerk_frame7"
-    pause 0.15
-    "perola_twerk_frame8"
-    pause 0.15
-    "perola_twerk_frame5"
-    pause 0.15
-    "perola_twerk_frame6"
-    pause 0.15
-    "perola_twerk_frame7"
-    pause 0.15
-    "perola_twerk_frame8"
-    pause 0.1
     repeat
 
 image perola_twerk_anim_rapida:
     "perola_twerk_frame1"
-    pause 0.1
+    pause 0.08
     "perola_twerk_frame2"
-    pause 0.1
+    pause 0.08
     "perola_twerk_frame3"
-    pause 0.1
+    pause 0.08
     "perola_twerk_frame4"
-    pause 0.05
+    pause 0.08
     "perola_twerk_frame5"
-    pause 0.05
+    pause 0.08
     "perola_twerk_frame6"
-    pause 0.05
+    pause 0.08
     "perola_twerk_frame7"
-    pause 0.05
+    pause 0.08
     "perola_twerk_frame8"
-    pause 0.05
-    "perola_twerk_frame4"
-    pause 0.07
-    "perola_twerk_frame5"
-    pause 0.07
-    "perola_twerk_frame6"
-    pause 0.07
-    "perola_twerk_frame7"
-    pause 0.05
-    "perola_twerk_frame8"
-    pause 0.05
+    pause 0.08
     repeat
 
-# NOVO: Animações de twerk profissional (3ª visita+)
+# Professional twerk animations
 image perola_twerk_pro_anim_normal:
     "perola_twerk_pro_frame1"
     pause 0.2
@@ -157,28 +123,39 @@ image perola_twerk_pro_anim_rapida:
 # Sound effects
 define audio.twerk_music = "twerksong.mp3"
 define audio.porta_casa = "house_door.mp3"
+define audio.pai_chegando = "footsteps.mp3"
 
-# Function to check if can visit Pearl today
+# Functions - USING 'dia' CORRECTLY
 init python:
     def pode_visitar_perola_hoje():
         global ultimo_dia_visita_perola, dia
         return ultimo_dia_visita_perola != dia
     
-    def mr_krotch_esta_em_casa():
-        global hora_do_dia
-        # Mr. Krotch is at restaurant during work hours (8-20)
-        return hora_do_dia < 8 or hora_do_dia > 20
-    
     def reset_conversas_perola():
         global perola_ultimas_conversas
         perola_ultimas_conversas = []
     
-    # Call this function at the start of each new day
     def novo_dia_perola():
+        global perola_presentes_hoje, dia_ultimo_presente, dia
+        # Reset daily gift counter if it's a new day
+        if dia_ultimo_presente != dia:
+            perola_presentes_hoje = 0
+            dia_ultimo_presente = dia
         reset_conversas_perola()
+    
+    def pode_dar_presente():
+        global perola_presentes_hoje, dia_ultimo_presente, dia
+        # Check if it's a new day and reset counter if needed
+        if dia_ultimo_presente != dia:
+            perola_presentes_hoje = 0
+            dia_ultimo_presente = dia
+        return perola_presentes_hoje < 2
 
-# Main label to visit Pearl's house
+# Main label to visit Purrl's house
 label visitar_casa_perola:
+    # Reset gift counter if it's a new day
+    $ novo_dia_perola()
+    
     # Check if address is known
     if not endereco_perola_descoberto:
         "You don't know where Purrl lives yet."
@@ -190,419 +167,308 @@ label visitar_casa_perola:
     
     # Check if already visited today
     if not pode_visitar_perola_hoje():
-        scene casa_perola_externa
-        "You already visited Pearl today. Better come back tomorrow."
-        "You can hear loud music and voices from inside..."
+        "You already visited Purrl today. Better come back tomorrow."
         jump room4
     
     # Mark visit
     $ ultimo_dia_visita_perola = dia
     $ visitas_casa_perola += 1
     
-    # Check if Mr. Krotch is home
-    $ mr_krotch_em_casa = mr_krotch_esta_em_casa()
-    
-    # Sistema de progressão baseado em visitas
+    # First visit - special scene
     if visitas_casa_perola == 1:
         jump primeira_visita_perola
-    elif perola_nivel_intimidade == 0:
-        jump visita_confronto_perola  
-    elif visitas_casa_perola >= 6:
-        jump visita_intima_avancada_perola  # CONECTA COM PURRLFUCKS
-    elif visitas_casa_perola >= 3:
-        jump visita_pro_perola  # Twerk profissional
-    elif perola_nivel_intimidade < 3:
-        jump visita_curiosidade_perola
+    # Second visit - continuation
+    elif visitas_casa_perola == 2:
+        jump segunda_visita_perola
+    # Third visit onwards - direct to main menu
     else:
-        jump visita_intima_perola
+        scene quarto_perola
+        show perola_provocante at center
+        prl "You're back... good."
+        prl "What you wanna do today?"
+        jump menu_principal_perola
 
-# Sistema de twerk com progressão
-label twerk_avancado:
-    if visitas_casa_perola >= 3:
-        jump twerk_profissional_avancado
-    else:
-        jump twerk_basico_avancado
+# First visit - Awakening
+label primeira_visita_perola:
+    play sound audio.porta_casa
+    
+    scene quarto_perola
+    show perola_pijama at center
+    
+    prl "So... you actually came, you bastard."
+    prl "Wasn't sure you'd have the balls to show up."
+    
+    jump perola_sozinha_primeira_vez
 
-label twerk_basico_avancado:
-    prl "Yes! I want to get better at it!"
-    prl "Teach me your techniques!"
+# Second visit - Building tension
+label segunda_visita_perola:
+    scene quarto_perola
+    show perola_provocante at center
+    
+    prl "You came back... I've been thinking about yesterday all fucking day."
+    prl "That twerking... it awakened something in me."
+    prl "I wanna learn more shit."
+    
+    jump segunda_visita_desenvolvimento
+
+# Main menu for Purrl's house (3rd visit onwards)
+label menu_principal_perola:
+    scene quarto_perola
+    show perola_normal at center
+    
+    "Purrl's Intimacy Level: [perola_nivel_intimidade]"
+    "Day: [dia]"
+    
+    menu:
+        "Talk to Purrl":
+            jump menu_conversa_perola
+            
+        "Give a gift ([perola_presentes_hoje]/2 today)" if pode_dar_presente():
+            jump menu_presentes_perola
+            
+        "Give a gift (Limit reached: 2 per day)" if not pode_dar_presente():
+            prl "You already gave me enough shit today."
+            prl "Come back tomorrow if you wanna spoil me more."
+            jump menu_principal_perola
+            
+        "Sexual favors":
+            jump menu_favores_sexuais_perola
+            
+        "Leave":
+            prl "Leaving already? Pussy."
+            $ mapa_disponivel = True
+            call screen bobCasas
+
+# Sexual favors menu with level requirements
+label menu_favores_sexuais_perola:
+    scene quarto_perola
+    show perola_provocante at center
+    
+    prl "What dirty shit you want today?"
+    
+    menu:
+        "Basic twerking" if perola_nivel_intimidade >= 0:
+            jump twerk_basico
+            
+        "Professional twerking" if perola_nivel_intimidade >= 5:
+            jump twerk_profissional
+            
+        "Show me your tits (Requires Level 10)" if perola_nivel_intimidade >= 10:
+            jump ver_peitos_perola
+            
+        "Sexual twerking (Requires Level 15)" if perola_nivel_intimidade >= 15:
+            jump twerk_sexual_perola
+            
+        "Handjob (Requires Level 20)" if perola_nivel_intimidade >= 20:
+            jump punheta_perola
+            
+        "Blowjob (Requires Level 25)" if perola_nivel_intimidade >= 25:
+            jump boquete_perola
+            
+        "Fuck your ass (Requires Level 30)" if perola_nivel_intimidade >= 30:
+            jump foder_perola_anal
+            
+        "Fuck your pussy (Requires Level 35)" if perola_nivel_intimidade >= 35:
+            jump foder_perola_vaginal
+            
+        "Not high enough level" if perola_nivel_intimidade < 10:
+            prl "You need to increase our intimacy level first."
+            prl "Current level: [perola_nivel_intimidade]"
+            prl "Talk to me more, give me gifts... make me want you."
+            jump menu_principal_perola
+            
+        "Go back":
+            jump menu_principal_perola
+
+# Basic twerking (always available)
+label twerk_basico:
+    prl "You wanna see me twerk? Alright..."
     
     play music audio.twerk_music fadein 1.0
     scene quarto_perola
     show perola_twerk_anim_normal at center
     
-    prl "Like this? Am I moving it right?"
-    
-    b "Lower... slower... feel the rhythm."
-    
-    prl "Oh! Like this?"
-    prl "I can feel it... this power over you..."
-    
-    "Pearl practices for several minutes, getting more confident."
-    
-    prl "I'm getting good at this, aren't I?"
-    prl "I love how you look at me when I move like this..."
+    prl "Like this? Am I doing it right?"
+    prl "I've been practicing..."
     
     menu:
-        "Keep going faster":
+        "Go faster":
             hide perola_twerk_anim_normal
             show perola_twerk_anim_rapida at center
-            
-            prl "Faster? Oh my God, yes!"
-            prl "I can feel the energy building up!"
-            
-            "Pearl's movements become wild and uninhibited."
-            
-            prl "This is incredible! I feel so alive!"
-            prl "I never want this feeling to end!"
-            
-            $ perola_nivel_intimidade += 2
-            
-        "That's perfect":
-            prl "Perfect? Really? I feel like I could do even better!"
+            prl "Faster? Like this?"
+            prl "Fuck, this is making me hot..."
             $ perola_nivel_intimidade += 1
+            
+        "That's enough":
+            prl "Already? Fine..."
     
     stop music fadeout 1.0
-    
     hide perola_twerk_anim_normal
     hide perola_twerk_anim_rapida
     show perola_satisfeita at center
     
-    prl "That was amazing! Next time, I want to try... other things."
-    
-    $ hora_do_dia += 2
-    jump final_visita_perola
+    $ hora_do_dia += 1
+    jump menu_principal_perola
 
-label twerk_profissional_avancado:
-    prl "Now I can show you my REAL skills!"
-    prl "I've been perfecting my professional techniques!"
+# Professional twerking (level 5+)
+label twerk_profissional:
+    prl "Now I'll show you my professional moves!"
     
     play music audio.twerk_music fadein 1.0
     scene quarto_perola
     show perola_twerk_pro_anim_normal at center
     
-    prl "This is what months of practice gets you!"
-    prl "Every movement is calculated, every rhythm perfected."
-    
-    b "Holy shit, Pearl... you're incredible now."
-    
-    prl "Incredible? This is just my warm-up routine!"
-    prl "Watch what I can do at full speed..."
-    
-    "Her professional technique is mesmerizing."
-    
-    prl "I can maintain this pace for so much longer now."
-    prl "All that stamina training was worth it!"
+    prl "See the difference? I'm a fucking pro now!"
+    prl "Every move calculated to make your dick hard!"
     
     menu:
-        "Show me your full speed":
+        "Maximum speed":
             hide perola_twerk_pro_anim_normal
             show perola_twerk_pro_anim_rapida at center
+            prl "Like this?! I can go even faster!"
+            prl "Your dick must be rock hard now!"
+            $ perola_nivel_intimidade += 1
             
-            prl "Like this?! I can go even faster if you want!"
-            prl "I've built up incredible stamina just for you!"
-            
-            "Pearl's professional moves at maximum speed are hypnotic."
-            
-            prl "This is what dedication to my craft looks like!"
-            prl "Every second of practice was thinking about this moment!"
-            
-            $ perola_nivel_intimidade += 3
-            
-        "Your technique is flawless":
-            prl "Flawless? I'm always finding ways to improve!"
-            prl "Next time I'll show you some moves you've never seen before!"
-            $ perola_nivel_intimidade += 2
+        "Perfect":
+            prl "Damn right it's perfect!"
     
     stop music fadeout 1.0
-    
     hide perola_twerk_pro_anim_normal
     hide perola_twerk_pro_anim_rapida
     show perola_satisfeita at center
     
-    prl "That's what happens when you combine natural talent with dedication!"
-    prl "And I did it all for you..."
-    
-    $ hora_do_dia += 2
-    jump final_visita_perola
-
-# Repeat twerking com sistema de progressão
-label repetir_twerk:
-    if visitas_casa_perola >= 3:
-        jump repetir_twerk_profissional
-    else:
-        jump repetir_twerk_basico
-
-label repetir_twerk_basico:
-    prl "I've been practicing!"
-    
-    play music audio.twerk_music fadein 1.0
-    scene quarto_perola
-    show perola_twerk_anim_rapida at center
-    
-    "Pearl's twerking is much more confident now."
-    
-    prl "I'm getting better, right?"
-    prl "I love the way you watch me..."
-    prl "Look how fast I can go now!"
-    
-    "Her movements are fluid and hypnotic."
-    
-    prl "I've been thinking about this all day!"
-    prl "The way it makes me feel... it's addictive!"
-    
-    $ perola_nivel_intimidade += 1
     $ hora_do_dia += 1
-    
-    stop music fadeout 1.0
-    
-    hide perola_twerk_anim_rapida
-    show perola_satisfeita at center
-    
-    jump final_visita_perola
+    jump menu_principal_perola
 
-label repetir_twerk_profissional:
-    prl "I've been perfecting my professional routine!"
-    prl "Wait until you see how much I've improved!"
-    
-    play music audio.twerk_music fadein 1.0
-    scene quarto_perola
-    show perola_twerk_pro_anim_rapida at center
-    
-    "Pearl's professional twerking is now at an expert level."
-    
-    prl "This is what dedication looks like!"
-    prl "I can maintain this intensity for so much longer now!"
-    prl "Every move is perfected... just for you!"
-    
-    "Her technique is flawless, mesmerizing, completely professional."
-    
-    prl "I've been practicing new variations too..."
-    prl "This routine is constantly evolving!"
-    
-    b "You're incredible, Pearl."
-    
-    prl "Incredible? This is what happens when passion meets practice!"
-    prl "And you're my inspiration for every single move!"
-    
-    $ perola_nivel_intimidade += 2
-    $ hora_do_dia += 1
-    
-    stop music fadeout 1.0
-    
-    hide perola_twerk_pro_anim_rapida
-    show perola_satisfeita at center
-    
-    prl "That's my professional level... and it keeps getting better!"
-    
-    jump final_visita_perola
+# Conversation menu
+label menu_conversa_perola:
+    menu:
+        "Ask about her life":
+            jump conversa_vida_perola
+            
+        "Talk about her father":
+            jump conversa_pai_perola
+            
+        "Ask about school":
+            jump conversa_escola_perola
+            
+        "Compliment her":
+            jump elogiar_perola
+            
+        "Go back":
+            jump menu_principal_perola
 
-# Gift menu for Pearl
+# Gift menu with daily limit - PROPERLY RESETTING
 label menu_presentes_perola:
-    "What gift do you want to give Pearl?"
+    # Double-check if it's a new day
+    if dia_ultimo_presente != dia:
+        $ perola_presentes_hoje = 0
+        $ dia_ultimo_presente = dia
     
-    # Check what items player has
+    if not pode_dar_presente():
+        prl "You already gave me 2 gifts today. That's enough."
+        jump menu_principal_perola
+    
+    "What gift you wanna give Purrl? (Daily limit: [perola_presentes_hoje]/2)"
+    "Current Day: [dia]"
+    
     $ presentes_disponiveis = []
     $ nomes_presentes = []
     
-    # Check specific items that Pearl would like
     if 2 in inventario:  # Chocolate
         $ presentes_disponiveis.append(2)
-        $ nomes_presentes.append("Chocolate")
+        $ nomes_presentes.append("Chocolate (+2 intimacy)")
         
     if 10 in inventario:  # Books
         $ presentes_disponiveis.append(10)
-        $ nomes_presentes.append("Books")
-        
-    if 16 in inventario:  # Soap Bubble
-        $ presentes_disponiveis.append(16)
-        $ nomes_presentes.append("Soap Bubble")
+        $ nomes_presentes.append("Books (+3 intimacy)")
         
     if 19 in inventario:  # Pineapple
         $ presentes_disponiveis.append(19)
-        $ nomes_presentes.append("Pineapple")
+        $ nomes_presentes.append("Pineapple (+2 intimacy)")
         
     if 1 in inventario:  # Cowboy Hat
         $ presentes_disponiveis.append(1)
-        $ nomes_presentes.append("Cowboy Hat")
+        $ nomes_presentes.append("Cowboy Hat (+2 intimacy)")
         
     if 6 in inventario:  # Nut Pie
         $ presentes_disponiveis.append(6)
-        $ nomes_presentes.append("Nut Pie (Straight from Texas)")
-        
-    if 5 in inventario:  # Seaweed Pie
-        $ presentes_disponiveis.append(5)
-        $ nomes_presentes.append("Seaweed Pie")
+        $ nomes_presentes.append("Nut Pie - Texas (+4 intimacy)")
     
-    # Check if player has any gifts
     if len(presentes_disponiveis) == 0:
-        "You don't have any gifts that Pearl might like."
-        jump menu_perola_casa_completo
+        "You don't have shit that Purrl might like."
+        jump menu_principal_perola
     
-    # Create dynamic menu with available gifts
     $ result = renpy.display_menu([(nome, id_item) for nome, id_item in zip(nomes_presentes, presentes_disponiveis)] + [("Go back", -1)])
     
-    # Process choice
     if result == -1:
-        jump menu_perola_casa_completo
-    elif result == 2:  # Chocolate
-        jump presente_chocolate_perola
-    elif result == 10:  # Books
-        jump presente_livros_perola
-    elif result == 16:  # Soap Bubble
-        jump presente_bolhas_perola
-    elif result == 19:  # Pineapple
-        jump presente_abacaxi_perola
-    elif result == 1:  # Cowboy Hat
-        jump presente_chapeu_perola
-    elif result == 6:  # Nut Pie
-        jump presente_torta_noz_perola
-    elif result == 5:  # Seaweed Pie
-        jump presente_torta_alga_perola
-
-# Individual gift reactions
-label presente_chocolate_perola:
-    $ inventario.remove(2)
-    $ perola_presentes_dados.append(2)
-    
-    show perola_feliz at center
-    prl "Chocolate! I love chocolate!"
-    prl "You remembered that I have a sweet tooth."
-    prl "This is so thoughtful of you!"
-    $ perola_nivel_intimidade += 2
-    
-    $ money += 3
-    "Pearl gives you $3 as thanks!"
-    $ hora_do_dia += 1
-    jump menu_perola_casa_completo
-
-label presente_livros_perola:
-    $ inventario.remove(10)
-    $ perola_presentes_dados.append(10)
-    
-    show perola_interessada at center
-    prl "Books? How... intellectual."
-    prl "Are these the kind of books that will teach me... things?"
-    prl "I love learning new things, especially from you."
-    $ perola_nivel_intimidade += 3
-    
-    $ money += 5
-    "Pearl gives you $5 for the educational gift!"
-    $ hora_do_dia += 1
-    jump menu_perola_casa_completo
-
-label presente_bolhas_perola:
-    $ inventario.remove(16)
-    $ perola_presentes_dados.append(16)
-    
-    show perola_brincalhona at center
-    prl "Soap bubbles! How cute and... innocent."
-    prl "We could have fun with these..."
-    prl "Maybe blow bubbles while we... do other things?"
-    $ perola_nivel_intimidade += 1
-    
-    $ money += 2
-    "Pearl gives you $2 for the playful gift!"
-    $ hora_do_dia += 1
-    jump menu_perola_casa_completo
-
-label presente_abacaxi_perola:
-    $ inventario.remove(19)
-    $ perola_presentes_dados.append(19)
-    
-    show perola_provocante at center
-    prl "A pineapple? This is... interesting."
-    prl "It's so... phallic shaped..."
-    prl "Are you trying to tell me something?"
-    
-    if perola_nivel_intimidade >= 6:
-        prl "I know exactly what we could do with this..."
-        $ perola_nivel_intimidade += 3
+        jump menu_principal_perola
     else:
-        prl "It's sweet and... hard. Like someone I know."
+        $ perola_presentes_hoje += 1
+        $ dia_ultimo_presente = dia
+        
+    if result == 2:  # Chocolate
+        $ inventario.remove(2)
+        prl "Chocolate! Fuck yeah!"
         $ perola_nivel_intimidade += 2
+        $ money += 3
+        "Purrl gives you $3!"
+        
+    elif result == 10:  # Books
+        $ inventario.remove(10)
+        prl "Books? Interesting..."
+        $ perola_nivel_intimidade += 3
+        $ money += 5
+        "Purrl gives you $5!"
+        
+    elif result == 19:  # Pineapple
+        $ inventario.remove(19)
+        prl "A pineapple? It's so... dick shaped..."
+        $ perola_nivel_intimidade += 2
+        $ money += 4
+        "Purrl gives you $4!"
+        
+    elif result == 1:  # Cowboy Hat
+        $ inventario.remove(1)
+        prl "A cowboy hat! Fucking dominant!"
+        $ perola_nivel_intimidade += 2
+        $ money += 6
+        "Purrl gives you $6!"
+        
+    elif result == 6:  # Nut Pie
+        $ inventario.remove(6)
+        prl "Expensive pie! You really spent money on me!"
+        $ perola_nivel_intimidade += 4
+        $ money += 10
+        "Purrl gives you $10!"
     
-    $ money += 4
-    "Pearl gives you $4 for the 'interesting' gift!"
     $ hora_do_dia += 1
-    jump menu_perola_casa_completo
-
-label presente_chapeu_perola:
-    $ inventario.remove(1)
-    $ perola_presentes_dados.append(1)
     
-    show perola_excitada at center
-    prl "A cowboy hat! How... dominant!"
-    prl "I love men who take charge..."
-    prl "Maybe you could wear this while we... play?"
-    $ perola_nivel_intimidade += 2
-    
-    $ money += 6
-    "Pearl gives you $6 for the dominant accessory!"
-    $ hora_do_dia += 1
-    jump menu_perola_casa_completo
-
-label presente_torta_noz_perola:
-    $ inventario.remove(6)
-    $ perola_presentes_dados.append(6)
-    
-    show perola_impressionada at center
-    prl "Nut pie from Texas! This is expensive!"
-    prl "You really spent money on me..."
-    prl "I'm so touched! This must mean I'm special to you."
-    $ perola_nivel_intimidade += 4
-    
-    $ money += 10
-    "Pearl gives you $10 for the expensive, thoughtful gift!"
-    $ hora_do_dia += 1
-    jump menu_perola_casa_completo
-
-label presente_torta_alga_perola:
-    $ inventario.remove(5)
-    $ perola_presentes_dados.append(5)
-    
-    show perola_duvidosa at center
-    prl "Seaweed pie? This is... different."
-    prl "I guess it's the thought that counts..."
-    prl "Thanks... I think?"
-    $ perola_nivel_intimidade += 1
-    
-    $ money += 1
-    "Pearl gives you $1, trying to be polite about the weird gift."
-    $ hora_do_dia += 1
-    jump menu_perola_casa_completo
-
-# Final visit conclusion
-label final_visita_perola:
-    scene quarto_perola
-    show perola_satisfeita at center
-    
-    prl "Thank you for today..."
-    prl "I can't wait until next time."
-    
-    if perola_nivel_intimidade >= 10:
-        prl "You've awakened the woman in me."
-        prl "I'm completely yours now."
-    elif perola_nivel_intimidade >= 5:
-        prl "I'm learning so much about myself."
-        prl "About what I really want."
+    if pode_dar_presente():
+        "You can give one more gift today."
     else:
-        prl "This is just the beginning."
-        prl "I want to discover everything."
+        "Daily gift limit reached (2/2)."
     
-    "Pearl's intimacy level: [perola_nivel_intimidade]"
-    "Visits completed: [visitas_casa_perola]"
-    
-    if visitas_casa_perola == 2:
-        "Next visit: Professional twerking unlocked!"
-    elif visitas_casa_perola == 5:
-        "Next visit: Intimate activities unlocked!"
-    elif visitas_casa_perola >= 6:
-        "All activities unlocked! Pearl is completely yours!"
-    else:
-        "Keep visiting to unlock new content!"
-    
-    jump room4
+    jump menu_principal_perola
+
+# Labels for sexual actions that connect to purrlfucks
+label ver_peitos_perola:
+    jump ver_peitos_perola_full
+
+label twerk_sexual_perola:
+    jump twerk_sexual_perola_full
+
+label punheta_perola:
+    jump punheta_perola_full
+
+label boquete_perola:
+    jump boquete_perola_full
+
+label foder_perola_anal:
+    jump foder_perola_anal_full
+
+label foder_perola_vaginal:
+    jump foder_perola_vaginal_full
 
 # Integration functions
 label resetar_conversas_perola_diario:
@@ -611,5 +477,5 @@ label resetar_conversas_perola_diario:
     
 label unlock_perola_house:
     $ mapa_disponivel = True
-    "Pearl's house location added to map!"
+    "Purrl's house location added to map!"
     return

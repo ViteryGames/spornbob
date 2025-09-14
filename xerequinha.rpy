@@ -1,4 +1,4 @@
-# xerequinha.rpy - UI Interface System (English)
+# xerequinha.rpy - UI Interface System (English) - Modified with Skip Day button
 
 screen xerequinha:
     # Basic information with underwater theme - left side
@@ -22,7 +22,7 @@ screen xerequinha:
     #if qnt_aguas_vivas > 0:
         #text "Jellyfish = [qnt_aguas_vivas]" xpos 50 ypos 300 size 50 color "#FF80BF" outlines [(2, "#CC0066", 0, 0), (4, "#990033", 1, 1)]
     
-    # Buttons for Map and Inventory - right side
+    # Buttons for Map, Inventory and Skip Day - right side
     vbox:
         xpos 1500  # Positioned on the right side of screen
         ypos 50    # Aligned with top
@@ -56,6 +56,43 @@ screen xerequinha:
             text_outlines [(2, "#006633", 0, 0)]
             background "#228866"
             hover_background "#33AA88"
+            
+        # NEW: Skip Day button
+        textbutton "Skip Day":
+            action Jump("skip_day_action")
+            text_size 40
+            text_color "#FFFFFF"
+            text_hover_color "#FFCC00"
+            text_outlines [(2, "#663300", 0, 0)]
+            background "#CC6600"
+            hover_background "#FF8800"
+
+# NEW: Label to handle Skip Day action
+label skip_day_action:
+    # Save current location before skipping
+    $ current_location = renpy.get_return_stack()
+    
+    # Show transition effect
+    scene black with fade
+    "Time passes quickly..."
+    
+    # Increment day
+    $ dia += 1
+    
+    # Reset time to morning (8 AM)
+    $ hora_do_dia = 8
+    
+    # Increment saida (exit counter)
+    $ saida += 1
+    
+    # Reset daily variables if needed
+    # You can add any other daily reset variables here
+    
+    # Show wake up message
+    "You wake up. It's 8 AM on day [dia]."
+    
+    # Return to bedroom (starting location for new day)
+    jump room4
 
 # Inventory Screen
 screen inventarioScreen():
