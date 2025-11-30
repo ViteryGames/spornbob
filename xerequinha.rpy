@@ -58,14 +58,14 @@ screen xerequinha:
             hover_background "#33AA88"
             
         # NEW: Skip Day button
-        textbutton "Skip Day":
-            action Jump("skip_day_action")
-            text_size 40
-            text_color "#FFFFFF"
-            text_hover_color "#FFCC00"
-            text_outlines [(2, "#663300", 0, 0)]
-            background "#CC6600"
-            hover_background "#FF8800"
+        #textbutton "Skip Day":
+            #action Jump("skip_day_action")
+            #text_size 40
+            #text_color "#FFFFFF"
+            #text_hover_color "#FFCC00"
+            #text_outlines [(2, "#663300", 0, 0)]
+            #background "#CC6600"
+            #hover_background "#FF8800"
 
 # NEW: Label to handle Skip Day action
 label skip_day_action:

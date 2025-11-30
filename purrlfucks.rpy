@@ -1,4 +1,4 @@
-# purrlfucks.rpy - Purrl Sexual Content - FINAL WITH MAP RETURN
+# purrlfucks.rpy - Purrl Sexual Content - RENAMED CONTENT
 
 # Sexual animations
 image perola_peitos_anim:
@@ -44,63 +44,81 @@ image perola_punheta_rapida:
     pause 0.2
     repeat
 
-image perola_boquete_anim:
-    "images/perola_boquete_1.png"
+image perola_tease_anim:
+    "images/perola_tease_1.png"
     pause 0.35
-    "images/perola_boquete_2.png"
+    "images/perola_tease_2.png"
     pause 0.35
-    "images/perola_boquete_3.png"
+    "images/perola_tease_3.png"
     pause 0.35
     repeat
 
-image perola_boquete_rapida:
-    "images/perola_boquete_1.png"
+image perola_tease_rapida:
+    "images/perola_tease_1.png"
     pause 0.15
-    "images/perola_boquete_2.png"
+    "images/perola_tease_2.png"
     pause 0.15
-    "images/perola_boquete_3.png"
+    "images/perola_tease_3.png"
     pause 0.15
     repeat
 
 image perola_vaginal_anim:
-    "images/perola_vaginal_1.png"
-    pause 0.4
-    "images/perola_vaginal_2.png"
-    pause 0.4
-    "images/perola_vaginal_3.png"
-    pause 0.4
+    zoom 0.9
+    "images/perola_vagina_1.png"
+    pause 0.12
+    "images/perola_vagina_2.png"
+    pause 0.12
+    "images/perola_vagina_3.png"
+    pause 0.12
+    "images/perola_vagina_4.png"
+    pause 0.12
+    "images/perola_vagina_5.png"
+    pause 0.12
+    "images/perola_vagina_6.png"
+    pause 0.12
     repeat
 
 image perola_vaginal_rapida:
-    "images/perola_vaginal_1.png"
-    pause 0.2
-    "images/perola_vaginal_2.png"
-    pause 0.2
-    "images/perola_vaginal_3.png"
-    pause 0.2
+    zoom 0.9
+    "images/perola_vagina_1.png"
+    pause 0.06
+    "images/perola_vagina_2.png"
+    pause 0.06
+    "images/perola_vagina_3.png"
+    pause 0.06
+    "images/perola_vagina_4.png"
+    pause 0.06
+    "images/perola_vagina_5.png"
+    pause 0.06
+    "images/perola_vagina_6.png"
+    pause 0.06
     repeat
 
 image perola_anal_anim:
     "images/perola_anal_1.png"
-    pause 0.4
+    pause 0.2
     "images/perola_anal_2.png"
-    pause 0.4
+    pause 0.2
     "images/perola_anal_3.png"
-    pause 0.4
+    pause 0.2
+    "images/perola_anal_4.png"
+    pause 0.2
     repeat
 
 image perola_anal_rapida:
     "images/perola_anal_1.png"
-    pause 0.18
+    pause 0.08
     "images/perola_anal_2.png"
-    pause 0.18
+    pause 0.08
     "images/perola_anal_3.png"
-    pause 0.18
+    pause 0.08
+    "images/perola_anal_4.png"
+    pause 0.08
     repeat
 
 # Cum images
 image perola_gozada_peitos = "images/perola_gozada_peitos.png"
-image perola_gozada_boca = "images/perola_gozada_boca.png"
+image perola_gozada_tease = "images/perola_gozada_tease.png"
 image perola_gozada_vaginal = "images/perola_gozada_vaginal.png"
 image perola_gozada_anal = "images/perola_gozada_anal.png"
 
@@ -114,7 +132,7 @@ define audio.pai_chegando = "footsteps.mp3"
 default perola_vezes_peitos = 0
 default perola_vezes_twerk_sexual = 0
 default perola_vezes_punheta = 0
-default perola_vezes_boquete = 0
+default perola_vezes_tease = 0
 default perola_vezes_vaginal = 0
 default perola_vezes_anal = 0
 default perola_ultimo_ato_sexual = -1
@@ -128,7 +146,7 @@ init python:
 # LEVEL 10 - Show tits
 label ver_peitos_perola_full:
     if not pode_fazer_ato_sexual_perola():
-        prl "We already did shit today. Come back tomorrow."
+        prl "We already did stuff today. Come back tomorrow."
         jump menu_principal_perola
     
     $ perola_ultimo_ato_sexual = dia
@@ -137,38 +155,48 @@ label ver_peitos_perola_full:
     scene quarto_perola
     
     if perola_vezes_peitos == 1:
-        prl "You wanna see my tits? Finally someone asks!"
+        prl "You wanna see my pearls? Finally someone asks!"
         prl "Been dying to show these to a real man."
     else:
-        prl "You love these tits, don't you?"
+        prl "You love looking at these, don't you?"
     
     hide perola_provocante
-    show perola_peitos_anim at center
+    show perola_peitos_1
     
     if perola_vezes_peitos == 1:
         prl "So? Good enough for you?"
-        b "They're fucking perfect."
+
+        b "Fuck! Those are HUGE!!"
         prl "Damn right they are!"
+
+        window hide
+        $ renpy.pause(hard=False)
+
     else:
-        prl "Stare all you want, pervert!"
-        b "They're mine to look at."
-        prl "Touch them... grab them hard!"
+        prl "Stare all you want!"
+
+        window hide
+        $ renpy.pause(hard=False)
+
+        
+        prl "Enjoying the view?"
     
     pause 3.0
     
-    hide perola_peitos_anim
-    show perola_satisfeita at center
+    hide perola_peitos_1
+    show perola_peitos_2 :
+      zoom 0.8 xpos 300 ypos -88
     
-    prl "Fuck... being wanted like that feels good."
+    prl "Being wanted like that feels good."
     
     $ hora_do_dia += 1
     
     # MR. KROTCH ARRIVES HOME!
     play sound audio.pai_chegando
     prl "SHIT! I hear footsteps!"
-    prl "It's my dad! GET THE FUCK OUT!"
+    prl "It's my dad! GET OUT!"
     
-    b "Fuck!"
+    b "Damn!"
     
     prl "Use the window! NOW!"
     
@@ -186,7 +214,7 @@ label twerk_sexual_perola_full:
     $ perola_ultimo_ato_sexual = dia
     $ perola_vezes_twerk_sexual += 1
     
-    prl "You want me to shake my ass sexually? I'm so fucking good at this now..."
+    prl "You want me to shake my rear seductively? I'm so good at this now..."
     
     play music audio.twerk_music fadein 1.0
     
@@ -194,36 +222,36 @@ label twerk_sexual_perola_full:
     show perola_twerk_sexual_anim at center
     
     if perola_vezes_twerk_sexual == 1:
-        prl "This time I'm doing it to make you hard as fuck!"
-        prl "Look at that bulge already!"
-        b "Keep moving that ass."
+        prl "This time I'm doing it to really get your attention!"
+        prl "Look at you already!"
+        b "Keep moving."
         prl "That's what I wanted to hear!"
     else:
-        prl "Watch this ass work!"
+        prl "Watch this work!"
         b "You're getting too good at this."
-        prl "I know what makes your dick twitch!"
+        prl "I know what gets your attention!"
     
     hide perola_twerk_sexual_anim
     show perola_twerk_sexual_rapida at center
     
-    prl "My pussy's getting so wet!"
-    prl "Your eyes on my ass make me so horny!"
+    prl "I'm getting so excited!"
+    prl "Your eyes on me make me feel amazing!"
     
-    b "Keep going, slut."
+    b "Keep going."
     
-    prl "Yes! I'm your twerk slut!"
+    prl "Yes! I'm your dancer!"
     
     stop music fadeout 1.0
     hide perola_twerk_sexual_rapida
     show perola_excitada at center
     
-    prl "I'm so fucking turned on right now..."
+    prl "I'm so turned on right now..."
     
     $ hora_do_dia += 2
     
     # DAD ARRIVES!
     play sound audio.pai_chegando
-    prl "FUCK! Dad's home!"
+    prl "Oh no! Dad's home!"
     prl "You need to leave NOW!"
     
     "You quickly escape through the window!"
@@ -234,7 +262,7 @@ label twerk_sexual_perola_full:
 # LEVEL 20 - Handjob
 label punheta_perola_full:
     if not pode_fazer_ato_sexual_perola():
-        prl "I already jacked you off today. Greedy bastard."
+        prl "I already helped you today. Greedy."
         jump menu_principal_perola
     
     $ perola_ultimo_ato_sexual = dia
@@ -243,50 +271,67 @@ label punheta_perola_full:
     scene quarto_perola
     
     if perola_vezes_punheta == 1:
-        prl "You want me to jack you off?"
-        prl "Never touched a dick before..."
+        prl "You want me to help you with my hands?"
+        prl "Never done this before..."
     else:
-        prl "I love stroking your cock!"
+        prl "I love doing this for you!"
     
-    play music audio.sexmusic_perola fadein 1.0
+    play music "sexmusic.wav"
     show perola_punheta_anim at center
     
     if perola_vezes_punheta == 1:
-        prl "Fuck, it's so hard!"
+        prl "Wow, it's so firm!"
         prl "Am I doing this right?"
-        b "Just like that."
+        window hide
+        $ renpy.pause(hard=False)
+        b "Oh yeah!Just like that baby girl"
         prl "I can feel it throbbing!"
     else:
         prl "I know exactly how you like it!"
-        b "Start slow, then fast."
-        prl "I control when you cum!"
+        b "Stroke slow, then fast."
+        prl "I control the pace!"
+        window hide
+        $ renpy.pause(hard=False)
     
     hide perola_punheta_anim
     show perola_punheta_rapida at center
     
-    prl "You're gonna cum!"
-    b "Gonna blow!"
-    prl "Cum all over me!"
-    
+    prl "You're close!"
+    b "Almost there!"
+
+    window hide
+    $ renpy.pause(hard=False)
+
+    prl "Let go!"
+
+    menu:
+        "Bust a nut":
+            pass
     hide perola_punheta_rapida
-    show perola_gozada_peitos at center
+    show perola_gozada_pupunha at center
     
-    play sound audio.gozada
+    play audio "porra.mp3"
     with hpunch
     
-    b "Fuck yeah!"
-    prl "So much cum!"
+    b "Yeah!" with hpunch
     
-    pause 2.0
-    hide perola_gozada_peitos
-    show perola_satisfeita at center
+    play audio "porra.mp3"
+    with hpunch
+
+    window hide
+    $ renpy.pause(hard=False)
+
+    prl "So much!"
+
+    hide perola_gozada_pupunha
+    show perola_gozada at center
     
     stop music fadeout 1.0
     
     $ hora_do_dia += 2
     
     # DAD ARRIVES!
-    prl "Shit, I need to clean up and you need to go!"
+    prl "I need to clean up and you need to go!"
     prl "Dad will be home any minute!"
     
     "You quickly get dressed and leave!"
@@ -294,53 +339,53 @@ label punheta_perola_full:
     $ mapa_disponivel = True
     call screen bobCasas
 
-# LEVEL 25 - Blowjob
+# LEVEL 25 - Rub and tease (renamed from the previous content)
 label boquete_perola_full:
     if not pode_fazer_ato_sexual_perola():
-        prl "My jaw's still sore from earlier. Tomorrow."
+        prl "I already teased you enough today. Tomorrow."
         jump menu_principal_perola
     
     $ perola_ultimo_ato_sexual = dia
-    $ perola_vezes_boquete += 1
+    $ perola_vezes_tease += 1
     
     scene quarto_perola
     
-    if perola_vezes_boquete == 1:
-        prl "You want me to suck your dick?"
-        prl "First time for everything..."
+    if perola_vezes_tease == 1:
+        prl "I'm so fucking wet, and it's not only because we are underwater"
+        prl "It's because I can't stop thinking about your fat smelly cock!"
     else:
-        prl "I love the taste of your cock!"
+        prl "I love teasing you!"
     
     play music audio.sexmusic_perola fadein 1.0
-    show perola_boquete_anim at center
+    show perola_tease_anim at center
     
-    if perola_vezes_boquete == 1:
+    if perola_vezes_tease == 1:
         prl "Mmm... different than expected..."
-        prl "*slurp* Am I doing good?"
+        prl "Go deeper!"
         b "Yeah, just like that."
     else:
-        prl "*slurp* I'm so good at this now!"
-        b "You're a real cocksucker."
-        prl "*muffled* Your cocksucker!"
+        prl "Fuck it went deep"
+        b "You're really something."
+        prl "Let me suck those fingers"
     
-    hide perola_boquete_anim
-    show perola_boquete_rapida at center
+    hide perola_tease_anim
+    show perola_tease_rapida at center
     
-    prl "*slurp* *glup* You close?"
-    b "Gonna fill your mouth!"
-    prl "*muffled* Give it to me!"
+    prl "You close?"
+    b "Almost there!"
+    prl "Let it happen!"
     
-    hide perola_boquete_rapida
-    show perola_gozada_boca at center
+    hide perola_tease_rapida
+    show perola_gozada_tease at center
     
     play sound audio.gozada
     with hpunch
     
-    b "Swallow it all!"
-    prl "*gulp* So thick!"
+    b "Yes!"
+    prl "So intense!"
     
     pause 2.0
-    hide perola_gozada_boca
+    hide perola_gozada_tease
     show perola_satisfeita at center
     
     stop music fadeout 1.0
@@ -349,7 +394,7 @@ label boquete_perola_full:
     
     # DAD ARRIVES!
     play sound audio.pai_chegando
-    prl "*cough* FUCK! Dad's car!"
+    prl "*cough* Oh no! Dad's car!"
     prl "You gotta go! NOW!"
     
     "You grab your clothes and jump out the window!"
@@ -360,7 +405,7 @@ label boquete_perola_full:
 # LEVEL 30 - Anal
 label foder_perola_anal_full:
     if not pode_fazer_ato_sexual_perola():
-        prl "My ass is still sore. Give me a day."
+        prl "I'm still sore. Give me a day."
         jump menu_principal_perola
     
     $ perola_ultimo_ato_sexual = dia
@@ -369,45 +414,83 @@ label foder_perola_anal_full:
     scene quarto_perola
     
     if perola_vezes_anal == 1:
-        prl "In my ass? Fuck... never done that!"
+        prl "You want to try that? Never done it before!"
         prl "Be gentle... at first."
     else:
-        prl "I love when you fuck my ass!"
+        prl "I love this feeling!"
     
-    play music audio.sexmusic_perola fadein 1.0
-    play sound audio.perola_gemidos loop
+    play music "sexmusic.wav"
+    play musica2 "nocuzin.wav"
+
     show perola_anal_anim at center
     
     if perola_vezes_anal == 1:
-        prl "FUCK! It's huge!"
-        prl "Hurts but... don't stop!"
-        b "Take it all."
-        prl "So fucking full!"
+        prl "WOW! It's intense!"
+        prl "It hurts but... don't stop!"
+        b "Fuck! It's too tight"
+        b "Tell your ass that this dick is getting in with or without permission!!!"
+        prl "Ah! I can feel it stretching all the way down"
+        
+        window hide
+        $ renpy.pause(hard=False)
+
+        b "Shake it faster bitch!"
+
     else:
-        prl "YES! Wreck my ass!"
-        b "That's right, take it."
+        prl "YES! Just like that!"
+        b "Your ass is a lot easier to fuck now huh"
+
+
+        prl "Thanks to your fat cock I am now a loose whore!"
+
+        window hide
+        $ renpy.pause(hard=False)
+
         prl "Deeper! Harder!"
+        
+        b "Full speed now whore"
     
+    stop musica2
+    play musica2 "nocuzinf.mp3"
     hide perola_anal_anim
     show perola_anal_rapida at center
-    
-    prl "I'M GONNA CUM FROM MY ASS!"
-    b "Because you're an anal slut!"
-    prl "YES! YOUR ANAL SLUT!"
-    
+    window hide
+    $ renpy.pause(hard=False)
+
+    prl "I'M GONNA LOSE IT!"
+    b "Ah your fucking my brains out I can't even spahshdjkahdjakshkjhdajshjkda!"
+    prl "YES! YOUR GIRL!"
+
+    menu:
+        "Cum inside her tight asshole":
+            pass
     hide perola_anal_rapida
     show perola_gozada_anal at center
-    
+    stop music
+    stop musica2
+
     stop sound
-    play sound audio.gozada
+    play audio "porra.mp3"
     with hpunch
-    
-    b "Take my cum!"
-    prl "FILL MY ASS!"
+
+        
+    b "Take it all inside bitch!"
+
+    play audio "porra.mp3"
+    with hpunch
+
+    window hide
+    $ renpy.pause(hard=False)
+
+    prl "FILL MY FUCKING ASS!!!!"
+    play audio "porra.mp3"
+    with hpunch
     
     pause 2.0
     hide perola_gozada_anal
-    show perola_satisfeita at center
+
+    show perola_peitos_2 :
+      zoom 0.8 xpos 300 ypos -88
     
     stop music fadeout 1.0
     
@@ -415,10 +498,10 @@ label foder_perola_anal_full:
     
     # DAD ARRIVES!
     play sound audio.pai_chegando
-    prl "Holy shit! Dad's home!"
-    prl "My ass is still leaking cum! GET OUT!"
+    prl "Holy hell! Dad's home!"
+    prl "I'm still leaking! GET OUT!"
     
-    b "Fuck, I'm going!"
+    b "I'm going!"
     
     "You barely manage to get dressed before jumping out the window!"
     
@@ -428,54 +511,90 @@ label foder_perola_anal_full:
 # LEVEL 35 - Vaginal
 label foder_perola_vaginal_full:
     if not pode_fazer_ato_sexual_perola():
-        prl "My pussy needs rest. Tomorrow."
+        prl "I need rest. Tomorrow."
         jump menu_principal_perola
     
     $ perola_ultimo_ato_sexual = dia
     $ perola_vezes_vaginal += 1
     
+
     scene quarto_perola
     
     if perola_vezes_vaginal == 1:
-        prl "You wanna fuck my pussy?"
-        prl "Pop my fucking cherry!"
+        prl "You wanna do it the normal way?"
+        prl "This is my first time! Go easy on my premium whale pussy"
+        prl "SO fucking hyped right now!I'm almost squirting already"
     else:
-        prl "I need your dick inside me!"
-    
-    play music audio.sexmusic_perola fadein 1.0
-    play sound audio.perola_gemidos loop
+        prl "I need you inside me big boy!"
+      
+    play music "sexmusic.wav"
+    play musica2 "nocuzin.wav"
+
     show perola_vaginal_anim at center
     
     if perola_vezes_vaginal == 1:
-        prl "SHIT! So big!"
-        prl "This is what fucking feels like?"
-        b "You're tight as fuck."
-        prl "Not a virgin anymore!"
+        prl "AH! FUCK IT'S EVERYWHERE"
+        prl "This is what it feels like?"
+        b "Damn, it's tighter than your ass!"
+        b "But your fishy pussy is so delicious I never wanna pull out, holy shit!"
+        
+        window hide
+        $ renpy.pause(hard=False)
+
+        prl"Fuck me Daddy!"
     else:
-        prl "Fill my pussy!"
-        b "Take it, slut."
-        prl "Your slut! Fuck me harder!"
+        prl "Ah! Fuck me all day long"
+        b "I love taking your innocence away, you little slut."
+        prl "YES I AM YOUR SLUT!"
+         
+        window hide
+        $ renpy.pause(hard=False) 
+
+        prl "Harder Daddy! Wreck my holes!"
     
+    stop musica2
+    play musica2 "botada.mp3"
     hide perola_vaginal_anim
     show perola_vaginal_rapida at center
     
-    prl "HARDER! DESTROY THIS PUSSY!"
-    b "Take it all, whore!"
-    prl "YES! I'M YOUR WHORE!"
+    prl "HARDER! DESTROY ME!"
+
+    window hide
+    $ renpy.pause(hard=False) 
+
+    b "Uhhhh Fuuuuuuuuck!"
+    prl "YES! I'M YOURS!"
     
+    menu:
+        "Cum deep inside her pussy":
+            pass
+    
+    stop music
+    stop musica2
+
     hide perola_vaginal_rapida
-    show perola_gozada_vaginal at center
-    
+
+    show perola_gozada_vaginal at center:
+     zoom 0.9
+
+    play audio "porra.mp3"
+    with hpunch
+    window hide
+    $ renpy.pause(hard=False) 
+
     stop sound
-    play sound audio.gozada
+    play audio "porra.mp3"
     with hpunch
     
-    b "Gonna fill you up!"
-    prl "CUM IN ME!"
+    b "I can feel my balls going away!"
+    prl "INSIDE ME!"
     
-    pause 2.0
+    play audio "porra.mp3"
+    with hpunch
+
     hide perola_gozada_vaginal
-    show perola_satisfeita at center
+    show perola_peitos_2 :
+      zoom 0.8 xpos 300 ypos -88
     
     stop music fadeout 1.0
     
@@ -484,13 +603,13 @@ label foder_perola_vaginal_full:
     # DAD ARRIVES - DRAMATIC!
     play sound audio.pai_chegando
     
-    prl "OH FUCK! DAD'S HOME!"
-    prl "I'M FULL OF YOUR CUM!"
-    prl "GET THE FUCK OUT BEFORE HE FINDS YOU!"
+    prl "OH NO! DAD'S HOME!"
+    prl "I'M FULL OF YOUR STUFF!"
+    prl "GET OUT BEFORE HE FINDS YOU!"
     
-    b "Shit shit shit!"
+    b "Going going going!"
     
-    "You grab your clothes and dive out the window naked!"
+    "You grab your clothes and dive out the window!"
     "You get dressed outside while running away!"
     
     $ mapa_disponivel = True

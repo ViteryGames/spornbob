@@ -1,4 +1,4 @@
-# room2.rpy - Krusty Krotch Restaurant - COM INTEGRAÇÃO DA PÉROLA
+# room2.rpy - Krusty Krotch Restaurant - COM INTEGRAÇÃO DA PÉROLA E SPATULA 3000
 
 define lu = "Squirtward"
 default cozinha_mensagem = False
@@ -165,7 +165,7 @@ label cozinha:
             "This is the Krusty Krotch kitchen"  
             $ cozinha_mensagem = True 
 
-        # MENU DA COZINHA COM OPÇÃO DA PÉROLA SE ELA ESTIVER PRESENTE
+        # MENU DA COZINHA COM OPÇÃO DA PÉROLA SE ELA ESTIVER PRESENTE E SPATULA 3000
         if perola_no_restaurante:
             menu:
                 "Add a secret sauce":
@@ -184,6 +184,10 @@ label cozinha:
                     $ escolha = "abacaxi"
                     jump chapa_abacaxi_com_perola
 
+                "Cook with Spatula 3000" if 28 in inventario:
+                    $ escolha = "spatula3000"
+                    jump chapa_spatula3000_com_perola
+
                 "Cook a normal Krotch burger":
                     $ escolha = "burguer"
                     jump chapa_com_perola
@@ -191,7 +195,7 @@ label cozinha:
                 "Talk to Pearl":
                     jump interagir_com_perola_cozinha
         else:
-            # MENU NORMAL QUANDO PÉROLA NÃO ESTÁ PRESENTE
+            # MENU NORMAL QUANDO PÉROLA NÃO ESTÁ PRESENTE (COM SPATULA 3000)
             menu:
                 "Add a secret sauce":
                     $ escolha = "gozo"
@@ -208,6 +212,10 @@ label cozinha:
                 "Cook with special sauce and pineapple" if 19 in inventario:
                     $ escolha = "abacaxi"
                     jump chapa_abacaxi
+
+                "Cook with Spatula 3000" if 28 in inventario:
+                    $ escolha = "spatula3000"
+                    jump chapa_spatula3000
 
                 "Cook a normal Krotch burger":
                     $ escolha = "burguer"
@@ -241,7 +249,65 @@ label interagir_com_perola_cozinha:
     
     jump cozinha
 
-# VERSÕES DAS RECEITAS COM REAÇÕES DA PÉROLA
+# NOVA FUNÇÃO: USAR SPATULA 3000 COM REAÇÃO DA PÉROLA
+label chapa_spatula3000_com_perola:
+    hide pesus
+    
+    # Pearl is SHOCKED when she sees the Spatula 3000
+    show reclavulva with hpunch:
+        xalign -2.2
+        yalign 1.2
+        zoom 1.3
+        
+    prl "WHAT THE ACTUAL FUCK IS THAT THING?!"
+    
+    with vpunch
+    prl "THAT SPATULA IS GLOWING LIKE A DAMN UFO!"
+    
+    b "It's just a new spatula I got."
+    
+    prl "JUST A SPATULA?! ARE YOU INSANE?!"
+    prl "That thing looks like it's from the YEAR 3000!"
+    prl "It's making WEIRD ELECTRONIC SOUNDS!"
+    
+    hide reclavulva
+    show perola_furiosa with hpunch:
+        xalign -2.2
+        yalign 1.2
+        zoom 1.3
+        
+    prl "The old Spoogebob could barely flip a burger without BURNING IT!"
+    prl "Now you have ALIEN TECHNOLOGY?!"
+    
+    with hpunch
+    prl "WHERE THE HELL DID YOU GET MONEY FOR THAT?!"
+    prl "THAT THING PROBABLY COSTS MORE THAN MY DAD'S CAR!"
+    
+    b "I... uh... saved up?"
+    
+    prl "SAVED UP?! ON YOUR MINIMUM WAGE SALARY?!"
+    prl "YOU'RE LYING THROUGH YOUR SQUARE TEETH!"
+    
+    hide perola_furiosa
+    show pesus with hpunch:
+        xalign -2.2
+        yalign 1.2
+        zoom 1.3
+        
+    prl "I'm DEFINITELY calling the police after this..."
+    prl "You're either a THIEF or you're NOT who you say you are!"
+    prl "Nobody just gets FUTURE TECH like that!"
+    
+    $ perola_suspeita_nivel += 5  # MAJOR suspicion increase
+    $ perola_quer_vinganca = True  # She now wants revenge
+    
+    prl "Cook with your MAGICAL SPATULA, 'Spoogebob'..."
+    prl "But I'm watching EVERYTHING!"
+    
+    # CONTINUAR COM A RECEITA DA SPATULA 3000
+    jump chapa_spatula3000
+
+# VERSÕES DAS RECEITAS COM REAÇÕES DA PÉROLA (keep existing ones and add new one)
 label chapa_com_perola:
     # REAÇÃO DA PÉROLA BASEADA NA ESCOLHA
     if escolha == "gozo":
@@ -318,6 +384,116 @@ label chapa_abacaxi_com_perola:
     
     # CONTINUAR COM A RECEITA NORMAL
     jump chapa_abacaxi
+
+# NOVA LABEL: COZINHAR COM SPATULA 3000 (VERSÃO SEM PÉROLA)
+label chapa_spatula3000:
+    # Play special legendary sound effect
+    play music "biurifou.mp3"
+    
+    scene kitchen
+    
+    with hpunch
+    "You pull out the LEGENDARY SPATULA 3000!"
+    "⚡ The kitchen fills with a golden glow! ⚡"
+    
+    play audio "grelha.mp3" fadein 2.0
+    show chapa
+    
+    with vpunch
+    "🔥 ACTIVATION SEQUENCE INITIATED! 🔥"
+    "The advanced cooking device starts humming with technological power!"
+    "Precision engineering systems: ONLINE!"
+    "Resonance chambers: CALIBRATED!"
+    
+    pause(2)
+    
+    show molho  # Reuse existing cooking animations
+    
+    "⚡ PERFECT FLIP ALGORITHM ENGAGED! ⚡"
+    "FLIP! ⚡ FLIP! ⚡ FLIP! The spatula moves at LIGHT SPEED!"
+    "Every burger flipped with SCIENTIFIC PRECISION!"
+    "Temperature sensors ensure OPTIMAL COOKING!"
+    
+    pause(2)
+    
+    show molho2
+    
+    "🌟 LEGENDARY COOKING MODE: ACTIVATED! 🌟"
+    "The Spatula 3000's advanced AI calculates perfect timing!"
+    "Customers outside can SMELL the incredible quality!"
+    "A crowd is forming - word spreads fast!"
+    
+    pause(2)
+    
+    show molho3
+    
+    "🎯 CULINARY PERFECTION ACHIEVED! 🎯"
+    "These aren't just burgers - they're MASTERPIECES!"
+    "The Spatula 3000 has transcended normal cooking!"
+    
+    pause(3)
+    
+    hide chapa
+    hide molho
+    hide molho2
+    hide molho3
+    
+    "Six hours later..." 
+    $ hora_do_dia += 6
+    
+    pause(2)
+    
+    show kk night
+    
+    show krab happy:
+        zoom 0.6 xpos 1000 ypos 400
+    
+    with hpunch
+    k "HOLY NEPTUNE'S BEARD AND BARNACLES!"
+    k "SPOOGEBOB! WHAT KIND OF MIRACLE DID YOU PERFORM?!"
+    
+    with vpunch  
+    k "These are the most PERFECT burgers in the HISTORY OF COOKING!"
+    k "Customers are offering me HUNDREDS for a single bite!"
+    k "The MAYOR called asking for our secret!"
+    k "I'VE NEVER MADE SO MUCH MONEY IN MY LIFE!"
+    
+    # High reward for using Spatula 3000
+    $ recompensa = renpy.random.randint(270, 292)
+    $ money += recompensa
+    
+    with hpunch
+    "💰 You received [recompensa] dollars for LEGENDARY performance! 💰"
+    
+    k "Whatever that MAGICAL DEVICE was, it was worth MORE THAN GOLD!"
+    k "You've made the Krusty Krotch FAMOUS across all seven seas!"
+    
+    # Remove Spatula 3000 from inventory after use (it's consumed)
+    $ inventario.remove(28)
+    
+
+    "⚡ The Spatula 3000 glows brighter and brighter... ⚡"
+    "Having fulfilled its LEGENDARY destiny, it dissolves into stardust!"
+    "Even the most advanced technology has its limits..."
+    stop music
+    play audio "quackbob.mp3"
+
+    hide krab happy
+    show krab4:
+        zoom 0.6 xpos 1000 ypos 400
+    k "NO! THE MAGICAL SPATULA DISAPPEARED!"
+    k "Well... at least we made a FORTUNE today!"
+    k "You'll go down in COOKING HISTORY, boy!"
+    
+    stop music fadeout 3.0 
+    stop audio fadeout 2.0
+    $ hora_do_dia = 20
+    
+    # Show xerequinha screen before leaving
+    show screen xerequinha
+    
+    # Exit using existing label
+    jump quanaite
 
 # Label for cooking with special sauce and pineapple
 label chapa_abacaxi:
@@ -599,6 +775,104 @@ label chapa:
         $ recompensa = renpy.random.randint(8, 25)
         $ money += recompensa
         "You received [recompensa] dollars for service with sweet and sour sauce!"
+        
+        stop music fadeout 3.0 
+        $ hora_do_dia = 20
+        
+        # Show xerequinha screen before leaving
+        show screen xerequinha
+        
+        # Exit using existing label
+        jump quanaite
+
+    # NOVA OPÇÃO: SPATULA 3000
+    elif escolha == "spatula3000":
+        # Play special sound for legendary cooking
+        play sound "unlock.mp3"  
+        
+        show chapa
+        with hpunch
+        
+        "You pull out the LEGENDARY SPATULA 3000!"
+        "The advanced cooking device starts GLOWING with technological power!"
+        
+        pause(1)
+        
+        with vpunch
+        "⚡ BZZZZT! ⚡ The spatula's energy resonates through the kitchen!"
+        "Its precision engineering activates PERFECT COOKING MODE!"
+        "The resonance chambers synchronize with your cooking rhythm!"
+        
+        pause(2)
+        
+        # Show cooking effects
+        show molho  # Reuse cooking animation
+        
+        "FLIP! ⚡ FLIP! ⚡ FLIP! The spatula moves at LIGHT SPEED!"
+        "Every burger is flipped with SCIENTIFIC PRECISION!"
+        "The Spatula 3000's advanced algorithms calculate perfect cooking times!"
+        
+        pause(2)
+        
+        show molho2
+        
+        "🔥 PERFECT SEAR! 🔥 OPTIMAL TEMPERATURE! 🔥 MAXIMUM FLAVOR!"
+        "Customers can SMELL the incredible quality from outside!"
+        "A LINE OF CUSTOMERS forms around the block!"
+        
+        pause(2)
+        
+        show molho3
+        
+        "The Spatula 3000 has created CULINARY PERFECTION!"
+        "These aren't just burgers - they're WORKS OF ART!"
+
+        pause(3)
+        
+        hide chapa
+        hide molho
+        hide molho2 
+        hide molho3
+
+        "Six hours later" 
+        $ hora_do_dia += 6  
+
+        stop audio fadeout 2.0
+
+        show kk night
+
+        show krab happy:  # Use existing happy Krotch
+            zoom 0.6 xpos 1000 ypos 400
+
+        k "GREAT NEPTUNE'S TRIDENT! SPOOGEBOB!"
+        k "WHAT IN THE SEVEN SEAS DID YOU DO?!"
+        k "These are the most LEGENDARY burgers I've EVER SEEN!"
+        
+        with hpunch
+        k "Customers are FIGHTING each other to get more!"
+        k "Some guy offered me $100 for ONE BURGER!"
+        k "I've never made so much PROFIT in my entire life!"
+
+        # High reward for using Spatula 3000
+        $ recompensa = renpy.random.randint(70, 92)
+        $ money += recompensa
+        
+        with vpunch
+        "🎉 You received [recompensa] dollars for LEGENDARY cooking! 🎉"
+        
+        k "Whatever that MAGICAL DEVICE was, it was worth more than GOLD!"
+        k "You've just made the Krusty Krotch FAMOUS across the entire ocean!"
+        
+        # Remove Spatula 3000 from inventory after use
+        $ inventario.remove(28)
+        
+        with hpunch
+        "⚡ The Spatula 3000 has fulfilled its LEGENDARY purpose! ⚡"
+        "It dissolves into stardust, having completed its ultimate mission..."
+        "Even the most advanced tools have their limits..."
+        
+        k "NO! THE MAGICAL SPATULA! IT'S GONE!"
+        k "Well... at least we made a FORTUNE today!"
         
         stop music fadeout 3.0 
         $ hora_do_dia = 20

@@ -1,4 +1,4 @@
-# krotchhouse_main.rpy - Purrl's House Visit System - TRULY FINAL VERSION
+# krotchhouse_main.rpy - Purrl's House Visit System - UPDATED WITH CHECK STATUS
 
 # Variables for Purrl's house system
 default perola_nivel_intimidade = 0  # Purrl's intimacy level with player
@@ -97,8 +97,7 @@ image perola_twerk_pro_anim_normal:
     pause 0.2
     "perola_twerk_pro_frame7"
     pause 0.2
-    "perola_twerk_pro_frame8"
-    pause 0.2
+  
     repeat
 
 image perola_twerk_pro_anim_rapida:
@@ -116,8 +115,7 @@ image perola_twerk_pro_anim_rapida:
     pause 0.08
     "perola_twerk_pro_frame7"
     pause 0.08
-    "perola_twerk_pro_frame8"
-    pause 0.08
+
     repeat
 
 # Sound effects
@@ -183,17 +181,21 @@ label visitar_casa_perola:
     # Third visit onwards - direct to main menu
     else:
         scene quarto_perola
-        show perola_provocante at center
-        prl "You're back... good."
+        play music "teenagewhale.mp3"
+        show purll happy:
+         zoom 0.4 xpos 300 ypos 200
+
+        prl "You're back again... good."
         prl "What you wanna do today?"
         jump menu_principal_perola
 
 # First visit - Awakening
 label primeira_visita_perola:
-    play sound audio.porta_casa
+    play music "teenagewhale.mp3"
     
     scene quarto_perola
-    show perola_pijama at center
+    show pesus:
+      zoom 1.2 xpos 300 ypos 200
     
     prl "So... you actually came, you bastard."
     prl "Wasn't sure you'd have the balls to show up."
@@ -203,22 +205,26 @@ label primeira_visita_perola:
 # Second visit - Building tension
 label segunda_visita_perola:
     scene quarto_perola
-    show perola_provocante at center
+    play music "teenagewhale.mp3"
+
+    show pehorny:
+      zoom 0.4 xpos 300 ypos 200
     
-    prl "You came back... I've been thinking about yesterday all fucking day."
+    prl "You came back... I've been thinking about yesterday all day."
     prl "That twerking... it awakened something in me."
-    prl "I wanna learn more shit."
+    prl "I wanna learn more with you mister!"
     
+    b "Don't call me mister, you are already 18!"
+
     jump segunda_visita_desenvolvimento
 
-# Main menu for Purrl's house (3rd visit onwards)
+# Main menu for Purrl's house (3rd visit onwards) - REMOVED CONSTANT INTIMACY DISPLAY
 label menu_principal_perola:
     scene quarto_perola
-    show perola_normal at center
-    
-    "Purrl's Intimacy Level: [perola_nivel_intimidade]"
-    "Day: [dia]"
-    
+    show purll happy:
+     zoom 0.4 xpos 300 ypos 200
+    # REMOVED the intimacy level and day display from here
+
     menu:
         "Talk to Purrl":
             jump menu_conversa_perola
@@ -234,17 +240,63 @@ label menu_principal_perola:
         "Sexual favors":
             jump menu_favores_sexuais_perola
             
+        "Check Status":  # NEW OPTION
+            jump checar_status_perola
+            
         "Leave":
             prl "Leaving already? Pussy."
             $ mapa_disponivel = True
             call screen bobCasas
 
+# NEW: Check Status label
+label checar_status_perola:
+    scene quarto_perola
+    show pehorny:
+     zoom 0.4 xpos 300 ypos 200
+    
+    "=== PURRL'S STATUS ==="
+    "Intimacy Level: [perola_nivel_intimidade]"
+    "Total Visits: [visitas_casa_perola]"
+    "Current Day: [dia]"
+    
+    # Show what's unlocked at current level
+    if perola_nivel_intimidade < 5:
+        "Next unlock at Level 5: Professional Twerking"
+    elif perola_nivel_intimidade < 10:
+        "Next unlock at Level 10: Show Tits"
+    elif perola_nivel_intimidade < 15:
+        "Next unlock at Level 15: Handjob"
+    elif perola_nivel_intimidade < 20:
+        "Next unlock at Level 20: Anal Sex"
+    elif perola_nivel_intimidade < 30:
+        "Next unlock at Level 30: Vaginal Sex"
+    else:
+        "Maximum intimacy reached! All content unlocked."
+    
+    # Show gift status
+    if pode_dar_presente():
+        "Gifts given today: [perola_presentes_hoje]/2"
+    else:
+        "Daily gift limit reached (2/2)"
+    
+    # Show if can do sexual act today
+    if perola_ultimo_ato_sexual == dia:
+        "Sexual act already performed today."
+    else:
+        "Can perform sexual act today."
+    
+    prl "Checking up on me? How thoughtful..."
+    
+    jump menu_principal_perola
+
 # Sexual favors menu with level requirements
 label menu_favores_sexuais_perola:
     scene quarto_perola
-    show perola_provocante at center
+    show pehorny:
+     zoom 0.4 xpos 300 ypos 200
     
-    prl "What dirty shit you want today?"
+    prl "Now we are talking!"
+    prl "What dirty shit are we trying today?"
     
     menu:
         "Basic twerking" if perola_nivel_intimidade >= 0:
@@ -256,19 +308,16 @@ label menu_favores_sexuais_perola:
         "Show me your tits (Requires Level 10)" if perola_nivel_intimidade >= 10:
             jump ver_peitos_perola
             
-        "Sexual twerking (Requires Level 15)" if perola_nivel_intimidade >= 15:
-            jump twerk_sexual_perola
-            
-        "Handjob (Requires Level 20)" if perola_nivel_intimidade >= 20:
+        "Handjob (Requires Level 15)" if perola_nivel_intimidade >= 15:
             jump punheta_perola
+    
+        #"Rub her whale twat (Requires Level 25)" if perola_nivel_intimidade >= 25:
+            #jump boquete_perola
             
-        "Blowjob (Requires Level 25)" if perola_nivel_intimidade >= 25:
-            jump boquete_perola
-            
-        "Fuck your ass (Requires Level 30)" if perola_nivel_intimidade >= 30:
+        "Fuck your ass" if perola_nivel_intimidade >= 20:
             jump foder_perola_anal
             
-        "Fuck your pussy (Requires Level 35)" if perola_nivel_intimidade >= 35:
+        "Fuck your pussy (Requires Level 30)" if perola_nivel_intimidade >= 30:
             jump foder_perola_vaginal
             
         "Not high enough level" if perola_nivel_intimidade < 10:
@@ -320,18 +369,38 @@ label twerk_profissional:
     
     prl "See the difference? I'm a fucking pro now!"
     prl "Every move calculated to make your dick hard!"
+
+    window hide
+    $ renpy.pause(hard=False)
+
     
     menu:
         "Maximum speed":
             hide perola_twerk_pro_anim_normal
             show perola_twerk_pro_anim_rapida at center
             prl "Like this?! I can go even faster!"
-            prl "Your dick must be rock hard now!"
+            prl "Fuck my panties are getting inside my butt!"
+
+            window hide
+            $ renpy.pause(hard=False)
+
             $ perola_nivel_intimidade += 1
             
         "Perfect":
             prl "Damn right it's perfect!"
-    
+
+            window hide
+            $ renpy.pause(hard=False)
+
+            prl "You like this speed fuckboy?"
+
+            b "I fucking love it!"
+
+            prl "Twerking for you in my room is SO H O T"
+            prl "Tifanny is gonna die when she hears about this"
+
+    "Your intimacy with Purll has increased"
+    $ perola_nivel_intimidade += 1
     stop music fadeout 1.0
     hide perola_twerk_pro_anim_normal
     hide perola_twerk_pro_anim_rapida
@@ -370,7 +439,6 @@ label menu_presentes_perola:
         jump menu_principal_perola
     
     "What gift you wanna give Purrl? (Daily limit: [perola_presentes_hoje]/2)"
-    "Current Day: [dia]"
     
     $ presentes_disponiveis = []
     $ nomes_presentes = []
@@ -423,7 +491,7 @@ label menu_presentes_perola:
         
     elif result == 19:  # Pineapple
         $ inventario.remove(19)
-        prl "A pineapple? It's so... dick shaped..."
+        prl "A pineapple? It kinda looks like your house but ok thanks!"
         $ perola_nivel_intimidade += 2
         $ money += 4
         "Purrl gives you $4!"

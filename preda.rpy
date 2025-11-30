@@ -125,6 +125,9 @@ label preda:
             # Show Fatrick shirtless
             hide pautrick
             show pautrick mole
+             
+            window hide
+            $ renpy.pause(hard=False) 
             
             p "Are you satisfied now?"
             

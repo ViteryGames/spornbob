@@ -3,21 +3,25 @@
 # First visit scene
 label perola_sozinha_primeira_vez:
     scene quarto_perola
-    show perola_provocante at center
+    show pesuses:
+      zoom 0.4 xpos 300 ypos 200
     
     prl "Alright, now it's just you and me, asshole."
     prl "Time to find out what the fuck is up with you."
     
-    b "I told you already, I'm fucking Spoogebob."
+    b "I told you already, I'm the same fucking Spoogebob."
+
+    b "Bahahahaha! I'm readyyyy! I love moaning in the closet at cold nights la la la"
     
-    prl "Bullshit! The Spoogebob I knew was a pussy."
-    prl "You're different. Rougher. More of a real fucking man."
+    prl "Bullshit! The Spoogebob I knew was a pussy!"
+    prl "You're different. Rougher. Almost like a real man."
     
-    show perola_provocante at center:
-        linear 2.0 xalign 0.7
+    hide pesuses
+    show pehorny:
+      zoom 0.4 xpos 300 ypos 200
     
     prl "You know what? Maybe I don't wanna rat you out."
-    prl "You're not boring as shit like before."
+    prl "You're not square like before."
     
     prl "You've got me feeling some type of way..."
     prl "Shit I never felt before."
@@ -30,23 +34,35 @@ label perola_sozinha_primeira_vez:
             jump despertar_sexual_perola
             
         "You're just a spoiled little bitch":
-            prl "Spoiled bitch?! I'll show you who's a bitch!"
+            hide pehorny
+            show pearl mad:
+             zoom 0.4 xpos 300 ypos 200
+       
+            prl "How dare you call me a bitch at my own house!"
+            prl "You work for my dad you fat loser"
             jump despertar_sexual_perola
 
 # Sexual awakening
 label despertar_sexual_perola:
     hide perola_provocante
-    show perola_excitada at center
+    hide pesuses
+    hide pehorny
+    hide pearl mad
+    show pesuses:
+      zoom 0.4 xpos 300 ypos 200
     
-    prl "Fuck... I never felt like this before..."
-    prl "You make me wanna do bad shit."
+    prl "You are lucky I'm really horny and dreaming about doing bad things!"
     
-    b "Bad how?"
+    b "How bad are we talking here hoe?"
     
-    prl "Like... dirty shit. Nasty shit."
+    prl "Like... dirty stuff. Nasty shit."
     prl "Shit that would make my old man lose his fucking mind."
     
-    prl "I've been watching videos online... learning shit..."
+    prl "I've been watching videos online... learning..."
+
+    b "Yeah we all watch porn, get to the point already my cock is getting hard"
+
+    prl "Fine! You are really anti climatic you know that right?!"
     prl "Wanna see what I learned?"
     
     menu:
@@ -62,8 +78,10 @@ label primeira_cena_twerk:
     $ primeiro_twerk = True
     $ perola_acordou_sexualmente = True
     
-    prl "I learned this shit called twerking."
+    prl "I learned this thing called twerking."
     prl "It's supposed to make dicks hard."
+
+    b "Oh boy here we go"
     
     play music audio.twerk_music fadein 1.0
     
@@ -73,7 +91,11 @@ label primeira_cena_twerk:
     prl "Am I doing this shit right?"
     prl "The videos made it look easy..."
     
+    window hide
+    $ renpy.pause(hard=False)
+
     b "Holy shit, Purrl..."
+    b "(She sucks but that ass is HUGE)"
     
     prl "You like it? I feel something wild inside me..."
     prl "This feeling is fucking incredible!"
@@ -88,20 +110,39 @@ label primeira_cena_twerk:
             hide perola_twerk_anim_normal
             show perola_twerk_anim_rapida at center
             prl "Faster! Like this?"
+
+            b "Fuck yes!"
+
+            window hide
+            $ renpy.pause(hard=False)
+
+            prl "You like staring at my butt huh?"
             $ perola_nivel_intimidade += 1
     
     stop music fadeout 2.0
     hide perola_twerk_anim_normal
     hide perola_twerk_anim_rapida
-    show perola_excitada at center
+    
+    play audio "soco.mp3"
+
+    show perola_excitada with vpunch:
+      zoom 0.5 xpos 400 ypos 250
     
     prl "Oh fuck... I'm so turned on!"
-    prl "Never felt shit like this before!"
+    prl "My legs are shaking so much!"
+
+    prl "I can't even stand anymore..."
     
+    window hide
+    $ renpy.pause(hard=False)
+    
+    b "(Damn she is SOAKED down there)"
+
     prl "This is our secret, got it?"
     prl "Nobody can know about this."
     
-    b "Yeah whatever."
+    b "Who would I even talk about this? Fatrick?"
+    b "Don't worry princess, your dirty secret is safe with me"
     
     prl "Good... come back tomorrow."
     prl "I wanna learn more..."
@@ -133,20 +174,35 @@ label twerk_segunda_visita:
     
     prl "I've been practicing!"
     prl "Watch this shit!"
-    
+
+    window hide
+    $ renpy.pause(hard=False)
+
     hide perola_twerk_anim_normal
     show perola_twerk_anim_rapida at center
     
     prl "See? I'm getting better!"
     prl "Your dick must be rock hard!"
     
+    window hide
+    $ renpy.pause(hard=False)
+
     $ perola_nivel_intimidade += 2
     
     stop music fadeout 1.0
     hide perola_twerk_anim_rapida
-    show perola_satisfeita at center
+
+    play audio "soco.mp3"
+
+    show perola_excitada with vpunch:
+      zoom 0.48 xpos 500 ypos 250
     
-    prl "Tomorrow, come back again."
+    prl "Aaaah that's enough for my body today!"
+
+    b "But my cock is super turned on now!"
+
+    prl "T-tomorrow, come back again."
+    prl "PLEASE!"
     prl "From now on, we can do whatever we want."
     
     $ hora_do_dia += 2
@@ -165,7 +221,8 @@ label conversa_segunda_visita:
             prl "Us? There's an us now?"
             prl "I guess... I do think about you a lot."
             $ perola_nivel_intimidade += 1
-    
+
+    prl "Now I'll show you my professional ass moves!"
     $ hora_do_dia += 1
     jump twerk_segunda_visita
 

@@ -54,7 +54,7 @@ label aprender_receitas:
             karen "The Spatula 3000 is the most advanced cooking utensil ever created, dipshit."
             karen "Ingredients: 1 Jellyfish Net + 1 Screwdriver + 1 Clarinet + no money needed"
             karen "This shit can flip burgers at light speed and cook with perfect precision."
-            karen "Even that yellow idiot SpongeBob would be jealous of this masterpiece."
+            karen "Even that yellow idiot SpoogeBob would be jealous of this masterpiece."
             
         "Steroid Shots (Ultimate strength boost)":
             karen "Steroid Shots give maximum physical enhancement, meathead."

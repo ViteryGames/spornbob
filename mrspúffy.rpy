@@ -33,9 +33,9 @@ label mrs_puffy_visit:
         linear 0.1 xpos 950
         linear 0.1 xpos 900
     
-    y"What the fuck..."
-    y"Who's that knocking at my door?"
-    y"Shit... what if it's the cops?!"
+    b "What the fuck..."
+    b "Who's that knocking at my door?"
+    b "Shit... what if it's the cops?!"
     
     with vpunch
     
@@ -48,9 +48,9 @@ label mrs_puffy_visit:
     
     with hpunch
     
-    y"FUCK! IT'S THE COPS!"
-    y"They found out what happened to the real Spoogebob!"
-    y"I'm so fucked!!"
+    b "FUCK! IT'S THE COPS!"
+    b "They found out what happened to the real Spoogebob!"
+    b "I'm so fucked!!"
     
     # Menu de escolhas
     menu:
@@ -65,7 +65,7 @@ label mrs_puffy_visit:
 
 # Label para ignorar
 label ignore_mrs_puffy:
-    y"I'll just ignore whoever this is..."
+    b "I'll just ignore whoever this is..."
     
     # Mrs. Puffy continua batendo
     play sound "soco.mp3"
@@ -77,21 +77,21 @@ label ignore_mrs_puffy:
     with hpunch
     "???" "Don't make me use my... special teaching methods!"
     
-    y"What the hell does that mean?"
-    y"This definitely doesn't sound like cops..."
+    b "What the hell does that mean?"
+    b "This definitely doesn't sound like cops..."
     
     # Ela continua insistindo
     "???" "Fine! I'll be back later with my private lesson plan!"
     
     # Som de passos se afastando
-    y"Whoever that was finally left..."
-    y"But what did they mean by 'special teaching methods'?"
+    b "Whoever that was finally left..."
+    b "But what did they mean by 'special teaching methods'?"
     
     jump mrs_puffy_aftermath
 
 # Label para abrir a porta
 label open_door_mrs_puffy:
-    y"Fine, let's see who this is..."
+    b "Fine, let's see who this is..."
     
     # Som da porta abrindo
     play sound "door_open.mp3"
@@ -123,7 +123,7 @@ label open_door_mrs_puffy:
      zoom 0.8
     "Mrs. Puffy" "I can see you've been... developing... in certain areas..."
     
-    y"What the fuck are you staring at, lady?"
+    b "What the fuck are you staring at, lady?"
     
     "Mrs. Puffy" "Well... maybe traditional driving lessons aren't what you need anymore..."
     "Mrs. Puffy" "Perhaps you'd be interested in some... private tutoring?"
@@ -135,8 +135,8 @@ label open_door_mrs_puffy:
     # Menu final
     menu:
         "Accept her offer":
-            y"Well... private lessons don't sound too bad..."
-            y"When do we start, Mrs. Puffy?"
+            b "Well... private lessons don't sound too bad..."
+            b "When do we start, Mrs. Puffy?"
 
             show puffyhappy
             "Mrs. Puffy" "Oh wonderful! Come by my class tomorrow..."
@@ -145,14 +145,14 @@ label open_door_mrs_puffy:
             
             # Ela vai embora animada
             hide puffyhappy
-            y"Damn... that crazy bitch might actually be fun..."
-            y"I'll check out her place later..."
+            b "Damn... that crazy bitch might actually be fun..."
+            b "I'll check out her place later..."
             
             jump mrs_puffy_aftermath
             
         "Tell her to fuck off":
-            y"Listen here, you huge fucking bitch!"
-            y"Take your 'private lessons' and shove them up your old fat hole!"
+            b "Listen here, you huge fucking bitch!"
+            b "Take your 'private lessons' and shove them up your old fat hole!"
             
             hide puffyhappy
             show puffymad at left:
@@ -163,28 +163,28 @@ label open_door_mrs_puffy:
             "Mrs. Puffy" "I'll remember this attitude, Spoogebob!"
             hide puffymad
             # Ela vai embora furiosa
-            y"I will never answer that door again"
+            b "I will never answer that door again"
             
             jump mrs_puffy_aftermath
 
 # Label para fingir que não tem ninguém
 label nobody_home_mrs_puffy:
-    y"Nobody's home!"
-    y"Spoogebob went out!"
+    b "Nobody's home!"
+    b "Spoogebob went out!"
     
     "???" "Wait... if nobody's home, then who's talking to me?"
     "???" "That doesn't sound like Spoogebob's voice either..."
     
     # Primeira vez ficando tenso
     show closeup frank
-    y"Shit, they're catching on..."
+    b "Shit, they're catching on..."
     hide closeup frank
     
     # Submenu para responder
     menu:
         "Say 'Nobody'":
-            y"Uh... nobody!"
-            y"You're hearing things, go back to sleep or something"
+            b "Uh... nobody!"
+            b "You're hearing things, go back to sleep or something"
             
             "???" "I'm not stupid! Someone is definitely in there!"
             "???" "Open this door right now!"
@@ -197,8 +197,8 @@ label nobody_home_mrs_puffy:
             jump open_door_mrs_puffy
             
         "Say 'None of your business'":
-            y"None of your fucking business, fuck head!"
-            y"Mind your own damn life!"
+            b "None of your fucking business, fuck head!"
+            b "Mind your own damn life!"
             
             "???" "Excuse me?! That language!"
             "???" "Open this door immediately!"
@@ -208,20 +208,20 @@ label nobody_home_mrs_puffy:
             jump open_door_mrs_puffy
             
         "Say 'Meow":
-            y"Meow!"
-            y"Meow meow!"
+            b "Meow!"
+            b "Meow meow!"
             
             "???" "Gary? Is that you?"
             "???" "Where's Spoogebob, Gary?"
             
-            y"Meow meow... he's not here..."
+            b "Meow meow... he's not here..."
             
             "???" "Wait... since when does Gary talk?!"
             "???" "And why do you sound like a grown man?!"
             
             # Segunda vez ficando tenso
             show panic
-            y"Shit, I blew it..."
+            b "Shit, I blew it..."
             hide panic 
 
             jump open_door_mrs_puffy
@@ -232,8 +232,8 @@ label mrs_puffy_aftermath:
     show batavo1 at Transform(xzoom=-1):
         zoom 1.3 xpos 1000 ypos 200
     
-    y"What a weird fucking day..."
-    y"That crazy fat teacher is definitely up to something..."
+    b "What a weird fucking day..."
+    b "That crazy fat teacher is definitely up to something..."
     
     # Parar música de suspense
     stop music fadeout 2.0

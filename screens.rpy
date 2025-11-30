@@ -361,7 +361,7 @@ screen main_menu():
     imagebutton:
         idle "patreon2.jpg"
         hover "patreon2.jpg"  # Você pode criar uma versão hover se quiser
-        action OpenURL("https://www.patreon.com/c/FRANKTOPIAGAMESTUDIO")
+        action OpenURL("https://www.patreon.com/c/franktopiagames")
         xalign 0.42
         yalign 0.03
         # Opcional: adicionar um efeito de hover

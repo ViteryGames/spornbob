@@ -211,7 +211,7 @@ label menu_favores_sexuais:
 
 # Leaving Sandy's house
 label sair_da_sandy:
-    sd "Leaving already cowoboy? That's okay, come back whenever you want!"
+    sd "Leaving already cowboy? That's okay, come back whenever you want!"
     
     scene black with dissolve
     "You leave Sandy's house..."

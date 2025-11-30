@@ -4,10 +4,24 @@
 define audio.typing_bubbles = "bubbles.mp3"     # Sound for normal characters
 define audio.typing_computer = "generic.mp3"    # Sound for narration/text without character
 define audio.typing_karen = "metatones.mp3"    # Special sound for Karen (computer)
-define audio.typing_evil = "bubbles.mp3"     # Evil sound for Plugton
+define audio.typing_evil = "evil_laugh.mp3"     # Evil sound for Plugton
 define audio.typing_deep = "krotch_voice.mp3"   # Deep sound for Mr. Krotch
-define audio.typing_robot = "bubbles.mp3"   # Robot sound for special characters
+define audio.typing_robot = "robot_voice.mp3"   # Robot sound for special characters
+define audio.music_fase1 = "bobesponja.mp3"      # Dias 1-4
+define audio.music_fase2 = "sua_musica_fase2.mp3"  # Dias 5-9
+define audio.music_fase3 = "sua_musica_fase3.mp3"  # Dia 10+
 
+# Adicione esta função no bloco init python do script.rpy
+init python:
+    def tocar_musica_por_dia():
+        """Toca a música apropriada baseada no dia atual"""
+        if dia < 5:
+            renpy.music.play(audio.music_fase1, channel="music", fadein=2.0, if_changed=True)
+        elif dia < 10:
+            renpy.music.play(audio.music_fase2, channel="music", fadein=2.0, if_changed=True)
+        else:
+            renpy.music.play(audio.music_fase3, channel="music", fadein=2.0, if_changed=True)
+            
 # Code to control typing sound - SAVE COMPATIBLE VERSION
 init python:
     # Global variable to control if sound is playing
@@ -55,17 +69,6 @@ init python:
                 renpy.music.stop(channel="sound")
                 typing_sound_playing = False
     
-    def evil_callback(event, **kwargs):
-        global typing_sound_playing
-        
-        if event == "show":
-            renpy.music.play(audio.typing_evil, channel="sound", loop=True)
-            typing_sound_playing = True
-        elif event == "slow_done" or event == "end":
-            if typing_sound_playing:
-                renpy.music.stop(channel="sound")
-                typing_sound_playing = False
-    
     def deep_callback(event, **kwargs):
         global typing_sound_playing
         
@@ -80,33 +83,26 @@ init python:
 # Definindo o narrador com callback de narração
 define narrator = Character(None, callback=narration_sound_callback)
 
-# DEFINIÇÕES DE PERSONAGENS COM SONS ESPECÍFICOS
+# DEFINIÇÕES DE PERSONAGENS - SISTEMA DE SOM SIMPLIFICADO
 
-# Personagens normais com som de bolhas (usando função original para compatibilidade)
-define p = Character("Fatrick Star", callback=typing_sound_callback)
-define bs = Character("Spoogebob Squirtpants", callback=typing_sound_callback)
-define sd = Character("Sandy Cunts", who_color="#ff69b4", callback=typing_sound_callback)
-define prl = Character("Purrl", who_color="#ff69b4", callback=typing_sound_callback)
-define l = Character("Larry the Pornstar", who_color="#ff4400", callback=typing_sound_callback)
-define puff = Character("Mrs. Puffy", who_color="#ff69b4", callback=typing_sound_callback)
-define lou = Character("Lou (Angry Employee)", who_color="#8B0000", callback=typing_sound_callback)
+# TODOS os personagens usem som padrão de bolhas (bubbles.mp3) automaticamente
+# através do callback global - EXCETO Karen e Mr. Krotch que têm callbacks específicos
+define p = Character("Fatrick Star")
+define bs = Character("Spoogebob Squirtpants")
+define sd = Character("Sandy Cunts", who_color="#ff69b4")
+define prl = Character("Purrl", who_color="#ff69b4")
+define l = Character("Larry the Pornstar", who_color="#ff4400")
+define puff = Character("Mrs. Puffy", who_color="#ff69b4")
+define lou = Character("Lou (Angry Employee)", who_color="#8B0000")
+define plug = Character("Plugton", who_color="#00ff00")
+define h = Character("Flying Fuckman", color="#34A65F")
+define b = Character("You", who_color="#ffff00")
+define you = Character("You", who_color="#ffff00") 
+define y = Character("You", who_color="#ffff00")
 
-# Karen com som especial
+# APENAS estes dois têm callbacks específicos:
 define karen = Character("Karen (Computer Wife)", who_color="#ff00ff", callback=karen_callback)
-
-# Plugton com som malvado
-define plug = Character("Plugton", who_color="#00ff00", callback=evil_callback)
-
-# Mr. Krotch com som profundo
 define k = Character("Mr. Krotch", callback=deep_callback)
-
-# Flying Dutchman com som malvado
-define h = Character("Flying Fuckman", color="#34A65F", callback=evil_callback)
-
-# Você (protagonista) com som profundo
-define b = Character("You", who_color="#ffff00", callback=deep_callback)
-define you = Character("You", who_color="#ffff00", callback=deep_callback)
-define y = Character("You", who_color="#ffff00", callback=deep_callback)
 
 # Imagens de fundo
 image fundo_dia = "fundo_dia.jpg"
@@ -122,7 +118,7 @@ label mostrar_fundo():
 
 # Label de teste para sistema dia/noite
 label inicio:
-    call mostrar_fundo
+    call mostrar_fundo from _call_mostrar_fundo
     "It's dawn."
     
     "Do you want to wait or continue?"
@@ -130,7 +126,7 @@ label inicio:
     menu:
         "Wait":
             $ hora_do_dia += 6
-            call mostrar_fundo
+            call mostrar_fundo from _call_mostrar_fundo_1
             "Now it's [hora_do_dia] o'clock."
         "Continue":
             "You moved forward."
@@ -175,9 +171,10 @@ label start:
             renpy.play(som_opcao, channel="sound")
             # Chamar menu original
             return original_menu(choices, *args, **kwargs)
-
-        # Substituir menu padrão pelo personalizado
-        renpy.display_menu = custom_menu
+        
+        # Configure callback global APENAS para personagens sem callback específico
+        # Isso fará com que todos os personagens (exceto Karen e Mr. Krotch) usem bubbles.mp3
+        config.all_character_callbacks.append(typing_sound_callback)
 
     # Começar a cutscene principal
     jump cutscene

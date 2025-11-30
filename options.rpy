@@ -23,7 +23,7 @@ define gui.show_name = True
 
 ## A versão do jogo.
 
-define config.version = "1.0"
+define config.version = "10.0"
 
 
 ## Texto que é colocado na tela "Sobre" do jogo. Coloque o texto entre aspas
@@ -37,7 +37,7 @@ define gui.about = _p("""
 ## construída. Ele deve ser somente ASCII e não deve conter espaços, dois pontos
 ## ou ponto e vírgula.
 
-define build.name = "Spornbob0.0.8"
+define build.name = "Spornbob0.0.10"
 
 
 ## Sons e música ###############################################################

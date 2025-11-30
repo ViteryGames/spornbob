@@ -329,16 +329,16 @@ label provocar_plugton:
         $ pontos_relacionamento_plugton += 1
         
     elif provocacao_random == 2:
-        b "I bet even Patrick could run a better restaurant, you anal disaster."
-        plug "PATRICK?! That pink fucking buffoon couldn't run a bath!"
-        plug "Although... he did eat 47 Krabby Patties in one sitting..."
-        plug "Maybe he knows something about food appeal... shit."
+        b "I bet even Fatrick could run a better restaurant"
+        plug "FATRICK?! That pink fucking buffoon couldn't run a bath!"
+        plug "Although... he did eat 47 Krotch Patties in one sitting..."
+        plug "Maybe he knows something about food appeal..."
         $ pontos_relacionamento_plugton += 2
         
     else:
         b "What's your success rate? 0.001 percent?"
         plug "It's 0.003 percent, thank you very fucking much!"
-        plug "And that's rounded UP, asshole!"
+        plug "And that's rounded UP!"
         $ pontos_relacionamento_plugton += 1
     
     $ pontos_ganhos = pontos_relacionamento_plugton - pontos_iniciais
@@ -402,7 +402,7 @@ label vender_resultado:
     "Total relationship: [pontos_relacionamento_plugton] points (Level [nivel_relacionamento_plugton])"
     
     if pontos_relacionamento_plugton >= 30:
-        "Plugton considers you a valuable ally! Lab access available!"
+        "Plugton considers you a valuable ally! Lab access now available!"
     
     jump menu_plugton
 
@@ -434,8 +434,8 @@ label comprar_palitos_lixo:
 # Talk about creating items
 label falar_criar_itens:
     if pontos_relacionamento_plugton < 30:
-        plug "Create items? Why would I help YOU with that shit?"
-        plug "We're not exactly fucking friends, you know!"
+        plug "Create items? Why would I help YOU with that?"
+        plug "We're not exactly friends, you know!"
         plug "You need at least 30 relationship points to access my lab, asshole!"
         "Current relationship: [pontos_relacionamento_plugton]/30 points"
         jump menu_plugton
@@ -445,7 +445,7 @@ label falar_criar_itens:
     
     menu:
         "I want to learn evil science!":
-            plug "EVIL SCIENCE! Now you're speaking my fucking language!"
+            plug "EVIL SCIENCE! Now you're speaking my language!"
             plug "Very well! I'll grant you access to my secret laboratory, dickhead!"
             $ laboratorio_desbloqueado = True
             $ pontos_relacionamento_plugton += 10
@@ -453,15 +453,15 @@ label falar_criar_itens:
             "You gained 10 relationship points with Plugton!"
             
         "I just want to make useful stuff":
-            plug "Useful? How fucking boring! But... I suppose evil and useful can overlap."
-            plug "Fine! You can use my lab, but only for EVIL fucking purposes!"
+            plug "Useful? How boring! But... I suppose evil and useful can overlap."
+            plug "Fine! You can use my lab, but only for EVIL purposes!"
             $ laboratorio_desbloqueado = True
             $ pontos_relacionamento_plugton += 5
             $ atualizar_relacionamento_plugton()
             "You gained 5 relationship points with Plugton!"
             
         "Never mind":
-            plug "Coward! Come back when you're ready for REAL fucking science!"
+            plug "Coward! Come back when you're ready for REAL science!"
     
     if laboratorio_desbloqueado:
         "LABORATORY ACCESS UNLOCKED!"
@@ -475,7 +475,7 @@ label laboratorio_plugton:
     scene bg_laboratorio
     
     if not karen_primeira_vez:
-        "You enter Plugton's secret laboratory hidden beneath the Chum Bucket."
+        "You enter Plugton's secret laboratory hidden beneath the Cum Bucket."
         "The room is filled with bubbling beakers, strange machines, and blinking computers."
         
         show karen_tela at right
@@ -531,9 +531,9 @@ label menu_laboratorio:
 # Exit Chum Bucket
 label sair_balde_lixo:
     plug "Leaving so fucking soon? Come back anytime! My door is always open!"
-    plug "Mainly because the lock is broken, but still, asshole!"
+    plug "Mainly because the lock is broken, but still!!!"
     
     scene black with dissolve
-    "You leave the smelly Chum Bucket..."
+    "You leave the smelly Cum Bucket..."
     
     jump explorar_balde_lixo

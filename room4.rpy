@@ -27,6 +27,8 @@ label room4:
     # Disable map when player is inside the house
     $ mapa_disponivel = False
     
+    $ tocar_musica_por_dia()
+
     # Check if it's after 8 PM to redirect to night scene
     if hora_do_dia >= 20:
         jump quanaite
@@ -37,8 +39,6 @@ label room4:
     show batavo1 at Transform(xzoom=-1):
         zoom 1.3 xpos 1000 ypos 200 
         
-    play music "bobesponja.mp3" fadein 2.0
-
     "What should I do now?"
     jump chegada_em_casa
 
@@ -261,7 +261,7 @@ label salabob:
                         jump day3  # Third time, go to day3    
                     elif saida == 4:
                         jump landal  # Fourth time, go to landal   
-                    elif saida == 10:
+                    elif saida == 7:
                         jump mrs_puffy_visit  # Tenth time, go to mrs_puffy_visit           
                     else:
                         $ mapa_disponivel = True
